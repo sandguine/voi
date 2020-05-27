@@ -1,93 +1,44 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <title>VoI Experiment</title>
-    <script src="js/jspsych.js"></script>
-    <script src="js/var.js"></script>
-    <script src="js/jsPsych/jspsych-html-keyboard-response.js"></script>
-    <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
-    <link href="/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-    <link href="/css/custom.css" rel="stylesheet" type="text/css"></link>
+        <title>VoI Experiment</title>
+
+        <script src="js/jspsych.js"></script>
+        <script src="js/var.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/jsPsych/jspsych-fullscreen.js"></script>
+        <script src="js/jsPsych/jspsych-instructions.js"></script>
+        <script src="js/jsPsych/jspsych-html-keyboard-response.js"></script>
+
+        <link href="css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/custom.css" rel="stylesheet" type="text/css"></link>
     </head>
 
-    <body style="background-color:#000000;">
+    <body>
 
-    <canvas id="canvas" width="800" height="600" style="border:1px solid #d3d3d3;">
-    Your browser does not support the HTML5 canvas tag.</canvas>
+    <div>
+        <canvas id="circle" width="800" height="600" style="border:1px solid #d3d3d3;">
+            Your browser does not support the HTML5 canvas tag.
+        </canvas>
+    </div>
 
     <script>
-        var x = 400;
-        var y = 300;
-        var radius = 100;
-        var c = document.getElementById("canvas");
+        var c = document.getElementById("circle");
         var ctx = c.getContext("2d");
-        // var left = c.getContext("2d");
-        // var right = c.getContext("2d");
-        // var veil = c.getContext("2d");
-        // var line = c.getContext("2d");
+        var x = c.width/2;
+        var y = c.height/2;
+        var radius = 100;
         var angle;
 
-        // Static items in every page
+
+        // Static items
 
         // Line stroke style and width
         ctx.strokeStyle = "#FFFFFF";
         ctx.lineWidth = 5;
 
-        // Right half of the circle
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0.5*Math.PI, 1.5*Math.PI);
-        ctx.fillStyle = "MediumPurple";
-        ctx.fill();
-        ctx.stroke();
-
-        // Left half of the circle
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 1.5*Math.PI, 0.5*Math.PI);
-        ctx.fillStyle = "Gold";
-        ctx.fill();
-        ctx.stroke();
-
-        // Move according to random probability
-
-        // Veil
-        // veil.beginPath()
-        // veil.arc(x, y, radius, 0, Math.PI);
-        // veil.globalAlpha = 0.5;
-        // veil.fillStyle = "DarkGrey";
-        // veil.fill();
-        
-        // // Line to reveal gambling info
-        // line.beginPath();
-        // line.lineCap = "round";
-        // line.moveTo(300, 300);
-        // line.lineTo(500, 300);
-        // line.strokeStyle = "Crimson";
-        // line.lineWidth = 5;
-        // line.stroke();
-
-        MARK_THE_HOURS();
-
-        function MARK_THE_HOURS() {
-
-                        for (var i = 0; i < 12; i++) {
-                            angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
-                            ctx.lineWidth = 1;            // HAND WIDTH.
-                            ctx.beginPath();
-
-                            var x1 = (c.width / 2) + Math.cos(angle) * (secHandLength);
-                            var y1 = (c.height / 2) + Math.sin(angle) * (secHandLength);
-                            var x2 = (c.width / 2) + Math.cos(angle) * (secHandLength - (secHandLength / 7));
-                            var y2 = (c.height / 2) + Math.sin(angle) * (secHandLength - (secHandLength / 7));
-
-                            ctx.moveTo(x1, y1);
-                            ctx.lineTo(x2, y2);
-
-                            ctx.strokeStyle = '#466B76';
-                            ctx.stroke();
-                        }
-                    }
-
-
+        drawCircle(x, y, radius, "MediumPurple", "Gold");
+        drawMarks(x, y, radius);
 
     </script>
 
