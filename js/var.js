@@ -133,6 +133,8 @@ var info = {
         drawCircle(x, y, radius, "MediumPurple", "Gold");
         textGambleChoices("+3", "-3");
         textInfoDecision("Yes", "No", "$1");
+        drawVeil();
+        drawCutOff(x, y);
 
         // border of circle: color and stroke width
         function drawCircleBorder(color, stroke_width){
@@ -201,21 +203,25 @@ var info = {
             }
         }
 
-        // ctx
-        ctx.beginPath()
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.globalAlpha = 0.5;
-        ctx.fillStyle = "DarkGrey";
-        ctx.fill();
+        // veil info
+        function drawVeil(){
+            ctx.beginPath()
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = "DarkGrey";
+            ctx.fill();
+        }
 
         // Line to reveal gambling info
-        ctx.beginPath();
-        ctx.lineCap = "round";
-        ctx.moveTo(x-radius, y); // y is a variable, need to be saved
-        ctx.lineTo(x+radius, y); // y is a variable, need to be saved
-        ctx.strokeStyle = "Crimson";
-        ctx.lineWidth = 5;
-        ctx.stroke();
+        function drawCutOff(angleX, angleY){
+            ctx.beginPath();
+            ctx.lineCap = "round";
+            ctx.moveTo(angleX-radius, angleY); // y is a variable, need to be saved
+            ctx.lineTo(angleX+radius, angleY); // y is a variable, need to be saved
+            ctx.strokeStyle = "Crimson";
+            ctx.lineWidth = 5;
+            ctx.stroke();
+        }
 
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
