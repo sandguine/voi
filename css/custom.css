@@ -15,4 +15,5 @@ canvas {
     left: 0;
     right: 0;
     background-color: #000000;
+    fillStyle: #FFFFFF
 }

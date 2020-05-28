@@ -12,6 +12,7 @@
     <script src="js/jsPsych/jspsych-canvas-keyboard-response.js"></script>
 
     <link href="css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link href="css/custom.css" rel="stylesheet" type="text/css"></link>
 
   </head>
   <body>
@@ -19,10 +20,8 @@
   <script>
 
     // run the whole experiment
-    // timeline.push(welcome, instructions);
-    // timeline.push(static_stim);
-    // timeline.push(canvas_slider);
-    timeline.push(canvas_keyboard);
+    timeline.push(welcome, instructions);
+    timeline.push(gamble, fixation, info);
 
     /* start the experiment */
     jsPsych.init({
@@ -31,24 +30,7 @@
         jsPsych.data.displayData();
       }
     });
-    /*
 
-
-    <link href="css/custom.css" rel="stylesheet" type="text/css"></link>
-      var c = document.getElementById("canvas");
-      var ctx = c.getContext("2d");
-      var x = c.width/2;
-      var y = c.height/2;
-      var radius = 100;
-      var angle;
-
-      // Line stroke style and width
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.lineWidth = 5;
-
-      drawCircle(x, y, radius, "MediumPurple", "Gold");
-      drawMarks(x, y, radius);
-    */
 
   </script>
 </html>

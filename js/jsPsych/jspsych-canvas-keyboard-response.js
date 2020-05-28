@@ -1,27 +1,6 @@
 /**
- * jspsych-canvas-sliders-response
- *
- * a jspsych plugin for free response to questions presented using canvas
- * drawing tools. This version uses multiple sliders to record responses. All
- * slider values will be included in the final data.
- * Sliders can be designated into groups of various kinds. These groups specify
- * which sliders need to be moved before the trial can be completed, and
- * which sliders get reset when other sliders are moved. E.g. one may want to
- * give a participant a split confidence scale where a response is required on
- * one of two sliders (but not both). Setting these two sliders to have the
- * same require_change group and the same exclusive_group identifier will
- * accomplish this.
- *
- * the canvas drawing is done by a function which is supplied as the stimulus.
- * this function is passed the id of the canvas on which it will draw.
- *
- * the canvas can either be supplied as customised HTML, or a default one
- * can be used. If a customised on is supplied, its ID must be specified
- * in a separate variable.
- *
- * Matt Jaquiery - https://github.com/mjaquiery/ - Feb 2018
- *
- * documentation: docs.jspsych.org
+ * jspsych-canvas-keyboard-response
+ * Sandy Tanwisuth, @sandguine, May 2020
  *
  */
 
@@ -49,14 +28,6 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
                 description: 'HTML for drawing the canvas. '+
                 'Overrides canvas width and height settings.'
             },
-            // canvasId: {
-            //     type: jsPsych.plugins.parameterType.STRING,
-            //     pretty_name: 'Canvas ID',
-            //     default: false,
-            //     description: 'ID for the canvas. Only necessary when '+
-            //     'supplying canvasHTML. This is required so that the ID '+
-            //     'can be passed to the stimulus function.'
-            // },
             prompt: {
                 type: jsPsych.plugins.parameterType.STRING,
                 pretty_name: 'Prompt',
@@ -92,23 +63,23 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
             canvas = trial.canvasHTML;
         } else {
             // Otherwise create a new default canvas
-            trial.canvasId = 'jspsych-canvas-sliders-response-canvas';
+            trial.canvasId = 'jspsych-canvas-keyboard-response-canvas';
             canvas = '<canvas id="'+trial.canvasId+'" height="'+trial.canvasHeight+
                 '" width="'+trial.canvasWidth+'"></canvas>';
         }
-        //let html = '<div id="jspsych-html-keyboard-response-stimulus">'+trial.stimulus
-        let html = '<div id="jspsych-canvas-sliders-response-wrapper" class="jspsych-sliders-response-wrapper">';
-        html += '<div id="jspsych-canvas-sliders-response-stimulus">'+canvas+'</div>';
+        let html = '<div id="jspsych-canvas-keyboard-response-wrapper" class="jspsych-keyboard-response-wrapper">';
+        html += '<div id="jspsych-canvas-keyboard-response-stimulus">'+canvas+'</div>';
+
 
         // Prompt text
         if (trial.prompt !== null) {
-            html += '<div id="jspsych-sliders-response-prompt">'+trial.prompt+'</div>';
+            html += '<div id="jspsych-keyboard-response-prompt">'+trial.prompt+'</div>';
         }
 
         // basic styling
-        html += '<style type="text/css">table.jspsych-sliders-table {width: 100%}'+
-            'div.jspsych-sliders-row {display: inline-flex; width: 100%}'+
-            'div.jspsych-sliders-col {width: 100%}</style>';
+        html += '<style type="text/css">table.jspsych-keyboard-table {width: 100%}'+
+            'div.jspsych-keyboard-row {display: inline-flex; width: 100%}'+
+            'div.jspsych-keyboard-col {width: 100%}</style>';
 
         display_element.innerHTML += html;
 
@@ -132,15 +103,6 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
                 "stimulus_properties": response.stimulus_properties
             };
 
-            let okay = false;
-            if(trial.check_response === null)
-                okay = true;
-            else
-                okay = trial.check_response(trialdata);
-
-            if(okay === false)
-                return;
-
             jsPsych.pluginAPI.clearAllTimeouts();
 
             if(trial.stimulus_duration !== null)
@@ -157,7 +119,7 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
 
         // after a valid response, the stimulus will have the CSS class 'responded'
         // which can be used to provide visual feedback that a response was recorded
-        display_element.querySelector('#jspsych-html-keyboard-response-stimulus').className += ' responded';
+        display_element.querySelector('#jspsych-canvas-keyboard-response-stimulus').className += ' responded';
 
         // only record the first response
         if (response.key == null) {
@@ -179,14 +141,6 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
         allow_held_key: false
         });
         }
-
-        // hide stimulus if stimulus_duration is set
-        if (trial.stimulus_duration !== null) {
-        jsPsych.pluginAPI.setTimeout(function() {
-        display_element.querySelector('#jspsych-html-keyboard-response-stimulus').style.visibility = 'hidden';
-        }, trial.stimulus_duration);
-        }
-
 
 
         // end trial if trial_duration is set
