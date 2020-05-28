@@ -3,6 +3,7 @@
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
+/*
 // draw circle halves of circle with two different color
 function drawCircle(x, y, r, color_left, color_right){
     // Right half of the circle
@@ -40,3 +41,4 @@ function drawMarks(x, y, r){
         ctx.stroke();
     }
 }
+*/

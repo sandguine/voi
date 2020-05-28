@@ -8,6 +8,8 @@
     <script src="js/jsPsych/jspsych-fullscreen.js"></script>
     <script src="js/jsPsych/jspsych-instructions.js"></script>
     <script src="js/jsPsych/jspsych-html-keyboard-response.js"></script>
+    <script src="js/jsPsych/jspsych-canvas-sliders-response.js"></script>
+    <script src="js/jsPsych/jspsych-canvas-keyboard-response.js"></script>
 
     <link href="css/jspsych.css" rel="stylesheet" type="text/css"></link>
 
@@ -17,8 +19,10 @@
   <script>
 
     // run the whole experiment
-    timeline.push(welcome, instructions);
-    timeline.push(static_stim);
+    // timeline.push(welcome, instructions);
+    // timeline.push(static_stim);
+    // timeline.push(canvas_slider);
+    timeline.push(canvas_keyboard);
 
     /* start the experiment */
     jsPsych.init({
