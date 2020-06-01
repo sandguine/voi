@@ -1,5 +1,7 @@
 /*
 * functions necessary for VoI experiments
+* this is for testing only
+* can't be called since the variable scoped is limited to each screen
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
@@ -100,3 +102,10 @@ function drawDot(x, y, r, a){
     ctx.fill();
     ctx.closePath()
 }
+
+
+/* to do:
+    - randomizations
+    - storing data for next screen
+    - storing data for analysis
+*/
