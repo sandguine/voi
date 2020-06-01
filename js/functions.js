@@ -67,6 +67,7 @@ function drawCutOffLine(x, y, r, a){
     ctx.moveTo(x2, y2);
     ctx.lineTo(x, y);
 
+    ctx.globalAlpha = 1;
     ctx.stroke();
     ctx.closePath()
 }
@@ -109,3 +110,17 @@ function drawDot(x, y, r, a){
     - storing data for next screen
     - storing data for analysis
 */
+
+
+// choice of gambles displayed
+function textGambleChoices(choicesArray){
+    ctx.fillStyle = "MediumPurple";
+    ctx.font = "28px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(choicesArray[0], c.width*1/3, c.height*1/3); // +3 is a variable, and save this
+
+    ctx.fillStyle = "Gold";
+    ctx.font = "28px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(choicesArray[1], c.width*2/3, c.height*1/3); // -3 is a variable, and save this
+}
