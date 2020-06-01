@@ -1,5 +1,7 @@
 /*
 * functions necessary for VoI experiments
+* this is for testing only
+* can't be called since the variable scoped is limited to each screen
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
@@ -19,13 +21,14 @@ function drawCircle(x, y, r, color_left, color_right){
     ctx.fillStyle = color_right;
     ctx.fill();
     ctx.stroke();
+    ctx.closePath()
 }
 
 
 // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
 function drawMarks(x, y, r){
     for (var i = 0; i < 12; i++) {
-        angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+        angle = (i - 3) * (2 * Math.PI) / 12;       // THE ANGLE TO MARK.
         ctx.lineWidth = 5;            // HAND WIDTH.
         ctx.beginPath();
 
@@ -39,5 +42,70 @@ function drawMarks(x, y, r){
 
         ctx.strokeStyle = 'White';
         ctx.stroke();
+        ctx.closePath()
     }
 }
+
+
+// draw cut-off line inputs: center at x coordinate, y coordinate, radius of a circle,
+// and angle 0 at horizontal-clockwise [options: 30, 60, 120, 150]
+function drawCutOffLine(x, y, r, a){
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'Crimson';
+    ctx.beginPath();
+
+    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+
+    var x1 = (x) + Math.cos(a1) * (r);
+    var y1 = (y) + Math.sin(a1) * (r);
+    var x2 = (x) + Math.cos(a2) * (r);
+    var y2 = (y) + Math.sin(a2) * (r);
+
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x, y);
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x, y);
+
+    ctx.stroke();
+    ctx.closePath()
+}
+
+// draw the veil side
+function drawHalfVeil(x, y, r, a){
+    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+
+    ctx.beginPath()
+    ctx.arc(x, y, r, a1, a2);
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = "DarkGrey";
+    ctx.fill();
+    ctx.closePath()
+}
+
+// draw the place of the outcome
+function drawDot(x, y, r, a){
+    ctx.fillStyle = "Lime";
+
+    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+
+    var x1 = (x) + Math.cos(a1) * (r);
+    var y1 = (y) + Math.sin(a1) * (r);
+
+    ctx.beginPath();
+    ctx.globalAlpha = 1;
+    ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+    ctx.strokeStyle = 'LimeGreen';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.fill();
+    ctx.closePath()
+}
+
+
+/* to do:
+    - randomizations
+    - storing data for next screen
+    - storing data for analysis
+*/
