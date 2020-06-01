@@ -1,6 +1,8 @@
 /**
  * jspsych-canvas-keyboard-response
- * Sandy Tanwisuth, @sandguine, May 2020
+ * adapted from Matt Jaquiery "jspsych-canvas-sliders-response" and "jspsych-html-keyboard-response"
+ *
+ * Sandy Tanwisuth, GitHub@sandguine, May 2020
  *
  */
 
