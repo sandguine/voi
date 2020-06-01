@@ -19,6 +19,7 @@ function drawCircle(x, y, r, color_left, color_right){
     ctx.fillStyle = color_right;
     ctx.fill();
     ctx.stroke();
+    ctx.closePath()
 }
 
 
@@ -39,6 +40,7 @@ function drawMarks(x, y, r){
 
         ctx.strokeStyle = 'White';
         ctx.stroke();
+        ctx.closePath()
     }
 }
 
@@ -50,12 +52,10 @@ function drawLine(x, y, r, a){
     ctx.beginPath();
 
     a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
 
     var x1 = (x) + Math.cos(a1) * (r);
     var y1 = (y) + Math.sin(a1) * (r);
-
-    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
-
     var x2 = (x) + Math.cos(a2) * (r);
     var y2 = (y) + Math.sin(a2) * (r);
 
@@ -65,14 +65,20 @@ function drawLine(x, y, r, a){
     ctx.lineTo(x, y);
 
     ctx.stroke();
+    ctx.closePath()
 }
 
 
 function drawDot(x, y, r, a){
     ctx.fillStyle = "SpringGreen";
 
-    var x1 = (x) + Math.cos(a) * (r);
-    var y1 = (y) + Math.sin(a) * (r);
+    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
 
-    ctx.fillRect(x1, y1, 10, 10);
+    var x1 = (x) + Math.cos(a1) * (r);
+    var y1 = (y) + Math.sin(a1) * (r);
+
+    ctx.beginPath();
+    ctx.arc(x1, y1, 7.5, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.closePath()
 }
