@@ -45,8 +45,9 @@ function drawMarks(x, y, r){
 }
 
 
-// draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
-function drawLine(x, y, r, a){
+// draw cut-off line inputs: center at x coordinate, y coordinate, radius of a circle,
+// and angle 0 at horizontal-clockwise [options: 30, 60, 120, 150]
+function drawCutOffLine(x, y, r, a){
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'Crimson';
     ctx.beginPath();
@@ -68,9 +69,22 @@ function drawLine(x, y, r, a){
     ctx.closePath()
 }
 
+// draw the veil side
+function drawHalfVeil(x, y, r, a){
+    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
 
+    ctx.beginPath()
+    ctx.arc(x, y, r, a1, a2);
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = "DarkGrey";
+    ctx.fill();
+    ctx.closePath()
+}
+
+// draw the place of the outcome
 function drawDot(x, y, r, a){
-    ctx.fillStyle = "SpringGreen";
+    ctx.fillStyle = "Lime";
 
     a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
 
@@ -78,7 +92,11 @@ function drawDot(x, y, r, a){
     var y1 = (y) + Math.sin(a1) * (r);
 
     ctx.beginPath();
-    ctx.arc(x1, y1, 7.5, 0, 2*Math.PI);
+    ctx.globalAlpha = 1;
+    ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+    ctx.strokeStyle = 'LimeGreen';
+    ctx.lineWidth = 5;
+    ctx.stroke();
     ctx.fill();
     ctx.closePath()
 }
