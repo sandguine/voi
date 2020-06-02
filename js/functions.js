@@ -49,9 +49,9 @@ function drawMarks(x, y, r){
 
 // draw cut-off line inputs: center at x coordinate, y coordinate, radius of a circle,
 // and angle 0 at horizontal-clockwise [options: 30, 60, 120, 150]
-function drawCutOffLine(x, y, r, a){
+function drawCutOffLine(x, y, r, a, color){
     ctx.lineWidth = 5;
-    ctx.strokeStyle = 'Crimson';
+    ctx.strokeStyle = color;
     ctx.beginPath();
 
     a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
@@ -73,14 +73,14 @@ function drawCutOffLine(x, y, r, a){
 }
 
 // draw the veil side
-function drawHalfVeil(x, y, r, a){
+function drawHalfVeil(x, y, r, a, color){
     a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
     a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
 
     ctx.beginPath()
     ctx.arc(x, y, r, a1, a2);
     ctx.globalAlpha = 0.5;
-    ctx.fillStyle = "DarkGrey";
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.closePath();
 }
