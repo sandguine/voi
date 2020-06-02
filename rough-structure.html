@@ -28,8 +28,8 @@
         var x = c.width/2;
         var y = c.height/2;
         var radius = 100;
-        var angle = 60;
-        var angleOutcome = 0;
+        var angle = 30;
+        var angleOutcome = 15;
 
 
         // Static items
@@ -40,22 +40,25 @@
 
         drawCircle(x, y, radius, "MediumPurple", "Gold");
         drawMarks(x, y, radius);
-        drawHalfVeil(x, y, radius, angle = 60);
-        drawCutOffLine(x, y, radius, angle = 60);
-        drawDot(x, y, radius, angleOutcome);
+        drawHalfVeil(x, y, radius, angle);
+        drawCutOffLine(x, y, radius, angle);
+        drawDot(x, y, radius, angleOutcome = 15);
 
         // all posible outcome right half
-        // drawDot(x, y, radius, angle = -60);
-        // drawDot(x, y, radius, angle = -30);
-        // drawDot(x, y, radius, angle = 0);
-        // drawDot(x, y, radius, angle = 30);
-        // drawDot(x, y, radius, angle = 60);
+        // drawDot(x, y, radius, angle = -75);
+        // drawDot(x, y, radius, angle = -45);
+        // drawDot(x, y, radius, angle = -15);
+        // drawDot(x, y, radius, angle = 15);
+        // drawDot(x, y, radius, angle = 45);
+        // drawDot(x, y, radius, angle = 75);
 
-        // // all posible outcome left half
-        // drawDot(x, y, radius, angle = 150);
-        // drawDot(x, y, radius, angle = 180);
-        // drawDot(x, y, radius, angle = -150);
-        // drawDot(x, y, radius, angle = -120);
+        // all posible outcome left half
+        // drawDot(x, y, radius, angle = -105);
+        // drawDot(x, y, radius, angle = -135);
+        // drawDot(x, y, radius, angle = -165);
+        // drawDot(x, y, radius, angle = 165);
+        // drawDot(x, y, radius, angle = 135);
+        // drawDot(x, y, radius, angle = 105);
 
         // all possible lines
         // drawCutOffLine(x, y, radius, angle = 30);

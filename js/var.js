@@ -17,17 +17,21 @@ var yesNo = [['Yes', 'No'], ['No', 'Yes']]; // for randomization of choices on l
 
 var infoPrice = ['$0.05', '$1', '$2', '$3', '$9']; // available options for information price
 
-var angles = [30, 60, 120, 150]; // all available angles
+var angles = [0, 30, 60, 120, 150, 180]; // all available angles
 
-var outcomeAllAngles = [-150, -120, -60, -30, 0, 30, 60, 150, 180]
+var outcomeAllAngles = [-165, -135, -105, -75, -45, -15, 15, 45, 75, 105, 135, 165];
 
-var outcomeA30 = [-120, -60, -30, 0];
+var outcomeA0 = outcomeAllAngles.slice(0, 6);
 
-var outcomeA60 = [];
+var outcomeA30 = outcomeAllAngles.slice(1, 7);
 
-var outcomeA120 = [];
+var outcomeA60 = outcomeAllAngles.slice(2, 8);
 
-var outcomeA150 = [];
+var outcomeA120 = outcomeAllAngles.slice(4, 10);
+
+var outcomeA150 = outcomeAllAngles.slice(5, 11);
+
+var outcomeA180 = outcomeAllAngles.slice(6, 12);
 
 /* end static values */
 
@@ -42,12 +46,19 @@ var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
 
 var rndAngles = jsPsych.randomization.shuffle(angles);
 
-// probably won't need this
-// // determine what would be the neccessary test stimuli from above variables
-// var test_stimuli = [
-//       { stimulus: "img/blue.png", data: { test_part: 'test', yesOption: 'f' } },
-//       { stimulus: "img/orange.png", data: { test_part: 'test', yesOption: 'j' } }
-//     ];
+var rndOutcomeAllAngles = jsPsych.randomization.sampleWithReplacement(angles);
+
+var rndA0 = jsPsych.randomization.sampleWithReplacement(outcomeA0);
+
+var rndA30 = jsPsych.randomization.sampleWithReplacement(outcomeA30);
+
+var rndA60 = jsPsych.randomization.sampleWithReplacement(outcomeA60);
+
+var rndA120 = jsPsych.randomization.sampleWithReplacement(outcomeA120);
+
+var rndA150 = jsPsych.randomization.sampleWithReplacement(outcomeA150);
+
+var rndA180 = jsPsych.randomization.sampleWithReplacement(outcomeA180);
 
 /* end probabilistic variables */
 
@@ -428,9 +439,10 @@ var infoOutcome = {
         drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
         textGambleChoices(rndOptionsPair[0]);
-        textInfoDecision(rndYesNo[1], rndInfoPrice[0]);
         drawHalfVeil(x, y, radius, rndAngles[0]);
         drawCutOffLine(x, y, radius, rndAngles[0]);
+        drawDotHalf(x, y, radius, rndAngles[0]);
+        textGambleOutcome();
 
         // border of circle: color and stroke width
         function drawCircleBorder(color, stroke_width){
@@ -451,15 +463,20 @@ var infoOutcome = {
             ctx.fillText(choicesArray[1], c.width*2/3, c.height*1/3);
         }
 
-        // info decision: left choice, right choice, price of the info
-        function textInfoDecision(left, right, infoPrice){
-            ctx.fillStyle = "Salmon";
+        function textGambleOutcome(a2){
+
+            // determine total payoff
+            if(a2 == -75 || -45 || -15 || 15 || 45 || 75){
+                payoff = parseInt(rndColorOptions[1], 10) - parseInt(rndInfoPrice[0], 10);
+            } else {
+                payoff = parseInt(rndColorOptions[0], 10) - parseInt(rndInfoPrice[0], 10);
+            }
+
+            ctx.fillStyle = "Moccasin";
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText('Would you like to purchase the information?', c.width/2, c.height*1/5);
-            ctx.fillText(infoPrice, c.width/2, c.height*4/5); // $1 is a variable, and save this
-            ctx.fillText(left, c.width*1/5, c.height*4/5); // Yes, No swap position, and save this
-            ctx.fillText(right, c.width*4/5, c.height*4/5); // Yes, No swap position, and save this
+            ctx.fillText('Gamble Outcome', c.width/2, c.height*1/5);
+            ctx.fillText('$'.concat(payoff), c.width/2, c.height*4/5);
         }
 
         function drawCircle(x, y, r, color_left, color_right){
@@ -536,11 +553,26 @@ var infoOutcome = {
             ctx.closePath();
         }
 
-        // draw outcome position
-        function drawDot(x, y, r, a){
+        // draw outcome position --> need to work on this screen
+        function drawDotHalf(x, y, r, a){
             ctx.fillStyle = "Lime";
 
-            a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+            // determine possible outcome options from angle
+            if (a == 0) {
+                a2 = rndA0[0];
+            } else if (a == 30) {
+                a2 = rndA30[0];
+            } else if (a == 60){
+                a2 = rndA60[0];
+            } else if (a == 120){
+                a2 = rndA120[0];
+            } else if (a == 150){
+                a2 = rndA150[0];
+            } else {
+                a2 = rndA180[0];
+            }
+
+            a1 = Math.ceil(a2) * Math.PI / 180;
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -578,8 +610,6 @@ var gambleOutcome = {
         drawMarks(x, y, radius);
         textGambleChoices("+3", "-3");
         textGambleOutcome("Total pay-off: +$2");
-        // drawVeil();
-        // drawCutOff(x, y);
         drawDot(x-radius, y);
 
         // border of circle: color and stroke width

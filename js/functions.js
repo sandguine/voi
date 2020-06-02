@@ -89,7 +89,7 @@ function drawHalfVeil(x, y, r, a){
 function drawDot(x, y, r, a){
     ctx.fillStyle = "Lime";
 
-    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+    a1 = Math.ceil(a) * Math.PI / 180;
 
     var x1 = (x) + Math.cos(a1) * (r);
     var y1 = (y) + Math.sin(a1) * (r);
