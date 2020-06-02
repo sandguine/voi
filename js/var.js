@@ -47,7 +47,7 @@ var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
 
 var rndAngles = jsPsych.randomization.shuffle(angles);
 
-var rndOutcomeAllAngles = jsPsych.randomization.sampleWithReplacement(outcomeAllAngles);
+var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
 
 var rndOBA = []; // all available outcome depending on the angle randomized
 
