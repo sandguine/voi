@@ -47,7 +47,7 @@ var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
 
 var rndAngles = jsPsych.randomization.shuffle(angles);
 
-var rndOutcomeAllAngles = jsPsych.randomization.sampleWithReplacement(angles);
+var rndOutcomeAllAngles = jsPsych.randomization.sampleWithReplacement(outcomeAllAngles);
 
 var rndOBA = []; // all available outcome depending on the angle randomized
 
@@ -604,8 +604,8 @@ var gambleOutcome = {
         drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
         textGambleChoices(rndOptionsPair[0]);
-        drawDot(x, y, radius, rndAngles[0]);
-        textGambleOutcome();
+        drawDot(x, y, radius);
+        textGambleOutcome(rndOutcomeAllAngles[0]);
 
         // border of circle: color and stroke width
         function drawCircleBorder(color, stroke_width){
@@ -702,13 +702,12 @@ var gambleOutcome = {
         }
 
         // draw gamble outcome dot
-        function drawDot(x, y, r, a){
+        function drawDot(x, y, r){
             ctx.fillStyle = "Lime";
 
-            // determine possible outcome options from angle
-            dotAngle = rndOutcomeAllAngles[0];
+            a = rndOutcomeAllAngles[0];
 
-            a1 = Math.ceil(dotAngle) * Math.PI / 180;
+            a1 = Math.ceil(a) * Math.PI / 180;
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
