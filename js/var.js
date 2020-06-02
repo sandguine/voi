@@ -267,8 +267,8 @@ var info = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
-            a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -470,7 +470,7 @@ var infoOutcome = {
             ctx.fillStyle = "Moccasin";
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText('Gamble Outcome', c.width/2, c.height*1/5);
+            ctx.fillText('Result', c.width/2, c.height*1/5);
             ctx.fillText('Total payoff this round: $'+payoff, c.width/2, c.height*4/5);
         }
 
@@ -639,7 +639,7 @@ var gambleOutcome = {
             ctx.fillStyle = "Moccasin";
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText('Gamble Outcome', c.width/2, c.height*1/5);
+            ctx.fillText('Result', c.width/2, c.height*1/5);
             ctx.fillText('Total payoff this round: $'+payoff, c.width/2, c.height*4/5);
         }
 
@@ -738,10 +738,12 @@ var fixation = {
         data: {test_part: 'fixation'}
 };
 
+/* test procedures */
+
+
+
 /* test procedure */
 // var test_procedure = {
 //       timeline: [gamble, fixation, info, fixation, infoOutcome, fixation, gambleOutcome, fixation,],
-//       timeline_variables: optionsPair,
-//       repetitions: 150,
-//       randomize_order: true
+//       repetitions: 150
 // };
