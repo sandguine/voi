@@ -21,7 +21,7 @@ function drawCircle(x, y, r, color_left, color_right){
     ctx.fillStyle = color_right;
     ctx.fill();
     ctx.stroke();
-    ctx.closePath()
+    ctx.closePath();
 }
 
 
@@ -42,7 +42,7 @@ function drawMarks(x, y, r){
 
         ctx.strokeStyle = 'White';
         ctx.stroke();
-        ctx.closePath()
+        ctx.closePath();
     }
 }
 
@@ -69,7 +69,7 @@ function drawCutOffLine(x, y, r, a){
 
     ctx.globalAlpha = 1;
     ctx.stroke();
-    ctx.closePath()
+    ctx.closePath();
 }
 
 // draw the veil side
@@ -82,7 +82,7 @@ function drawHalfVeil(x, y, r, a){
     ctx.globalAlpha = 0.5;
     ctx.fillStyle = "DarkGrey";
     ctx.fill();
-    ctx.closePath()
+    ctx.closePath();
 }
 
 // draw the place of the outcome
@@ -101,7 +101,7 @@ function drawDot(x, y, r, a){
     ctx.lineWidth = 5;
     ctx.stroke();
     ctx.fill();
-    ctx.closePath()
+    ctx.closePath();
 }
 
 

@@ -13,11 +13,22 @@ var colorOptions = ['MediumPurple', 'Gold']; // color options for gain or loss
 var optionsPair = [['+$12','-$9'], ['+$9', '-$12'], ['+$9', '-$9'], ['+$12', '-$6'], ['+$6', '-$12'], ['+$9',
 '-$6'], ['+$6', '-$9'], ['+$3', '-$3'], ['+$12', '-$3'], ['+$3', '-$12']]; // all availiable gambles outcomes
 
-var yesNo = [['Yes', 'No'], ['No', 'Yes']] // for randomization of choices on left and right
+var yesNo = [['Yes', 'No'], ['No', 'Yes']]; // for randomization of choices on left and right
 
-var infoPrice = ['$0.05', '$1', '$2', '$3', '$9'] // available options for information price
+var infoPrice = ['$0.05', '$1', '$2', '$3', '$9']; // available options for information price
 
-var angles = [30, 60, 120, 150] // all available angles
+var angles = [30, 60, 120, 150]; // all available angles
+
+var outcomeAllAngles = [-150, -120, -60, -30, 0, 30, 60, 150, 180]
+
+var outcomeA30 = [-120, -60, -30, 0];
+
+var outcomeA60 = [];
+
+var outcomeA120 = [];
+
+var outcomeA150 = [];
+
 /* end static values */
 
 /* probabilistic variables for stimuli */
@@ -27,9 +38,9 @@ var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair)
 
 var rndYesNo = jsPsych.randomization.sampleWithoutReplacement(yesNo);
 
-var rndInfoPrice = jsPsych.randomization.sampleWithoutReplacement(infoPrice);
+var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
 
-var rndAngles = jsPsych.randomization.sampleWithoutReplacement(angles);
+var rndAngles = jsPsych.randomization.shuffle(angles);
 
 // probably won't need this
 // // determine what would be the neccessary test stimuli from above variables
@@ -158,7 +169,6 @@ var info = {
         var y = c.height/2;
 
         // draw screen components
-
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
@@ -284,13 +294,13 @@ var revealInfo = {
         var y = c.height/2;
 
         // draw screen components
-        drawCircleBorder("White", 5);
-        drawCircle(x, y, radius, "MediumPurple", "Gold");
+        drawCircleBorder(circleBorder[0], circleBorder[1]);
+        drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
-        textGambleChoices("+3", "-3");
-        textInfoDecision("Yes", "No", "$1");
-        drawHalfVeil(x, y, radius, angles[0]);
-        drawCutOffLine(x, y, radius, angle[0]);
+        textGambleChoices(rndOptionsPair[0]);
+        textInfoOutcomeDecision(rndYesNo[0]);
+        drawHalfVeil(x, y, radius, rndAngles[0]);
+        drawCutOffLine(x, y, radius, rndAngles[0]);
 
         // border of circle: color and stroke width
         function drawCircleBorder(color, stroke_width){
@@ -299,27 +309,27 @@ var revealInfo = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(left, right){
-            ctx.fillStyle = "MediumPurple";
+        function textGambleChoices(choicesArray){
+            ctx.fillStyle = rndColorOptions[0];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(left, c.width*1/3, c.height*1/3); // +3 is a variable, and save this
+            ctx.fillText(choicesArray[0], c.width*1/3, c.height*1/3);
 
-            ctx.fillStyle = "Gold";
+            ctx.fillStyle = rndColorOptions[1];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(right, c.width*2/3, c.height*1/3); // -3 is a variable, and save this
+            ctx.fillText(choicesArray[1], c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
-        function textInfoDecision(left, right, infoPrice){
+        function textInfoOutcomeDecision(yesNoArray){
             ctx.fillStyle = "Salmon";
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText('Would you like to purchase this information?', c.width/2, c.height*1/5);
-            ctx.fillText(infoPrice, c.width/2, c.height*4/5); // $1 is a variable, and save this
-            ctx.fillText(left, c.width*1/5, c.height*4/5); // Yes, No swap position, and save this
-            ctx.fillText(right, c.width*4/5, c.height*4/5); // Yes, No swap position, and save this
+            ctx.fillText('Would you like to play this round?', c.width/2, c.height*1/5);
+            //ctx.fillText(infoPrice, c.width/2, c.height*4/5);
+            ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
+            ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
         }
 
         function drawCircle(x, y, r, color_left, color_right){
@@ -369,7 +379,7 @@ var revealInfo = {
             ctx.globalAlpha = 0.5;
             ctx.fillStyle = "DarkGrey";
             ctx.fill();
-            ctx.closePath()
+            ctx.closePath();
         }
 
         // cut-off line to reveal gambling info
@@ -393,7 +403,7 @@ var revealInfo = {
 
             ctx.globalAlpha = 1;
             ctx.stroke();
-            ctx.closePath()
+            ctx.closePath();
         }
 
      },
@@ -414,13 +424,13 @@ var infoOutcome = {
         var angle;
 
         // draw screen components
-        drawCircleBorder("White", 5);
-        drawCircle(x, y, radius, "MediumPurple", "Gold");
+        drawCircleBorder(circleBorder[0], circleBorder[1]);
+        drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
-        textGambleChoices("+3", "-3");
-        textInfoDecision("Yes", "No", "$1");
-        drawHalfVeil(0, Math.PI);
-        drawCutOff(x, y);
+        textGambleChoices(rndOptionsPair[0]);
+        textInfoDecision(rndYesNo[1], rndInfoPrice[0]);
+        drawHalfVeil(x, y, radius, rndAngles[0]);
+        drawCutOffLine(x, y, radius, rndAngles[0]);
 
         // border of circle: color and stroke width
         function drawCircleBorder(color, stroke_width){
@@ -429,16 +439,16 @@ var infoOutcome = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(left, right){
-            ctx.fillStyle = "MediumPurple";
+        function textGambleChoices(choicesArray){
+            ctx.fillStyle = rndColorOptions[0];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(left, c.width*1/3, c.height*1/3); // +3 is a variable, and save this
+            ctx.fillText(choicesArray[0], c.width*1/3, c.height*1/3);
 
-            ctx.fillStyle = "Gold";
+            ctx.fillStyle = rndColorOptions[1];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(right, c.width*2/3, c.height*1/3); // -3 is a variable, and save this
+            ctx.fillText(choicesArray[1], c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
@@ -490,23 +500,59 @@ var infoOutcome = {
         }
 
         // veil info -> this needs to be variable
-        function drawHalfVeil(begin, end){
+        function drawHalfVeil(x, y, r, a){
+            a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+            a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+
             ctx.beginPath()
-            ctx.arc(x, y, radius, begin, end);
+            ctx.arc(x, y, r, a1, a2);
             ctx.globalAlpha = 0.5;
             ctx.fillStyle = "DarkGrey";
             ctx.fill();
+            ctx.closePath();
         }
 
         // cut-off line to reveal gambling info
-        function drawCutOff(angleX, angleY){
+        function drawCutOffLine(x, y, r, a){
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
-            ctx.lineCap = "round";
-            ctx.moveTo(angleX-radius, angleY); // y is a variable, need to be saved
-            ctx.lineTo(angleX+radius, angleY); // y is a variable, need to be saved
-            ctx.strokeStyle = "Crimson";
+
+            a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+            a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+
+            var x1 = (x) + Math.cos(a1) * (r);
+            var y1 = (y) + Math.sin(a1) * (r);
+            var x2 = (x) + Math.cos(a2) * (r);
+            var y2 = (y) + Math.sin(a2) * (r);
+
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x, y);
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x, y);
+
+            ctx.globalAlpha = 1;
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        // draw outcome position
+        function drawDot(x, y, r, a){
+            ctx.fillStyle = "Lime";
+
+            a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+
+            var x1 = (x) + Math.cos(a1) * (r);
+            var y1 = (y) + Math.sin(a1) * (r);
+
+            ctx.beginPath();
+            ctx.globalAlpha = 1;
+            ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+            ctx.strokeStyle = 'LimeGreen';
             ctx.lineWidth = 5;
             ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
         }
 
      },
@@ -543,16 +589,16 @@ var gambleOutcome = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(left, right){
-            ctx.fillStyle = "MediumPurple";
+        function textGambleChoices(choicesArray){
+            ctx.fillStyle = rndColorOptions[0];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(left, c.width*1/3, c.height*1/3); // +3 is a variable, and save this
+            ctx.fillText(choicesArray[0], c.width*1/3, c.height*1/3);
 
-            ctx.fillStyle = "Gold";
+            ctx.fillStyle = rndColorOptions[1];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(right, c.width*2/3, c.height*1/3); // -3 is a variable, and save this
+            ctx.fillText(choicesArray[1], c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
@@ -623,11 +669,22 @@ var gambleOutcome = {
         }
 
         // draw gamble outcome dot
-        function drawDot(outcomeX, outcomeY){
+        function drawDot(x, y, r, a){
+            ctx.fillStyle = "Lime";
+
+            a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
+
+            var x1 = (x) + Math.cos(a1) * (r);
+            var y1 = (y) + Math.sin(a1) * (r);
+
             ctx.beginPath();
-            ctx.fillStyle = "SpringGreen";
-            ctx.arc(outcomeX, outcomeY, 7, 0, 2 * Math.PI, true);
+            ctx.globalAlpha = 1;
+            ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+            ctx.strokeStyle = 'LimeGreen';
+            ctx.lineWidth = 5;
+            ctx.stroke();
             ctx.fill();
+            ctx.closePath();
         }
 
      },

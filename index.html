@@ -20,8 +20,28 @@
 
     // run the whole experiment
     timeline.push(welcome, instructions);
-    timeline.push(gamble, fixation, info, fixation, infoOutcome, fixation, gambleOutcome);
+
+    // should be inside a for loop
+    timeline.push(gamble, fixation);
+    if(true){ // need to change condition such that gamble yes is selected probably something like: jsPsych.data.get().last(1).values()[0].correct
+      timeline.push(info, fixation);
+      if(true){
+        timeline.push(revealInfo, fixation);
+      }
+      if(true){
+        timeline.push(infoOutcome, fixation);
+      }
+    }
+    else {
+      timeline.push(gambleOutcome, fixation);
+    }
+
+
+    // old code
+    // timeline.push(gamble, fixation, info, fixation, infoOutcome, fixation, gambleOutcome);
     // timeline.push(test_procedure);
+
+    // end of experiment procedures
 
     /* start the experiment */
     jsPsych.init({
