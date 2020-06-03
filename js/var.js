@@ -58,9 +58,29 @@ for ( var j = 0; j < angles.length; j++){
 
 /* end probabilistic variables */
 
+/* save the variables */
+function addVars(vars){
+    jsPsych.data.addProperties(vars);
+};
+
+addVars({
+  colors: rndColorOptions,
+  options: rndOptionsPair,
+  prices: rndInfoPrice,
+});
+/* end save variables */
+
 
 /* create timeline */
 var timeline = [];
+
+/* subject id */
+var id = {
+  type: 'survey-text',
+  questions: [
+    {prompt: "Please enter your ID:",  columns: 5, required: true, name: 'ID'}
+  ],
+};
 
 /* welcome message */
 var welcome = {
@@ -255,7 +275,7 @@ var info = {
         function drawVeil(){
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, 2 * Math.PI);
-            ctx.globalAlpha = 0.5;
+            ctx.globalAlpha = 0.7;
             ctx.fillStyle = "DarkGrey";
             ctx.fill();
             ctx.closePath();
@@ -382,7 +402,7 @@ var revealInfo = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = 0.5;
+            ctx.globalAlpha = 0.7;
             ctx.fillStyle = "DarkGrey";
             ctx.fill();
             ctx.closePath();
@@ -518,7 +538,7 @@ var infoOutcome = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = 0.5;
+            ctx.globalAlpha = 0.7;
             ctx.fillStyle = "DarkGrey";
             ctx.fill();
             ctx.closePath();
@@ -685,7 +705,7 @@ var gambleOutcome = {
         function drawVeil(){
             ctx.beginPath()
             ctx.arc(x, y, radius, 0, 2 * Math.PI);
-            ctx.globalAlpha = 0.5;
+            ctx.globalAlpha = 0.7;
             ctx.fillStyle = "DarkGrey";
             ctx.fill();
         }
