@@ -48,6 +48,8 @@ var infoPlayDecision;
 
 /* end static values */
 
+
+
 /* probabilistic variables for stimuli */
 var rndColorOptions = jsPsych.randomization.sampleWithoutReplacement(colorOptions);
 
@@ -69,6 +71,8 @@ for ( var j = 0; j < angles.length; j++){
 }
 
 /* end probabilistic variables */
+
+
 
 /* save global variables */
 function addVars(vars){
@@ -96,6 +100,8 @@ addVars({
 /* end save global variables */
 
 
+
+/* individual screen */
 /* create timeline */
 var timeline = [];
 
@@ -861,7 +867,11 @@ var fixation = {
         data: {test_part: 'fixation'}
 };
 
-/* test procedures */
+/* end individual screen */
+
+
+
+/* if functions */
 
 // if they decide to play the gamble
 var ifGamble = {
@@ -876,7 +886,7 @@ var ifGamble = {
     }
 }
 
-// if they decide to purchse info
+// if they decide to purchase info
 var ifInfoReveal = {
     timeline: [revealInfo],
     conditional_function: function(){
@@ -906,8 +916,44 @@ var ifInfoReveal = {
 //     }
 // }
 
+/* end if functions */
+
+
 /* test procedure */
 var procedure = {
-      timeline: [gamble, fixation, ifGamble, fixation, ifInfoReveal, fixation, pause],
-      repetitions: 150
+    timeline: [gamble, fixation, ifGamble, fixation, ifInfoReveal, fixation, pause],
+    repetitions: 3
 };
+
+/* end test procedures */
+
+// var repeatProcedures = {
+//     timeline: [procedure],
+//     timeline_variables: {[
+//         { face: 'person-1.jpg', name: 'Alex' },
+//         { face: 'person-2.jpg', name: 'Beth' },
+//         { face: 'person-3.jpg', name: 'Chad' },
+//         { face: 'person-4.jpg', name: 'Dave' }
+//     ]},
+
+    // var rndColorOptions = jsPsych.randomization.sampleWithoutReplacement(colorOptions);
+    //
+    // var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair);
+    //
+    // var rndYesNo = jsPsych.randomization.sampleWithoutReplacement(yesNo);
+    //
+    // var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
+    //
+    // var rndAngles = jsPsych.randomization.shuffle(angles);
+    //
+    // var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
+    //
+    // var rndOBA = []; // all available outcome depending on the angle randomized
+    //
+    // // fill-in all available outcome depending on the angle randomized
+    // for ( var j = 0; j < angles.length; j++){
+    //     rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
+    // },
+
+//     repetitions: 3
+// }
