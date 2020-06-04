@@ -42,6 +42,10 @@ var payoff;
 
 var gambleDecision;
 
+var infoRevealDecision;
+
+var infoPlayDecision;
+
 /* end static values */
 
 /* probabilistic variables for stimuli */
@@ -121,11 +125,12 @@ var instructions = {
 };
 
 /* pause page before next trial */
-var pause ={
+var pause = {
     type: 'html-keyboard-response',
     stimulus: 'Press spacebar for the next trial.',
     choices: ' ',
     response_ends_trial: true
+
 }
 
 /* show gamble results, if yes to gamble or if yes gamble and to info */
@@ -268,11 +273,6 @@ var gambleOutcome = {
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
     choices: ['f', 'j']
-    // on_finish: addVars({
-    //     outcomeAngle: rndOutcomeAllAngles[0],
-    //     payoff: payoff
-    // })
-
 };
 
 /* VoI info outcome screen, if yes on info */
@@ -445,11 +445,6 @@ var infoOutcome = {
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
     choices: ['f', 'j']
-    // on_finish: addVars({
-    //     cutoffAngle: rndAngles[0],
-    //     infoOutcomeAngle: outcomeAngle,
-    //     infoPayoff: infoPayoff
-    // })
 };
 
 /* VoI info purchase screen, if yes to info, if no next trial this is basically one side is grey and the other is not*/
@@ -576,12 +571,29 @@ var revealInfo = {
 
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
-    choices: ['f', 'j']
-    // on_finish: addVars({
-    //     infoOutcomeLeft: rndYesNo[0][0],
-    //     infoOutcomeRight: rndYesNo[0][1],
-    //     cutoffAngle: rndAngles[0]
-    // })
+    choices: ['f', 'j'],
+    on_finish: function(data){
+        var data = jsPsych.data.getLastTrialData().values()[0];
+        if(data.response == 70){
+            if (data.infoOutcomeLeft == 'Yes'){
+                infoPlayDecision = 'Yes'
+                addVars({infoPlayDecision: infoPlayDecision})
+            } else {
+                infoPlayDecision = 'No'
+                addVars({infoPlayDecision: infoPlayDecision})
+            }
+        } else if (data.response == 74){
+            if (data.infoOutcomeRight == 'Yes'){
+                infoPlayDecision = 'Yes'
+                addVars({infoPlayDecision: infoPlayDecision})
+            }
+            else {
+                infoPlayDecision = 'No'
+                addVars({infoPlayDecision: infoPlayDecision})
+            }
+        }
+    }
+
 };
 
 /* VoI info purchase screen, if yes to gamble, if no next trial */
@@ -706,41 +718,28 @@ var info = {
 
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
-    choices: ['f', 'j'] //,
-    // on_trial_start: function(data){
-    //
-    //     var data = jsPsych.data.getLastTrialData().values()[0];
-    //     if(data.response == 70){
-    //         if(gambleChoiceLeft == 'No'){
-    //             jsPsych.endCurrentTimeline;
-    //         }
-    //     } else if (data.response == 74){
-    //         if(gambleChoiceRight == 'No'){
-    //             jsPsych.endCurrentTimeline;
-    //         }
-    //     }
-    // }//,
-    // on_trial_finish: function(data){
-    //     var data = jsPsych.data.getLastTrialData().values()[0];
-    //     if(data.response == 70){
-    //         if (data.infoShowLeft == 'Yes'){
-    //             infoDecision = 'Yes'
-    //             addVars({infoDecision: infoDecision})
-    //         } else {
-    //             infoDecision = 'No'
-    //             addVars({gambleDecision: infoDecision})
-    //         }
-    //     } else if (data.response == 74){
-    //         if (data.infoShowLeft == 'Yes'){
-    //             infoDecision = 'Yes'
-    //             addVars({gambleDecision: infoDecision})
-    //         }
-    //         else {
-    //             infoDecision = 'No'
-    //             addVars({gambleDecision: infoDecision})
-    //         }
-    //     }
-    // }
+    choices: ['f', 'j'],
+    on_finish: function(data){
+        var data = jsPsych.data.getLastTrialData().values()[0];
+        if(data.response == 70){
+            if (data.infoShowLeft == 'Yes'){
+                infoRevealDecision = 'Yes'
+                addVars({infoRevealDecision: infoRevealDecision})
+            } else {
+                infoRevealDecision = 'No'
+                addVars({infoRevealDecision: infoRevealDecision})
+            }
+        } else if (data.response == 74){
+            if (data.infoShowRight == 'Yes'){
+                infoRevealDecision = 'Yes'
+                addVars({infoRevealDecision: infoRevealDecision})
+            }
+            else {
+                infoRevealDecision = 'No'
+                addVars({infoRevealDecision: infoRevealDecision})
+            }
+        }
+    }
 };
 
 /* VoI canvas keyboard, gamble screen */
@@ -826,31 +825,29 @@ var gamble = {
 
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
-    choices: ['f', 'j']
-    // on_finish: function(data){
-    //     console.log('starting gamble onfinish');
-    //
-    //     var data = jsPsych.data.getLastTrialData().values()[0];
-    //     console.log('data.response: ' + data.response);
-    //     if(data.response == 70){
-    //         if (data.gambleChoiceLeft == 'Yes'){
-    //             gambleDecision = 'Yes'
-    //             addVars({gambleDecision: gambleDecision})
-    //         } else {
-    //             gambleDecision = 'No'
-    //             addVars({gambleDecision: gambleDecision})
-    //         }
-    //     } else if (data.response == 74){
-    //         if (data.gambleChoiceRight == 'Yes'){
-    //             gambleDecision = 'Yes'
-    //             addVars({gambleDecision: gambleDecision})
-    //         }
-    //         else {
-    //             gambleDecision = 'No'
-    //             addVars({gambleDecision: gambleDecision})
-    //         }
-    //     }
-    // } // end function
+    choices: ['f', 'j'],
+    on_finish: function(data){
+        var data = jsPsych.data.getLastTrialData().values()[0];
+
+        if(data.response == 70){
+            if (data.gambleChoiceLeft == 'Yes'){
+                gambleDecision = 'Yes'
+                addVars({gambleDecision: gambleDecision})
+            } else {
+                gambleDecision = 'No'
+                addVars({gambleDecision: gambleDecision})
+            }
+        } else if (data.response == 74){
+            if (data.gambleChoiceRight == 'Yes'){
+                gambleDecision = 'Yes'
+                addVars({gambleDecision: gambleDecision})
+            }
+            else {
+                gambleDecision = 'No'
+                addVars({gambleDecision: gambleDecision})
+            }
+        }
+    } // end function
 };
 
 /* fixation */
@@ -865,31 +862,52 @@ var fixation = {
 };
 
 /* test procedures */
-// var if_gamble = {
-//     timeline: [gamble],
+
+// if they decide to play the gamble
+var ifGamble = {
+    timeline: [info],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.gambleDecision == 'Yes'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+// if they decide to purchse info
+var ifInfoReveal = {
+    timeline: [revealInfo],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check which key was pressed
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+// if they decide to play after info is revealed
+// var ifInfoPlay = {
+//     timeline: [revealInfo],
 //     conditional_function: function(){
 //         // get the data from the previous trial,
 //         // and check which key was pressed
 //         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.response == 70){
-//             if (data.gambleChoiceLeft == 'Yes'){
-//                 return fixation, info
-//             } else {
-//                 return fixation, pause
-//             }
+//         if(data.infoRevealDecision == 'Yes'){
+//             return true;
 //         } else {
-//             if (data.gambleChoiceRight == 'Yes'){
-//                 return fixation, info
-//             } else {
-//                 return fixation, pause
-//             }
+//             return false;
 //         }
 //     }
 // }
 
-
 /* test procedure */
-var test_procedure = {
-      timeline: [gamble, fixation, info, fixation, infoOutcome, fixation, gambleOutcome, fixation],
+var procedure = {
+      timeline: [gamble, fixation, ifGamble, fixation, ifInfoReveal, fixation, pause],
       repetitions: 150
 };
