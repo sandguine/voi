@@ -865,6 +865,48 @@ var gamble = {
     } // end function
 };
 
+var confirmGamble = {
+    type: 'html-keyboard-response',
+    stimulus: function(){
+        var data = jsPsych.data.getLastTrialData().values()[0];
+        if (gambleDecision = 'Yes'){
+            return '<b>Yes</b>'
+        } else {
+            return '<b>No</b>'
+        }
+    },
+    trial_duration: 3000,
+    response_ends_trial: true
+}
+
+var confirmInfoReveal = {
+    type: 'html-keyboard-response',
+    stimulus: function(){
+        var data = jsPsych.data.getLastTrialData().values()[0];
+        if (infoRevealDecision = 'Yes'){
+            return '<b>Yes</b>'
+        } else {
+            return '<b>No</b>'
+        }
+    },
+    trial_duration: 3000,
+    response_ends_trial: true
+}
+
+var confirmInfoPlay = {
+    type: 'html-keyboard-response',
+    stimulus: function(){
+        var data = jsPsych.data.getLastTrialData().values()[0];
+        if (infoPlayDecision = 'Yes'){
+            return '<b>Yes</b>'
+        } else {
+            return '<b>No</b>'
+        }
+    },
+    trial_duration: 3000,
+    response_ends_trial: true
+}
+
 /* fixation */
 var fixation = {
         type: 'html-keyboard-response',
@@ -930,7 +972,7 @@ var ifInfoReveal = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, fixation, ifGamble, fixation, ifInfoReveal, fixation, pause],
+    timeline: [gamble, confirmGamble, fixation, ifGamble, confirmInfoReveal, fixation, ifInfoReveal, confirmInfoPlay, fixation, pause],
     repetitions: 3
 };
 
