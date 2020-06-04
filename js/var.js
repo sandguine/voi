@@ -150,7 +150,7 @@ var timeline = [];
 var id = {
   type: 'survey-text',
   questions: [{
-      prompt: "Please enter your ID:",
+      prompt: "<b>Please enter your ID.</b><br>Press \'Enter\' or click on \'Continue\' to proceed.",
       columns: 5,
       required: true,
       name: 'ID'
@@ -160,7 +160,7 @@ var id = {
 /* welcome message */
 var welcome = {
   type: "html-keyboard-response",
-  stimulus: "Welcome to the experiment. Press any key to begin."
+  stimulus: "Welcome to the experiment.<br>Press any key to begin."
 };
 
 /* instructions */
@@ -907,7 +907,7 @@ var confirmGamble = {
     type: 'html-keyboard-response',
     stimulus: function(){
         var data = jsPsych.data.getLastTrialData().values()[0];
-        if (gambleDecision = 'Yes'){
+        if (gambleDecision == 'Yes'){
             return '<b>Yes</b>'
         } else {
             return '<b>No</b>'
@@ -921,7 +921,7 @@ var confirmInfoReveal = {
     type: 'html-keyboard-response',
     stimulus: function(){
         var data = jsPsych.data.getLastTrialData().values()[0];
-        if (infoRevealDecision = 'Yes'){
+        if (infoRevealDecision == 'Yes'){
             return '<b>Yes</b>'
         } else {
             return '<b>No</b>'
@@ -935,7 +935,7 @@ var confirmInfoPlay = {
     type: 'html-keyboard-response',
     stimulus: function(){
         var data = jsPsych.data.getLastTrialData().values()[0];
-        if (infoPlayDecision = 'Yes'){
+        if (infoPlayDecision == 'Yes'){
             return '<b>Yes</b>'
         } else {
             return '<b>No</b>'
@@ -960,7 +960,7 @@ var fixation = {
 
 
 
-/* timeline variable in process */
+/* timeline variable */
 var gambleProcedure ={
     timeline: [gamble],
     timeline_variables: tvOptions
@@ -981,7 +981,7 @@ var infoProcedure ={
 
 // if they decide to play the gamble
 var ifGamble = {
-    timeline: [info],
+    timeline: [info, confirmInfoReveal],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
         if(data.gambleDecision == 'Yes'){
@@ -994,7 +994,7 @@ var ifGamble = {
 
 // if they decide to purchase info
 var ifInfoReveal = {
-    timeline: [revealInfo],
+    timeline: [revealInfo, confirmInfoPlay],
     conditional_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
@@ -1011,8 +1011,6 @@ var ifInfoReveal = {
 // var ifInfoPlay = {
 //     timeline: [revealInfo],
 //     conditional_function: function(){
-//         // get the data from the previous trial,
-//         // and check which key was pressed
 //         var data = jsPsych.data.get().last(1).values()[0];
 //         if(data.infoRevealDecision == 'Yes'){
 //             return true;
@@ -1028,10 +1026,40 @@ var ifInfoReveal = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, fixation, ifGamble, confirmInfoReveal, fixation, ifInfoReveal, confirmInfoPlay, fixation, pause]
+    timeline: [gamble, confirmGamble, fixation, ifGamble, fixation, ifInfoReveal, fixation, pause]
 };
 
 /* end test procedures */
+
+/* vars needed be randomized
+
+// colorOptions, sample: 'without-replacement' or 'shuffle'
+var rndColorOptions = jsPsych.randomization.sampleWithoutReplacement(colorOptions);
+
+// optionsPair, sample: 'without-replacement' or 'shuffle' to gaurantee equal distribution
+var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair);
+
+// yesNO, sample: 'without-replacement' or 'shuffle'
+var rndYesNo = jsPsych.randomization.sampleWithoutReplacement(yesNo);
+
+// infoPrice, sample: 'with-replacement' -> this doesn't work
+var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
+
+// angles, sample: 'without-replacement' or 'shuffle'
+var rndAngles = jsPsych.randomization.shuffle(angles);
+
+// outcomeAllAngles, sample: 'without-replacement' or 'shuffle'
+var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
+
+var rndOBA = []; // all available outcome depending on the angle randomized
+
+// outcomeByAngles[j], sample: 'without-replacement' or 'shuffle'
+// fill-in all available outcome depending on the angle randomized
+for ( var j = 0; j < angles.length; j++){
+    rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
+},
+
+end vars needed to be randomized */
 
 // var repeatProcedures = {
 //     timeline: [procedure],
@@ -1041,28 +1069,10 @@ var procedure = {
 //         { face: 'person-3.jpg', name: 'Chad' },
 //         { face: 'person-4.jpg', name: 'Dave' }
 //     ]},
-
-    // var rndColorOptions = jsPsych.randomization.sampleWithoutReplacement(colorOptions);
-    //
-    // var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair);
-    //
-    // var rndYesNo = jsPsych.randomization.sampleWithoutReplacement(yesNo);
-    //
-    // var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
-    //
-    // var rndAngles = jsPsych.randomization.shuffle(angles);
-    //
-    // var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
-    //
-    // var rndOBA = []; // all available outcome depending on the angle randomized
-    //
-    // // fill-in all available outcome depending on the angle randomized
-    // for ( var j = 0; j < angles.length; j++){
-    //     rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
-    // },
-
 //     repetitions: 3
 // }
+
+
 
 
 // might be useful
