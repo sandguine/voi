@@ -89,19 +89,20 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
             startTime: performance.now(),
             rt: null,
             response: null,
-            stimulus_properties: null
+            stimulus_properties: null,
+            key: null
         };
 
         // Execute the supplied drawing function
         response.stimulus_properties = trial.stimulus(trial.canvasId);
 
-        function end_trial(){
+        var end_trial = function(){
 
             // save data
             let trialdata = {
                 "startTime": response.startTime,
                 "rt": response.rt,
-                "response": response.response,
+                "response": response.key,
                 "stimulus_properties": response.stimulus_properties
             };
 
@@ -114,34 +115,33 @@ jsPsych.plugins['canvas-keyboard-response'] = (function() {
 
             // next trial
             jsPsych.finishTrial(trialdata);
-        }
+        };
 
         // function to handle responses by the subject
         var after_response = function(info) {
+            // after a valid response, the stimulus will have the CSS class 'responded'
+            // which can be used to provide visual feedback that a response was recorded
+            display_element.querySelector('#jspsych-canvas-keyboard-response-stimulus').className += ' responded';
 
-        // after a valid response, the stimulus will have the CSS class 'responded'
-        // which can be used to provide visual feedback that a response was recorded
-        display_element.querySelector('#jspsych-canvas-keyboard-response-stimulus').className += ' responded';
+            // only record the first response
+            if (response.key == null) {
+                response = info;
+            }
 
-        // only record the first response
-        if (response.key == null) {
-        response = info;
-        }
-
-        if (trial.response_ends_trial) {
-        end_trial();
-        }
+            if (trial.response_ends_trial) {
+                end_trial();
+            }
         };
 
         // start the response listener
         if (trial.choices != jsPsych.NO_KEYS) {
-        var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
-        callback_function: after_response,
-        valid_responses: trial.choices,
-        rt_method: 'performance',
-        persist: false,
-        allow_held_key: false
-        });
+            var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
+                callback_function: after_response,
+                valid_responses: trial.choices,
+                rt_method: 'performance',
+                persist: false,
+                allow_held_key: false
+            });
         }
 
 

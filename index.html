@@ -18,17 +18,51 @@
   </body>
   <script>
 
+    /* choices from data */
+    // var gambleLeft = jsPsych.data.getLastTrialData().values()[0].gambleChoiceLeft;
+    //
+    // var gambleRight = jsPsych.data.getLastTrialData().values()[0].gambleChoiceRight;
+
+    //var infoReveal =
+    /* end choices from data */
+
     // run the whole experiment
-    timeline.push(welcome, id, instructions);
+    // timeline.push(welcome, id, instructions);
 
     // should be inside a for loop
-    timeline.push(gamble, fixation);
-    if(true){ // need to change condition such that gamble yes is selected probably something like: jsPsych.data.get().last(1).values()[0].correct
-      timeline.push(info, fixation);
-      if(true){
-        timeline.push(revealInfo, fixation);
-      }
-    }
+
+    // timeline.push(gamble);
+    // timeline.push(info);
+    // timeline.push(revealInfo);
+    timeline.push(fixation, pause);
+    // timeline.push(info, fixation);
+    // timeline.push(revealInfo, fixation);
+
+
+
+
+    // if(jsPsych.data.getLastTrialData().values()[0].key_press == 70){ // f is pressed
+    //   if (jsPsych.data.getLastTrialData().values()[0].gambleChoiceLeft == 'Yes'){
+    //     timeline.push(info, fixation);
+    //   }
+    // } else if (jsPsych.data.getLastTrialData().values()[0].key_press == 74){ // j is pressed
+    //   if (jsPsych.data.getLastTrialData().values()[0].gambleChoiceRight == 'Yes'){
+    //     timeline.push(info, fixation);
+    //   }
+    // } else {
+    //   timeline.push(pause);
+    // }
+
+    // if(lastKeyPressed == 70 && gambleLeft == 'Yes'){ // need to change condition such that gamble yes is selected probably something like: jsPsych.data.get().last(1).values()[0].correct
+    //   timeline.push(info, fixation);
+    //   if(true){
+    //     timeline.push(revealInfo, fixation);
+    //   }
+    // } else if (lastKeyPressed == 74 && gambleRight == 'Yes'){
+    //   timeline.push(info, fixation);
+    //
+    // }
+    // timeline.push(pause);
 
     // if this get make into a learning experiment, it should be more like this
     // timeline.push(gamble, fixation);
