@@ -32,6 +32,12 @@ for (var i = 0; i <= outcomeAllAngles.length/2; i++ ){
     outcomeByAngles.push(outcomeAllAngles.slice(i, i+6));
 }
 
+/* end static values */
+
+
+
+/* variables assigned at each screen */
+
 var dotAngle; // initialized the angle for the dot outcome
 
 var outcomeAngle;
@@ -46,7 +52,7 @@ var infoRevealDecision;
 
 var infoPlayDecision;
 
-/* end static values */
+/* enc variable assigned at each screen */
 
 
 
@@ -108,9 +114,12 @@ var timeline = [];
 /* subject id */
 var id = {
   type: 'survey-text',
-  questions: [
-    {prompt: "Please enter your ID:",  columns: 5, required: true, name: 'ID'}
-  ],
+  questions: [{
+      prompt: "Please enter your ID:",
+      columns: 5,
+      required: true,
+      name: 'ID'
+  }],
 };
 
 /* welcome message */
