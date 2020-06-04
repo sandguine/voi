@@ -36,6 +36,41 @@ for (var i = 0; i <= outcomeAllAngles.length/2; i++ ){
 
 
 
+/* timeline variables */
+var tvOptions = [
+    {options: ['+12','-9']},
+    {options: ['+9', '-12']},
+    {options: ['+9', '-9']},
+    {options: ['+12', '-6']},
+    {options: ['+6', '-12']},
+    {options: ['+9', '-6']},
+    {options: ['+6', '-9']},
+    {options: ['+3', '-3']},
+    {options: ['+12', '-3']},
+    {options: ['+3', '-12']}
+];
+
+var tvInfoPrice = [
+    {infoPrice: '0.05'},
+    {infoPrice: '1'},
+    {infoPrice: '2'},
+    {infoPrice: '3'},
+    {infoPrice: '9'}
+];
+
+var tvCutOffAngles = [
+    {cutOffAngle: 0},
+    {cutOffAngle: 30},
+    {cutOffAngle: 60},
+    {cutOffAngle: 120},
+    {cutOffAngle: 150},
+    {cutOffAngle: 180}
+];
+
+/* end timeline variables */
+
+
+
 /* variables assigned at each screen */
 
 var dotAngle; // initialized the angle for the dot outcome
@@ -626,8 +661,10 @@ var info = {
         drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
         textGambleChoices(rndOptionsPair[0]);
+        // textInfoDecision(rndYesNo[1], jsPsych.timelineVariable('infoPrice', true));
         textInfoDecision(rndYesNo[1], rndInfoPrice[0]);
         drawVeil();
+        // drawCutOffLine(x, y, radius, jsPsych.timelineVariable('cutOffAngle', true));
         drawCutOffLine(x, y, radius, rndAngles[0]);
 
         // border of circle: color and stroke width
@@ -771,6 +808,7 @@ var gamble = {
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, radius, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, radius);
+        // textGambleChoices(jsPsych.timelineVariable('options', true));
         textGambleChoices(rndOptionsPair[0]);
         textGambleDecision(rndYesNo[0]);
 
@@ -785,12 +823,12 @@ var gamble = {
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(choicesArray[0], c.width*1/3, c.height*1/3);
+            ctx.fillText('$'+choicesArray[0], c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(choicesArray[1], c.width*2/3, c.height*1/3);
+            ctx.fillText('$'+choicesArray[1], c.width*2/3, c.height*1/3);
         }
 
         function textGambleDecision(yesNoArray){
@@ -922,6 +960,23 @@ var fixation = {
 
 
 
+/* timeline variable in process */
+var gambleProcedure ={
+    timeline: [gamble],
+    timeline_variables: tvOptions
+}
+
+var infoProcedure ={
+    timeline: [info],
+    timeline_variables: tvInfoPrice,
+    timeline_variables: tvCutOffAngles
+}
+
+
+/* end timeline variable */
+
+
+
 /* if functions */
 
 // if they decide to play the gamble
@@ -970,10 +1025,10 @@ var ifInfoReveal = {
 /* end if functions */
 
 
+
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, fixation, ifGamble, confirmInfoReveal, fixation, ifInfoReveal, confirmInfoPlay, fixation, pause],
-    repetitions: 3
+    timeline: [gamble, confirmGamble, fixation, ifGamble, confirmInfoReveal, fixation, ifInfoReveal, confirmInfoPlay, fixation, pause]
 };
 
 /* end test procedures */
@@ -1007,4 +1062,39 @@ var procedure = {
     // },
 
 //     repetitions: 3
+// }
+
+
+// might be useful
+// var face_name_procedure = {
+//     timeline: [
+//         {
+//             type: 'html-keyboard-response',
+//             stimulus: '+',
+//             choices: jsPsych.NO_KEYS,
+//             trial_duration: 500
+//         },
+//         {
+//             type: 'html-keyboard-response',
+//             stimulus: jsPsych.timelineVariable('name'),
+//             trial_duration: 1000,
+//             choices: jsPsych.NO_KEYS
+//         },
+//         {
+//             type: 'html-keyboard-response',
+//             stimulus: function(){
+//                 var html="<img src='"+jsPsych.timelineVariable('face', true)+"'>";
+//                 html += "<p>"+jsPsych.timelineVariable('name', true)+"</p>";
+//                 return html;
+//             },
+//             choices: jsPsych.NO_KEYS,
+//             trial_duration: 2500
+//         }
+//     ],
+//     timeline_variables: [
+//         { face: 'person-1.jpg', name: 'Alex' },
+//         { face: 'person-2.jpg', name: 'Beth' },
+//         { face: 'person-3.jpg', name: 'Chad' },
+//         { face: 'person-4.jpg', name: 'Dave' }
+//     ]
 // }
