@@ -3,11 +3,16 @@
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
-/* static values */
+/* static values across tasks and subjects */
 var RADIUS = 100; // radius of circle on the screen always 100px
 
 var CB = ['White', 5]; // parameter for circle border
 
+/* end static values */
+
+
+
+/* */
 var colorOptions = ['MediumPurple', 'Gold']; // color options for gain or loss
 
 var optionsPair = [['+12','-9'], ['+9', '-12'], ['+9', '-9'], ['+12', '-6'], ['+6', '-12'], ['+9',
@@ -17,7 +22,7 @@ var yesNo = ['Yes', 'No']; // for randomization of choices on left and right
 
 var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
 
-var angles = [0, 30, 60, 120, 150, 180]; // all available angles
+var angles = [0, 30, 60, 120, 150]; // all available angles
 
 var outcomeAllAngles = [-15, -45, -75, -105, -135, -165, 165, 135, 105, 75, 45, 15];
 
