@@ -124,6 +124,8 @@ function addVars(vars){
 addVars({
   leftColor: rndColorOptions[0],
   rightColor: rndColorOptions[1],
+  optionLeft: rndOptionsPair[0][0],
+  optionRight: rndOptionsPair[0][1],
   gambleChoiceLeft: rndYNG[0],
   gambleChoiceRight: rndYNG[1],
   infoShowLeft: rndYNIR[0],
@@ -179,7 +181,6 @@ var pause = {
     stimulus: 'Press spacebar for the next trial.',
     choices: ' ',
     response_ends_trial: true
-
 };
 
 /* VoI canvas keyboard, gamble screen */
@@ -196,8 +197,8 @@ var gamble = {
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(rndOptionsPair[0]);
-        // textGambleChoices(jsPsych.timelineVariable('options', true));
+        // textGambleChoices(rndOptionsPair[0]);
+        textGambleChoices(jsPsych.timelineVariable('options', true));
         textGambleDecision(rndYNG);
 
         // border of circle: color and stroke width
@@ -217,11 +218,6 @@ var gamble = {
             ctx.font = "28px Arial";
             ctx.textAlign = "center";
             ctx.fillText('$'+choicesArray[1], c.width*2/3, c.height*1/3);
-
-            // addVars({
-            //     optionLeft: choicesArray[0],
-            //     optionRight: choicesArray[1]
-            // });
         }
 
         function textGambleDecision(yesNoArray){
@@ -273,6 +269,7 @@ var gamble = {
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
     choices: ['f', 'j'],
     on_finish: function(data){
+
         var data = jsPsych.data.getLastTrialData().values()[0];
         if(data.response == 70){
             if (data.gambleChoiceLeft == 'Yes'){
@@ -311,8 +308,8 @@ var gambleOutcome = {
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(rndOptionsPair[0]);
-        // textGambleChoices(jsPsych.timelineVariable('options', true));
+        // textGambleChoices(rndOptionsPair[0]);
+        textGambleChoices(jsPsych.timelineVariable('options', true));
         drawDot(x, y, RADIUS);
         textGambleOutcome(rndOutcomeAllAngles[0]);
 
@@ -452,8 +449,8 @@ var info = {
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        // textGambleChoices(jsPsych.timelineVariable('options', true));
-        textGambleChoices(rndOptionsPair[0]);
+        textGambleChoices(jsPsych.timelineVariable('options', true));
+        // textGambleChoices(rndOptionsPair[0]);
         // textInfoDecision(rndYNIR, jsPsych.timelineVariable('infoPrice', true));
         textInfoDecision(rndYNIR, rndInfoPrice[0]);
         drawVeil();
@@ -601,8 +598,8 @@ var revealInfo = {
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        // textGambleChoices(jsPsych.timelineVariable('options', true));
-        textGambleChoices(rndOptionsPair[0]);
+        textGambleChoices(jsPsych.timelineVariable('options', true));
+        // textGambleChoices(rndOptionsPair[0]);
         textInfoOutcomeDecision(rndYNIP);
         drawHalfVeil(x, y, RADIUS, rndAngles[0]);
         drawCutOffLine(x, y, RADIUS, rndAngles[0]);
@@ -752,8 +749,8 @@ var infoOutcome = {
         drawCircleBorder(circleBorder[0], circleBorder[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        // textGambleChoices(jsPsych.timelineVariable('options', true));
-        textGambleChoices(rndOptionsPair[0]);
+        textGambleChoices(jsPsych.timelineVariable('options', true));
+        // textGambleChoices(rndOptionsPair[0]);
         drawHalfVeil(x, y, RADIUS, rndAngles[0]);
         drawCutOffLine(x, y, RADIUS, rndAngles[0]);
         drawDotHalf(x, y, RADIUS, rndAngles[0]);
@@ -1032,9 +1029,33 @@ var ifInfoReveal = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, fixation, ifGamble, fixation, ifInfoReveal, fixation, pause]
-    // timeline_variables: tvOptions,
-    // randomize_order: true
+    timeline: [gamble, confirmGamble, ifGamble, ifInfoReveal, pause],
+    timeline_variables: tvOptions,
+    randomize_order: true,
+    on_finish: function(){
+        addVars(tvOptions)
+        // var rndColorOptions = jsPsych.randomization.sampleWithoutReplacement(colorOptions);
+        //
+        // var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair);
+        //
+        // var rndYNG = jsPsych.randomization.sampleWithoutReplacement(yesNo); // at the 1st gamble screen
+        //
+        // var rndYNIR = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to reveal info
+        //
+        // var rndYNIP = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to play after info is revealed
+        //
+        // var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
+        //
+        // var rndAngles = jsPsych.randomization.shuffle(angles);
+        //
+        // var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
+        //
+        // var rndOBA = []; // all available outcome depending on the angle randomized
+        // // fill-in all available outcome depending on the angle randomized
+        // for ( var j = 0; j < angles.length; j++){
+        //     rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
+        // }
+    }
 
 };
 
