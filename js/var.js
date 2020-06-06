@@ -49,7 +49,7 @@ var tvOptions = [
     {options: ['+9', '-6']},
     {options: ['+6', '-9']},
     {options: ['+3', '-3']},
-    {options: ['+12', '-3']},
+{options: ['+12', '-3']},
     {options: ['+3', '-12']}
 ];
 
@@ -1136,24 +1136,24 @@ var fixation = {
 /* if functions */
 
 // if they decide to play the gamble
-var ifGamble = {
-    timeline: [info, confirmInfoReveal],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.gambleDecision == 'Yes'){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+// var ifGamble = {
+//     timeline: [info, confirmInfoReveal],
+//     conditional_function: function(){
+//         var data = jsPsych.data.get().last(1).values()[0];
+//         if(data.gambleDecision == 'Yes'){
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+// }
 
 // if they decide to purchase info
 var ifInfoReveal = {
     timeline: [revealInfo, confirmInfoPlay, revealOtherInfo, confirmOtherInfoPlay],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
-        if(data.gambleDecision == 'Yes' && data.infoRevealDecision == 'Yes'){
+        if(data.infoRevealDecision == 'Yes'){
             return true;
         } else {
             return false;
@@ -1180,34 +1180,8 @@ var ifInfoReveal = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, ifGamble, ifInfoReveal, pause],
-    timeline_variables: tvOptions,
-    randomize_order: true,
-    on_finish: function(){
-        addVars(tvOptions)
-        // var rndColorOptions = jsPsych.randomization.sampleWithoutReplacement(colorOptions);
-        //
-        // var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair);
-        //
-        // var rndYNG = jsPsych.randomization.sampleWithoutReplacement(yesNo); // at the 1st gamble screen
-        //
-        // var rndYNIR = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to reveal info
-        //
-        // var rndYNIP = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to play after info is revealed
-        //
-        // var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
-        //
-        // var rndAngles = jsPsych.randomization.shuffle(angles);
-        //
-        // var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
-        //
-        // var rndOBA = []; // all available outcome depending on the angle randomized
-        // // fill-in all available outcome depending on the angle randomized
-        // for ( var j = 0; j < angles.length; j++){
-        //     rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
-        // }
-    }
-
+    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
+    timeline_variables: tvOptions
 };
 
 /* end test procedures */
