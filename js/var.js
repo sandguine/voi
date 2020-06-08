@@ -403,20 +403,24 @@ var confirmGamble = {
         // check previous trial
         var data = jsPsych.data.getLastTrialData().values()[0];
 
-        if (data.gambleDecision == 'Yes'){
+        if (data.gambleDecision == 'Yes' && data.response == 70){
             // draw screen components
             drawCB(CB[0], CB[1]);
             drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
             drawMarks(x, y, RADIUS);
             textGambleChoices(jsPsych.timelineVariable('options', true));
             textGambleYes(rndYNG);
-        } else {
+        } else if (data.gambleDecision == 'No' && data.response == 70){
             // draw screen components
             drawCB(CB[0], CB[1]);
             drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
             drawMarks(x, y, RADIUS);
             textGambleChoices(jsPsych.timelineVariable('options', true));
             textGambleNo(rndYNG);
+        } else if (data.gambleDecision == 'Yes' && data.response == 74){
+
+        } else {
+
         }
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
