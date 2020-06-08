@@ -160,10 +160,15 @@ var timeline = [];
 var id = {
   type: 'survey-text',
   questions: [{
-      prompt: "<b>Please enter your ID.</b><br>Then, press \'Enter\' or click on \'Continue\' to proceed.",
+      prompt: "<b>Please enter your ID.",
       columns: 5,
       required: true,
       name: 'ID'
+  }, {
+      prompt: "<b>Please enter the session number.</b><br>Then, press \'Enter\' or click on \'Continue\' to proceed.",
+      columns: 5,
+      required: true,
+      name: 'session'
   }],
 };
 
@@ -417,11 +422,11 @@ var confirmGamble = {
             drawMarks(x, y, RADIUS);
             textGambleChoices(jsPsych.timelineVariable('options', true));
             textGambleNo(rndYNG);
-        } else if (data.gambleDecision == 'Yes' && data.response == 74){
-
-        } else {
-
-        }
+        } // else if (data.gambleDecision == 'Yes' && data.response == 74){
+        //
+        // } else {
+        //
+        // }
      },
     canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
     choices: [' '],
