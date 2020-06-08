@@ -8,6 +8,8 @@ var RADIUS = 100; // radius of circle on the screen always 100px
 
 var CB = ['White', 5]; // parameter for circle border
 
+var CANVAS = '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>';
+
 /* end static values */
 
 
@@ -283,7 +285,7 @@ var gamble = {
         }
 
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
+    canvasHTML: CANVAS,
     choices: ['f', 'j'],
     on_finish: function(data){
 
@@ -309,6 +311,7 @@ var gamble = {
     }
 };
 
+/* confirm choice selected for gamble screen */
 var confirmGamble = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
@@ -350,7 +353,7 @@ var confirmGamble = {
                 ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
             } else if (yesNoArray[1] == 'Yes') {
                 ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.strokeText(yesNoArray[1], c.width*1/5, c.height*4/5);
+                ctx.strokeText(yesNoArray[1], c.width*4/5, c.height*4/5);
             }
         }
 
@@ -365,7 +368,7 @@ var confirmGamble = {
                 ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
             } else if (yesNoArray[1] == 'No'){
                 ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.strokeText(yesNoArray[1], c.width*1/5, c.height*4/5);
+                ctx.strokeText(yesNoArray[1], c.width*4/5, c.height*4/5);
             }
         }
 
@@ -408,29 +411,25 @@ var confirmGamble = {
         // check previous trial
         var data = jsPsych.data.getLastTrialData().values()[0];
 
-        if (data.gambleDecision == 'Yes' && data.response == 70){
+        if (data.gambleDecision == 'Yes'){
             // draw screen components
             drawCB(CB[0], CB[1]);
             drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
             drawMarks(x, y, RADIUS);
             textGambleChoices(jsPsych.timelineVariable('options', true));
             textGambleYes(rndYNG);
-        } else if (data.gambleDecision == 'No' && data.response == 70){
+        } else if (data.gambleDecision == 'No'){
             // draw screen components
             drawCB(CB[0], CB[1]);
             drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
             drawMarks(x, y, RADIUS);
             textGambleChoices(jsPsych.timelineVariable('options', true));
             textGambleNo(rndYNG);
-        } // else if (data.gambleDecision == 'Yes' && data.response == 74){
-        //
-        // } else {
-        //
-        // }
+        }
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
-    choices: [' '],
-    trial_duration: 1000,
+    canvasHTML: CANVAS,
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 250,
     response_ends_trial: true
 };
 
@@ -576,7 +575,7 @@ var gambleOutcome = {
         }
 
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
+    canvasHTML: CANVAS,
     choices: ['f', 'j']
 };
 
@@ -707,7 +706,7 @@ var info = {
         }
 
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
+    canvasHTML: CANVAS,
     choices: ['f', 'j'],
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
@@ -861,7 +860,7 @@ var revealInfo = {
         }
 
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
+    canvasHTML: CANVAS,
     choices: ['f', 'j'],
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
@@ -1015,7 +1014,7 @@ var revealOtherInfo = {
         }
 
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
+    canvasHTML: CANVAS,
     choices: ['f', 'j'],
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
@@ -1212,7 +1211,7 @@ var infoOutcome = {
         }
 
      },
-    canvasHTML: '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>',
+    canvasHTML: CANVAS,
     choices: ['f', 'j']
 };
 
