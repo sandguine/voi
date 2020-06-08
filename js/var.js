@@ -102,14 +102,10 @@ function addVars(vars){
 addVars({
   leftColor: rndColorOptions[0],
   rightColor: rndColorOptions[1],
-  optionLeft: rndOptionsPair[0][0],
-  optionRight: rndOptionsPair[0][1],
   gambleChoiceLeft: rndYNG[0],
   gambleChoiceRight: rndYNG[1],
   infoShowLeft: rndYNIR[0],
   infoShowRight: rndYNIR[1],
-  infoPrice: rndInfoPrice[0],
-  cutoffAngle: rndAngles[0],
   topInfoOutcomeLeft: rndYNITP[0],
   topInfoOutcomeRight: rndYNITP[1],
   bottomInfoOutcomeLeft: rndYNIBP[0],
@@ -137,12 +133,12 @@ var fullscreen = {
 var id = {
   type: 'survey-text',
   questions: [{
-      prompt: "<b>Please enter your ID.",
+      prompt: "Answer the information below, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Your ID:</b>",
       columns: 5,
       required: true,
       name: 'ID'
   }, {
-      prompt: "<b>Please enter the session number.</b><br>Then, press \'Enter\' or click on \'Continue\' to proceed.",
+      prompt: "<b>Session number:</b>",
       columns: 5,
       required: true,
       name: 'session'
@@ -420,7 +416,6 @@ var gambleOutcome = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        // textGambleChoices(rndOptionsPair[0]);
         textGambleChoices(jsPsych.timelineVariable('options', true));
         drawDot(x, y, RADIUS);
         textGambleOutcome(rndOutcomeAllAngles[0]);
@@ -1691,7 +1686,11 @@ var ifInfoReveal = {
 /* test procedure */
 var procedure = {
     timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
-    timeline_variables: tvRnd
+    timeline_variables: tvTest
+};
+
+var outcomeProcedure = {
+    timeline: []
 };
 
 /* end test procedures */

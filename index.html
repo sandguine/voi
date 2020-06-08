@@ -21,7 +21,7 @@
     // run the whole experiment
 
     // logistics
-    // timeline.push(fullscreen, welcome, id, instructions);
+    timeline.push(fullscreen, welcome, id, instructions);
 
     // actual experiment
     timeline.push(procedure);
@@ -30,7 +30,7 @@
     jsPsych.init({
       timeline: timeline,
       on_finish: function() {
-        jsPsych.data.addProperties(tvAll);
+        jsPsych.data.addProperties(tvTest);
         jsPsych.data.displayData();
       }
     });
