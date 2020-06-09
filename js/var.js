@@ -145,11 +145,11 @@ var id = {
 var session = {
     type: 'survey-multi-choice',
     questions: [{
-        prompt: "Please select the session number, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Session Number:</b>",
+        prompt: "<b>Session Number:</b>",
         name: 'session',
         options: [1, 2],
-        required: true,
-        horizontal: true
+        horizontal: true,
+        required: true
     }]
 };
 
