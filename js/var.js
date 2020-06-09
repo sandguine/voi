@@ -147,6 +147,20 @@ var id = {
   }],
 };
 
+var loopID = {
+    timeline: [id],
+    loop_function: function(data){
+        var str = jsPsych.data.getLastTrialData().values()[0].response;
+        var session = (?<="session":")\d;
+        var match = parseInt(str.match(session));
+        if( match < 1 || match > 2){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 /* welcome message */
 var welcome = {
   type: "html-keyboard-response",
