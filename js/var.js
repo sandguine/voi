@@ -135,31 +135,37 @@ var fullscreen = {
 var id = {
   type: 'survey-text',
   questions: [{
-      prompt: "Answer the information below, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Your ID:</b>",
+      prompt: "Please enter your ID, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Your ID:</b>",
       columns: 5,
       required: true,
-      name: 'ID'
-  }, {
-      prompt: "<b>Session number:</b>",
-      columns: 5,
-      required: true,
-      name: 'session'
+      name: 'Participant ID'
   }],
 };
 
-var loopID = {
-    timeline: [id],
-    loop_function: function(data){
-        var str = jsPsych.data.getLastTrialData().values()[0].response;
-        var session = (?<="session":")\d;
-        var match = parseInt(str.match(session));
-        if( match < 1 || match > 2){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+var session = {
+    type: 'survey-multi-choice',
+    questions: [{
+        prompt: "Please select the session number, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Session Number:</b>",
+        name: 'session',
+        options: [1, 2],
+        required: true,
+        horizontal: true
+    }]
+};
+
+// var loopID = {
+//     timeline: [id],
+//     loop_function: function(data){
+//         var str = jsPsych.data.getLastTrialData().values()[0].response;
+//         var session = (?<="session":")\d;
+//         var match = parseInt(str.match(session));
+//         if( match < 1 || match > 2){
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+// }
 
 /* welcome message */
 var welcome = {

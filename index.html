@@ -5,11 +5,13 @@
     <script src="js/jspsych.js"></script>
     <script src="js/timelineVariables.js"></script>
     <script src="js/var.js"></script>
+    <script src="js/jsPsych/jspsych-canvas-keyboard-response.js"></script>
     <script src="js/jsPsych/jspsych-fullscreen.js"></script>
     <script src="js/jsPsych/jspsych-instructions.js"></script>
     <script src="js/jsPsych/jspsych-html-keyboard-response.js"></script>
-    <script src="js/jsPsych/jspsych-canvas-keyboard-response.js"></script>
+    <script src="js/jsPsych/jspsych-survey-multi-choice.js"></script>
     <script src="js/jsPsych/jspsych-survey-text.js"></script>
+
 
     <link href="css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="css/custom.css" rel="stylesheet" type="text/css"></link>
@@ -21,7 +23,7 @@
     // run the whole experiment
 
     // logistics
-    timeline.push(fullscreen, welcome, loopID, instructions);
+    timeline.push(fullscreen, welcome, id, session, instructions);
 
     // actual experiment
     timeline.push(procedure);
