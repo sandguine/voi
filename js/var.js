@@ -4,6 +4,10 @@
 */
 
 /* static values across tasks and subjects */
+var EID = 'circle'; // element id from css
+
+var CONTEXT = '2d'; // get context 2d
+
 var RADIUS = 100; // radius of circle on the screen always 100px
 
 var CB = ['White', 5]; // parameter for circle border
@@ -12,9 +16,11 @@ var CANVAS = '<canvas id="circle" width="800" height="600"> Your browser does no
 
 var CONFIRM = 1000;
 
-var FONT = '32px Arial';
+var FONT = '32px Helvetica';
 
-var VEILALPHA = 0.7;
+var FULLVEILALPHA = 0.7;
+
+var HALFVEILALPHA = 0.9;
 
 var FULLVIEL = 'DarkGrey';
 
@@ -188,8 +194,8 @@ var instructions = {
 var pause = {
     type: 'canvas-keyboard-response',
     stimulus: function (){
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -213,8 +219,8 @@ var gamble = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -324,8 +330,8 @@ var gamble = {
 var confirmGamble = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -443,8 +449,8 @@ var gambleOutcome = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
         var RADIUS = 100;
@@ -541,7 +547,7 @@ var gambleOutcome = {
         function drawVeil(){
             ctx.beginPath()
             ctx.arc(x, y, RADIUS, 0, 2 * Math.PI);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = FULLVEILALPHA;
             ctx.fillStyle = FULLVIEL;
             ctx.fill();
         }
@@ -588,8 +594,8 @@ var info = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -675,7 +681,7 @@ var info = {
         function drawVeil(){
             ctx.beginPath();
             ctx.arc(x, y, RADIUS, 0, 2 * Math.PI);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = FULLVEILALPHA;
             ctx.fillStyle = FULLVIEL;
             ctx.fill();
             ctx.closePath();
@@ -735,8 +741,8 @@ var info = {
 var confirmInfoReveal = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -859,8 +865,8 @@ var revealTopInfo = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -948,7 +954,7 @@ var revealTopInfo = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = HALFVEILALPHA;
             ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
@@ -1008,8 +1014,8 @@ var revealTopInfo = {
 var confirmTop = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -1117,7 +1123,7 @@ var confirmTop = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = HALFVEILALPHA;
             ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
@@ -1175,8 +1181,8 @@ var revealBottomInfo = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -1264,7 +1270,7 @@ var revealBottomInfo = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a2, a1);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = HALFVEILALPHA;
             ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
@@ -1324,8 +1330,8 @@ var revealBottomInfo = {
 var confirmBottom = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
 
@@ -1433,7 +1439,7 @@ var confirmBottom = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a2, a1);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = HALFVEILALPHA;
             ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
@@ -1491,8 +1497,8 @@ var infoOutcome = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
-        var c = document.getElementById("circle");
-        var ctx = c.getContext("2d");
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
         var RADIUS = 100;
@@ -1503,10 +1509,9 @@ var infoOutcome = {
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
         textGambleChoices(jsPsych.timelineVariable('options', true));
-        // textGambleChoices(rndOptionsPair[0]);
-        drawHalfVeil(x, y, RADIUS, rndAngles[0]);
-        drawCutOffLine(x, y, RADIUS, rndAngles[0]);
-        drawDotHalf(x, y, RADIUS, rndAngles[0]);
+        drawHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
+        drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
+        drawDotHalf(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         textInfoOutcome(dotAngle);
 
         // border of circle: color and stroke width
@@ -1593,7 +1598,7 @@ var infoOutcome = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = VEILALPHA;
+            ctx.globalAlpha = HALFVEILALPHA;
             ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
@@ -1662,6 +1667,8 @@ var infoOutcome = {
     choices: ['f', 'j']
 };
 
+
+
 /* fixation */
 var fixation = {
         type: 'html-keyboard-response',
@@ -1697,6 +1704,45 @@ var ifInfoReveal = {
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
         if(data.infoRevealDecision == 'Yes'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+// show gamble outcome
+var showGambleOutcome = {
+    timeline: [gambleOutcome],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.gambleDecision == 'Yes' && data.infoRevealDecision == 'No'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+// show info-gamble outcome if played first half
+var showInfoOutcome = {
+    timeline: [infoOutcome],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes' && data.infoPlayDecision == 'Yes'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+// show info-gamble outcome if played second half
+var showInfoOtherOutcome = {
+    timeline: [infoOtherOutcome],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes' && data.infoOtherPlayDecision == 'Yes'){
             return true;
         } else {
             return false;
