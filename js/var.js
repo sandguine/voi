@@ -138,34 +138,28 @@ var id = {
       prompt: "Please enter your ID, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Your ID:</b>",
       columns: 5,
       required: true,
-      name: 'Participant ID'
+      name: 'ID'
+  }, {
+      prompt: "<b>Session Number:</b> </br> Only 1, or 2 is allowed.",
+      columns: 5,
+      required: true,
+      name: 'session'
   }],
 };
 
-var session = {
-    type: 'survey-multi-choice',
-    questions: [{
-        prompt: "<b>Session Number:</b>",
-        name: 'session',
-        options: [1, 2],
-        horizontal: true,
-        required: true
-    }]
-};
-
-// var loopID = {
-//     timeline: [id],
-//     loop_function: function(data){
-//         var str = jsPsych.data.getLastTrialData().values()[0].response;
-//         var session = (?<="session":")\d;
-//         var match = parseInt(str.match(session));
-//         if( match < 1 || match > 2){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-// }
+var loopID = {
+    timeline: [id],
+    loop_function: function(data){
+        var str = jsPsych.data.getLastTrialData().values()[0].responses;
+        var session = /(?<="session":")\d/g;
+        var match = parseInt(str.match(session));
+        if( match < 1 || match > 2){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 /* welcome message */
 var welcome = {
