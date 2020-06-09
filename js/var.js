@@ -10,9 +10,15 @@ var CB = ['White', 5]; // parameter for circle border
 
 var CANVAS = '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>';
 
-var CONFIRM = 300;
+var CONFIRM = 1000;
 
-var FONT = '36px Arial';
+var FONT = '32px Arial';
+
+var VEILALPHA = 0.7;
+
+var FULLVIEL = 'DarkGrey';
+
+var HALFVEIL = 'DimGrey';
 
 /* end static values */
 
@@ -74,11 +80,11 @@ var rndOptionsPair = jsPsych.randomization.sampleWithoutReplacement(optionsPair)
 
 var rndYNG = jsPsych.randomization.sampleWithoutReplacement(yesNo); // at the 1st gamble screen
 
-var rndYNIR = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to reveal info
+var rndYNIR = rndYNG; // if want to reveal info
 
-var rndYNITP = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to play after top info is revealed
+var rndYNITP = rndYNG; // if want to play after top info is revealed
 
-var rndYNIBP = jsPsych.randomization.sampleWithoutReplacement(yesNo); // if want to play after bottom info is revealed
+var rndYNIBP = rndYNG; // if want to play after bottom info is revealed
 
 var rndInfoPrice = jsPsych.randomization.shuffle(infoPrice);
 
@@ -135,12 +141,12 @@ var fullscreen = {
 var id = {
   type: 'survey-text',
   questions: [{
-      prompt: "Please enter your ID, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Your ID:</b>",
+      prompt: "Answer the information below, then press \'Enter\' or click on \'Continue\' to proceed. </br> </br> </br> <b>Your ID:</b>",
       columns: 5,
       required: true,
       name: 'ID'
   }, {
-      prompt: "<b>Session Number:</b> </br> Only 1, or 2 is allowed.",
+      prompt: "<b>Session number:</b>",
       columns: 5,
       required: true,
       name: 'session'
@@ -159,7 +165,7 @@ var loopID = {
             return false;
         }
     }
-}
+};
 
 /* welcome message */
 var welcome = {
@@ -535,8 +541,8 @@ var gambleOutcome = {
         function drawVeil(){
             ctx.beginPath()
             ctx.arc(x, y, RADIUS, 0, 2 * Math.PI);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = FULLVIEL;
             ctx.fill();
         }
 
@@ -623,7 +629,7 @@ var info = {
             ctx.fillStyle = "Salmon";
             ctx.font = FONT;
             ctx.textAlign = "center";
-            ctx.fillText('Purchase this information?', c.width/2, c.height*1/5);
+            ctx.fillText('Purchase this information?', c.width/2, c.height*725/1000);
             ctx.fillText('$'+infoPrice, c.width/2, c.height*4/5);
             ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
             ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
@@ -669,8 +675,8 @@ var info = {
         function drawVeil(){
             ctx.beginPath();
             ctx.arc(x, y, RADIUS, 0, 2 * Math.PI);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = FULLVIEL;
             ctx.fill();
             ctx.closePath();
         }
@@ -760,7 +766,7 @@ var confirmInfoReveal = {
             ctx.fillStyle = "Salmon";
             ctx.font = FONT;
             ctx.textAlign = "center";
-            ctx.fillText('Purchase this information?', c.width/2, c.height*1/5);
+            ctx.fillText('Purchase this information?', c.width/2, c.height*725/1000);
             ctx.fillText('$'+infoPrice, c.width/2, c.height*4/5);
         }
 
@@ -942,8 +948,8 @@ var revealTopInfo = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
         }
@@ -1111,8 +1117,8 @@ var confirmTop = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
         }
@@ -1258,8 +1264,8 @@ var revealBottomInfo = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a2, a1);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
         }
@@ -1427,8 +1433,8 @@ var confirmBottom = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a2, a1);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
         }
@@ -1587,8 +1593,8 @@ var infoOutcome = {
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = "DarkGrey";
+            ctx.globalAlpha = VEILALPHA;
+            ctx.fillStyle = HALFVEIL;
             ctx.fill();
             ctx.closePath();
         }
