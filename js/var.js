@@ -1708,43 +1708,43 @@ var ifInfoReveal = {
 }
 
 // show gamble outcome
-var showGambleOutcome = {
-    timeline: [gambleOutcome],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.gambleDecision == 'Yes' && data.infoRevealDecision == 'No'){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+// var showGambleOutcome = {
+//     timeline: [gambleOutcome],
+//     conditional_function: function(){
+//         var data = jsPsych.data.get().last(1).values()[0];
+//         if(data.gambleDecision == 'Yes' && data.infoRevealDecision == 'No'){
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+// }
 
 // show info-gamble outcome if played first half
-var showInfoOutcome = {
-    timeline: [infoOutcome],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && data.infoPlayDecision == 'Yes'){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+// var showInfoOutcome = {
+//     timeline: [infoOutcome],
+//     conditional_function: function(){
+//         var data = jsPsych.data.get().last(1).values()[0];
+//         if(data.infoRevealDecision == 'Yes' && data.infoPlayDecision == 'Yes'){
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+// }
 
 // show info-gamble outcome if played second half
-var showInfoOtherOutcome = {
-    timeline: [infoOtherOutcome],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && data.infoOtherPlayDecision == 'Yes'){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+// var showInfoOtherOutcome = {
+//     timeline: [infoOtherOutcome],
+//     conditional_function: function(){
+//         var data = jsPsych.data.get().last(1).values()[0];
+//         if(data.infoRevealDecision == 'Yes' && data.infoOtherPlayDecision == 'Yes'){
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+// }
 
 // if they decide to play after info is revealed
 // var ifInfoPlay = {
@@ -1769,8 +1769,8 @@ var procedure = {
     timeline_variables: tvTest
 };
 
-var outcomeProcedure = {
-    timeline: []
-};
+// var outcomeProcedure = {
+//     timeline: []
+// };
 
 /* end test procedures */
