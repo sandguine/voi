@@ -26,6 +26,8 @@ var FULLVIEL = 'DarkGrey';
 
 var HALFVEIL = 'DimGrey';
 
+var PI = Math.PI;
+
 /* end static values */
 
 
@@ -266,14 +268,14 @@ var gamble = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -282,7 +284,7 @@ var gamble = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -390,14 +392,14 @@ var confirmGamble = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -406,7 +408,7 @@ var confirmGamble = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -509,14 +511,14 @@ var gambleOutcome = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -526,7 +528,7 @@ var gambleOutcome = {
         // draw marks, inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -546,7 +548,7 @@ var gambleOutcome = {
         // veil information with grey veil on top of the circle
         function drawVeil(){
             ctx.beginPath()
-            ctx.arc(x, y, RADIUS, 0, 2 * Math.PI);
+            ctx.arc(x, y, RADIUS, 0, 2 * PI);
             ctx.globalAlpha = FULLVEILALPHA;
             ctx.fillStyle = FULLVIEL;
             ctx.fill();
@@ -569,14 +571,14 @@ var gambleOutcome = {
 
             a = rndOutcomeAllAngles[0];
 
-            a1 = -(Math.ceil(a) * Math.PI / 180);
+            a1 = -(Math.ceil(a) * PI / 180);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
 
             ctx.beginPath();
             ctx.globalAlpha = 1;
-            ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+            ctx.arc(x1, y1, 5, 0, 2*PI);
             ctx.strokeStyle = 'LimeGreen';
             ctx.lineWidth = 5;
             ctx.stroke();
@@ -644,14 +646,14 @@ var info = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -660,7 +662,7 @@ var info = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -680,7 +682,7 @@ var info = {
         // veil info
         function drawVeil(){
             ctx.beginPath();
-            ctx.arc(x, y, RADIUS, 0, 2 * Math.PI);
+            ctx.arc(x, y, RADIUS, 0, 2 * PI);
             ctx.globalAlpha = FULLVEILALPHA;
             ctx.fillStyle = FULLVIEL;
             ctx.fill();
@@ -693,8 +695,8 @@ var info = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -805,14 +807,14 @@ var confirmInfoReveal = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -821,7 +823,7 @@ var confirmInfoReveal = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -914,14 +916,14 @@ var revealTopInfo = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -930,7 +932,7 @@ var revealTopInfo = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -949,8 +951,8 @@ var revealTopInfo = {
 
         // reveal veil info
         function drawHalfVeil(x, y, r, a){
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
@@ -966,8 +968,8 @@ var revealTopInfo = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1083,14 +1085,14 @@ var confirmTop = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -1099,7 +1101,7 @@ var confirmTop = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -1118,8 +1120,8 @@ var confirmTop = {
 
         // reveal veil info
         function drawHalfVeil(x, y, r, a){
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
@@ -1135,8 +1137,8 @@ var confirmTop = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1230,14 +1232,14 @@ var revealBottomInfo = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -1246,7 +1248,7 @@ var revealBottomInfo = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -1265,8 +1267,8 @@ var revealBottomInfo = {
 
         // reveal veil info
         function drawOtherHalfVeil(x, y, r, a){
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             ctx.beginPath()
             ctx.arc(x, y, r, a2, a1);
@@ -1282,8 +1284,8 @@ var revealBottomInfo = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1399,14 +1401,14 @@ var confirmBottom = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -1415,7 +1417,7 @@ var confirmBottom = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -1434,8 +1436,8 @@ var confirmBottom = {
 
         // reveal veil info
         function drawOtherHalfVeil(x, y, r, a){
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             ctx.beginPath()
             ctx.arc(x, y, r, a2, a1);
@@ -1451,8 +1453,8 @@ var confirmBottom = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1557,14 +1559,14 @@ var infoOutcome = {
         function drawCircle(x, y, r, color_left, color_right){
             // Right half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*Math.PI, 1.5*Math.PI);
+            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
             ctx.fillStyle = color_left;
             ctx.fill();
             ctx.stroke();
 
             // Left half of the circle
             ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*Math.PI, 0.5*Math.PI);
+            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
             ctx.fillStyle = color_right;
             ctx.fill();
             ctx.stroke();
@@ -1574,7 +1576,7 @@ var infoOutcome = {
         // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (Math.PI * 2) / 12;       // THE ANGLE TO MARK.
+                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
                 ctx.lineWidth = 5;            // HAND WIDTH.
                 ctx.beginPath();
 
@@ -1593,8 +1595,8 @@ var infoOutcome = {
 
         // veil info -> this needs to be variable
         function drawHalfVeil(x, y, r, a){
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             ctx.beginPath()
             ctx.arc(x, y, r, a1, a2);
@@ -1610,8 +1612,8 @@ var infoOutcome = {
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
-            a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1645,14 +1647,14 @@ var infoOutcome = {
                 dotAngle = rndOBA[5][0];
             }
 
-            a1 = -(Math.ceil(dotAngle) * Math.PI / 180);
+            a1 = -(Math.ceil(dotAngle) * PI / 180);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
 
             ctx.beginPath();
             ctx.globalAlpha = 1;
-            ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+            ctx.arc(x1, y1, 5, 0, 2*PI);
             ctx.strokeStyle = 'LimeGreen';
             ctx.lineWidth = 5;
             ctx.stroke();
