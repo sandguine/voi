@@ -5,6 +5,40 @@
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
+var angles = [0, 30, 60, 90, 120, 150];
+
+var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
+
+var ooaa = outcomeAllAngles.reverse();
+
+var outcomeByAngles = []; // all available outcome depending on the angle
+// filling all available outcome depending on the angle
+for (var i = 0; i < outcomeAllAngles.length/2; i++ ){
+    outcomeByAngles.push(outcomeAllAngles.slice(i, i+6));
+}
+
+
+var rndOBA = []; // all available outcome depending on the angle randomized
+// fill-in all available outcome depending on the angle randomized
+for ( var j = 0; j < angles.length; j++){
+    rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
+}
+
+
+var ooba = []; // all available outcome depending on the angle
+// filling all available outcome depending on the angle
+for (var i = 0; i < ooaa.length/2; i++ ){
+    ooba.push(ooaa.slice(i, i+6));
+}
+
+
+var rndOOBA = []; // all available outcome depending on the angle randomized
+// fill-in all available outcome depending on the angle randomized
+for ( var j = 0; j < angles.length; j++){
+    rndOOBA.push(jsPsych.randomization.shuffle(ooba[j]));
+}
+
+
 
 // draw circle halves of circle with two different color
 function drawCircle(x, y, r, color_left, color_right){
@@ -54,8 +88,8 @@ function drawCutOffLine(x, y, r, a, color){
     ctx.strokeStyle = color;
     ctx.beginPath();
 
-    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
-    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+    a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
+    a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
 
     var x1 = (x) + Math.cos(a1) * (r);
     var y1 = (y) + Math.sin(a1) * (r);
@@ -74,12 +108,24 @@ function drawCutOffLine(x, y, r, a, color){
 
 // draw the veil side
 function drawHalfVeil(x, y, r, a, color){
-    a1 = Math.ceil(a/30) * (2 * Math.PI) / 12;
-    a2 = Math.ceil((a/30)+6) * (2 * Math.PI) / 12;
+    a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
+    a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
 
     ctx.beginPath()
     ctx.arc(x, y, r, a1, a2);
-    ctx.globalAlpha = 0.5;
+    ctx.globalAlpha = 0.7;
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawOtherHalfVeil(x, y, r, a, color){
+    a1 = -(Math.ceil(a/30) * (2 * Math.PI) / 12);
+    a2 = -(Math.ceil((a/30)+6) * (2 * Math.PI) / 12);
+
+    ctx.beginPath()
+    ctx.arc(x, y, r, a2, a1);
+    ctx.globalAlpha = 0.7;
     ctx.fillStyle = color;
     ctx.fill();
     ctx.closePath();
@@ -89,7 +135,7 @@ function drawHalfVeil(x, y, r, a, color){
 function drawDot(x, y, r, a){
     ctx.fillStyle = "Lime";
 
-    a1 = Math.ceil(a) * Math.PI / 180;
+    a1 = -(Math.ceil(a) * Math.PI / 180);
 
     var x1 = (x) + Math.cos(a1) * (r);
     var y1 = (y) + Math.sin(a1) * (r);
@@ -103,6 +149,77 @@ function drawDot(x, y, r, a){
     ctx.fill();
     ctx.closePath();
 }
+
+
+function drawDotHalf(x, y, r, a){
+    ctx.fillStyle = "Lime";
+
+    // determine possible outcome options from angle
+    if (a == 0) {
+        dotAngle = rndOBA[0];
+    } else if (a == 30) {
+        dotAngle = rndOBA[1];
+    } else if (a == 60){
+        dotAngle = rndOBA[2];
+    } else if (a == 120){
+        dotAngle = rndOBA[4];
+    } else if (a == 150){
+        dotAngle = rndOBA[5];
+    }
+
+    for (var i = 0; i < dotAngle.length; i++){
+        a1 = -(Math.ceil(dotAngle[i]) * Math.PI / 180);
+
+        var x1 = (x) + Math.cos(a1) * (r);
+        var y1 = (y) + Math.sin(a1) * (r);
+
+        ctx.beginPath();
+        ctx.globalAlpha = 1;
+        ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+        ctx.strokeStyle = 'LimeGreen';
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+
+    }
+} // all is correct
+
+
+function drawDotOtherHalf(x, y, r, a){
+    ctx.fillStyle = "Lime";
+
+    // determine possible outcome options from angle
+    if (a == 0) {
+        dotAngle = rndOOBA[0];
+    } else if (a == 30) {
+        dotAngle = rndOOBA[1];
+    } else if (a == 60){
+        dotAngle = rndOOBA[2];
+    } else if (a == 120){
+        dotAngle = rndOOBA[4];
+    } else if (a == 150){
+        dotAngle = rndOOBA[5];
+    }
+
+    for (var i = 0; i < dotAngle.length; i++){
+        a1 = -(Math.ceil(dotAngle[i]) * Math.PI / 180);
+
+        var x1 = (x) + Math.cos(a1) * (r);
+        var y1 = (y) + Math.sin(a1) * (r);
+
+        ctx.beginPath();
+        ctx.globalAlpha = 1;
+        ctx.arc(x1, y1, 5, 0, 2*Math.PI);
+        ctx.strokeStyle = 'LimeGreen';
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+
+    }
+} // only 0 is correct
+
 
 
 /* to do:

@@ -42,7 +42,7 @@ var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for informati
 
 var angles = [0, 30, 60, 90, 120, 150]; // all available angles
 
-var outcomeAllAngles = [-15, -45, -75, -105, -135, -165, 165, 135, 105, 75, 45, 15];
+var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
 
 var outcomeByAngles = []; // all available outcome depending on the angle
 // filling all available outcome depending on the angle
@@ -569,7 +569,7 @@ var gambleOutcome = {
 
             a = rndOutcomeAllAngles[0];
 
-            a1 = Math.ceil(a) * Math.PI / 180;
+            a1 = -(Math.ceil(a) * Math.PI / 180);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1640,14 +1640,12 @@ var infoOutcome = {
             } else if (a == 60){
                 dotAngle = rndOBA[2][0];
             } else if (a == 120){
-                dotAngle = rndOBA[3][0];
-            } else if (a == 150){
                 dotAngle = rndOBA[4][0];
-            } else {
+            } else if (a == 150){
                 dotAngle = rndOBA[5][0];
             }
 
-            a1 = Math.ceil(dotAngle) * Math.PI / 180;
+            a1 = -(Math.ceil(dotAngle) * Math.PI / 180);
 
             var x1 = (x) + Math.cos(a1) * (r);
             var y1 = (y) + Math.sin(a1) * (r);
@@ -1666,8 +1664,6 @@ var infoOutcome = {
     canvasHTML: CANVAS,
     choices: ['f', 'j']
 };
-
-
 
 /* fixation */
 var fixation = {
