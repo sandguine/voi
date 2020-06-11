@@ -14,19 +14,25 @@ var CB = ['White', 5]; // parameter for circle border
 
 var CANVAS = '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>';
 
-var CONFIRM = 1000;
+var CONFIRM = 1000; // duration of confirmation of choice selected
 
-var FONT = '32px Helvetica';
+var FONT = '32px Helvetica'; // font size and color throughout the task
 
-var FULLVEILALPHA = 0.7;
+var FULLVEILALPHA = 0.7; // transparency of full veil
 
-var HALFVEILALPHA = 0.9;
+var HALFVEILALPHA = 0.9; //transparency of half veil
 
-var FULLVIEL = 'DarkGrey';
+var FULLVIEL = 'DarkGrey'; // color of full veil
 
-var HALFVEIL = 'DimGrey';
+var HALFVEIL = 'DimGrey'; // color of half veil
 
-var PI = Math.PI;
+var GAMBLETEXTCOLOR = 'PaleGreen'; // text color of gamble page
+
+var INFOTEXTCOLOR = 'Salmon'; // text color of info page
+
+var PI = Math.PI; // pi as a constant
+
+var CENTER = 'center'; // center alignment
 
 /* end static values */
 
@@ -42,7 +48,7 @@ var yesNo = ['Yes', 'No']; // for randomization of choices on left and right
 
 var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
 
-var angles = [0, 30, 60, 90, 120, 150]; // all available angles
+var angles = [0, 30, 60, -60, -30]; // all available angles -60 == 120, -30 == 150
 
 var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
 
@@ -63,19 +69,19 @@ var leftSideOP = [-105, -135, -165, 165, 135, 105]; //outcome position on the le
 
 var dotAngle; // initialized the angle for the dot outcome
 
-var outcomeAngle;
+var outcomeAngle; // angle of the outcome
 
-var infoPayoff;
+var infoPayoff; // payoff per trial if info screen is selected
 
-var payoff;
+var payoff; // payoff if gamble page is selected
 
-var gambleDecision;
+var gambleDecision; // decision to gamble or not
 
-var infoRevealDecision;
+var infoRevealDecision; // decision to reveal info or not
 
-var infoPlayDecision;
+var infoPlayDecision; // decision to play the gamble after info is revealed on the 1st screen
 
-var infoOtherPlayDecision;
+var infoOtherPlayDecision; // // decision to play the gamble after info is revealed on the 2nd screen
 
 /* end variable assigned at each screen */
 
@@ -205,7 +211,7 @@ var pause = {
             ctx.strokeStyle = CB[0];
             ctx.fillStyle = CB[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Press space bar for the next trial.', c.width*1/2, c.height*1/2);
         }
 
@@ -247,19 +253,19 @@ var gamble = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         function textGambleDecision(yesNoArray){
-            ctx.fillStyle = "PaleGreen";
+            ctx.fillStyle = GAMBLETEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
             ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
             ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
@@ -350,19 +356,19 @@ var confirmGamble = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         function textGambleYes(yesNoArray){
-            ctx.fillStyle = "PaleGreen";
+            ctx.fillStyle = GAMBLETEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
 
             if (yesNoArray[0] == 'Yes'){
@@ -375,9 +381,9 @@ var confirmGamble = {
         }
 
         function textGambleNo(yesNoArray){
-            ctx.fillStyle = "PaleGreen";
+            ctx.fillStyle = GAMBLETEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
 
             if (yesNoArray[0] == 'No'){
@@ -479,12 +485,12 @@ var gambleOutcome = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
@@ -500,7 +506,7 @@ var gambleOutcome = {
 
             ctx.fillStyle = "Moccasin";
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
             ctx.fillText('Total payoff this round: $'+payoff, c.width/2, c.height*4/5);
 
@@ -623,20 +629,20 @@ var info = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
         function textInfoDecision(yesNoArray, infoPrice){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Purchase this information?', c.width/2, c.height*725/1000);
             ctx.fillText('$'+infoPrice, c.width/2, c.height*4/5);
             ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
@@ -761,25 +767,25 @@ var confirmInfoReveal = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         function textInfoPrice(infoPrice){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Purchase this information?', c.width/2, c.height*725/1000);
             ctx.fillText('$'+infoPrice, c.width/2, c.height*4/5);
         }
 
         function textInfoYes(yesNoArray){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
 
             if (yesNoArray[0] == 'Yes'){
@@ -792,7 +798,7 @@ var confirmInfoReveal = {
         }
 
         function textInfoNo(yesNoArray){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
 
             if (yesNoArray[0] == 'No'){
@@ -850,6 +856,7 @@ var confirmInfoReveal = {
         textGambleChoices(jsPsych.timelineVariable('options', true));
         textInfoPrice(jsPsych.timelineVariable('infoPrice', true));
 
+        // to determine which side was chosen then highlight
         if (data.infoRevealDecision == 'Yes'){
             textInfoYes(rndYNIR);
         } else if (data.infoRevealDecision == 'No'){
@@ -894,20 +901,20 @@ var revealTopInfo = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
         function textTopInfoOutcomeDecision(yesNoArray){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
             ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
             ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
@@ -1034,29 +1041,29 @@ var confirmTop = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
         function textTopInfo(){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
         }
 
         // info decision: left choice, right choice, price of the info
         function textTopInfoYes(yesNoArray){
             ctx.strokeStyle = CB[0];
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
 
             if (yesNoArray[0] == 'Yes'){
                 ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
@@ -1069,9 +1076,9 @@ var confirmTop = {
 
         function textTopInfoNo(yesNoArray){
             ctx.strokeStyle = CB[0];
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
 
             if (yesNoArray[0] == 'No'){
                 ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
@@ -1210,20 +1217,20 @@ var revealBottomInfo = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
         function textBottomInfo(yesNoArray){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
             ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
             ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
@@ -1350,29 +1357,29 @@ var confirmBottom = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
         // info decision: left choice, right choice, price of the info
         function textBottomInfo(){
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Play this gamble?', c.width/2, c.height*1/5);
         }
 
         // info decision: left choice, right choice, price of the info
         function textBottomInfoYes(yesNoArray){
             ctx.strokeStyle = CB[0];
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
 
             if (yesNoArray[0] == 'Yes'){
                 ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
@@ -1385,9 +1392,9 @@ var confirmBottom = {
 
         function textBottomInfoNo(yesNoArray){
             ctx.strokeStyle = CB[0];
-            ctx.fillStyle = "Salmon";
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
 
             if (yesNoArray[0] == 'No'){
                 ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
@@ -1529,12 +1536,12 @@ var infoOutcome = {
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
@@ -1549,7 +1556,7 @@ var infoOutcome = {
 
             ctx.fillStyle = "Moccasin";
             ctx.font = FONT;
-            ctx.textAlign = "center";
+            ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
             ctx.fillText('Total payoff this round: $'+infoPayoff, c.width/2, c.height*4/5);
 

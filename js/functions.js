@@ -161,9 +161,9 @@ function drawDotHalf(x, y, r, a){
         dotAngle = rndOBA[1];
     } else if (a == 60){
         dotAngle = rndOBA[2];
-    } else if (a == 120){
+    } else if (a == -60){
         dotAngle = rndOBA[4];
-    } else if (a == 150){
+    } else if (a == -30){
         dotAngle = rndOBA[5];
     }
 
