@@ -193,7 +193,7 @@ function drawDotOtherHalf(x, y, r, a){
     if (a == 0) {
         dotAngle = rndOOBA[0];
     } else if (a == 30) {
-        dotAngle = rndOOBA[1];
+        dotAngle = rndOOBA[5];
     } else if (a == 60){
         dotAngle = rndOOBA[2];
     } else if (a == 120){
@@ -203,7 +203,7 @@ function drawDotOtherHalf(x, y, r, a){
     }
 
     for (var i = 0; i < dotAngle.length; i++){
-        a1 = -(Math.ceil(dotAngle[i]) * Math.PI / 180);
+        a1 = -(Math.ceil(dotAngle[i]) * Math.PI / 180)+Math.PI;
 
         var x1 = (x) + Math.cos(a1) * (r);
         var y1 = (y) + Math.sin(a1) * (r);
