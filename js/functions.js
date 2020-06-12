@@ -5,7 +5,7 @@
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
-var angles = [0, 30, 60, 90, 120, 150];
+var angles = [0, 30, 60, -60, -30];
 
 var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
 

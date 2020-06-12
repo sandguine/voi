@@ -165,6 +165,18 @@ var id = {
       required: true,
       name: 'session'
   }],
+  on_finish: function(data){
+      var data = jsPsych.data.getLastTrialData().values()[0].responses;
+      var strid = /(?<="ID":")\d+/g;
+      var participantID = parseInt(data.match(strid));
+      var strsession = /(?<="session":")\d/g;
+      var session = parseInt(data.match(strsession))
+
+      addVars({
+          participantID: participantID,
+          session: session
+      });
+  }
 };
 
 var loopID = {
@@ -236,7 +248,6 @@ var gamble = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        // textGambleChoices(rndOptionsPair[0]);
         textGambleChoices(jsPsych.timelineVariable('options', true));
         textGambleDecision(rndYNG);
 
@@ -306,7 +317,6 @@ var gamble = {
                 ctx.stroke();
             }
         }
-
      },
     canvasHTML: CANVAS,
     choices: ['f', 'j'],
@@ -456,140 +466,143 @@ var confirmGamble = {
 var gambleOutcome = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
+        if (false){
 
-        var c = document.getElementById(EID);
-        var ctx = c.getContext(CONTEXT);
-        var x = c.width/2;
-        var y = c.height/2;
-        var RADIUS = 100;
-        var angle;
+        } else {
+            var c = document.getElementById(EID);
+            var ctx = c.getContext(CONTEXT);
+            var x = c.width/2;
+            var y = c.height/2;
+            var RADIUS = 100;
+            var angle;
 
-        // draw screen components
-        drawCB(CB[0], CB[1]);
-        drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
-        drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
-        drawDot(x, y, RADIUS);
-        textGambleOutcome(rndOutcomeAllAngles[0]);
+            // draw screen components
+            drawCB(CB[0], CB[1]);
+            drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
+            drawMarks(x, y, RADIUS);
+            textGambleChoices(jsPsych.timelineVariable('options', true));
+            drawDot(x, y, RADIUS);
+            textGambleOutcome(rndOutcomeAllAngles[0], jsPsych.timelineVariable('options', true));
 
-        // border of circle: color and stroke width
-        function drawCB(color, stroke_width){
-            ctx.strokeStyle = color;
-            ctx.lineWidth = stroke_width;
-        }
-
-        // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
-
-            ctx.fillStyle = rndColorOptions[0];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(l, c.width*1/3, c.height*1/3);
-
-            ctx.fillStyle = rndColorOptions[1];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(r, c.width*2/3, c.height*1/3);
-        }
-
-        // info decision: left choice, right choice, price of the info
-        function textGambleOutcome(dotAngle){
-
-            // total payoff is either left or right
-            if(rightSideOP.includes(dotAngle)){
-                payoff = parseFloat(rndOptionsPair[0][1]);
-            } else {
-                payoff = parseFloat(rndOptionsPair[0][0]);
+            // border of circle: color and stroke width
+            function drawCB(color, stroke_width){
+                ctx.strokeStyle = color;
+                ctx.lineWidth = stroke_width;
             }
 
-            ctx.fillStyle = "Moccasin";
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText('Result', c.width/2, c.height*1/5);
-            ctx.fillText('Total payoff this round: $'+payoff, c.width/2, c.height*4/5);
+            // choice of gambles displayed
+            function textGambleChoices(choicesArray){
+                var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
+                var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
 
-            return payoff, dotAngle;
-        }
+                ctx.fillStyle = rndColorOptions[0];
+                ctx.font = FONT;
+                ctx.textAlign = CENTER;
+                ctx.fillText(l, c.width*1/3, c.height*1/3);
 
-        // draw based circle, inputs: center at x coordinate, y coordinate, radius of a circle, color on the left and color on the right
-        function drawCircle(x, y, r, color_left, color_right){
-            // Right half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
-            ctx.fillStyle = color_left;
-            ctx.fill();
-            ctx.stroke();
+                ctx.fillStyle = rndColorOptions[1];
+                ctx.font = FONT;
+                ctx.textAlign = CENTER;
+                ctx.fillText(r, c.width*2/3, c.height*1/3);
+            }
 
-            // Left half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
-            ctx.fillStyle = color_right;
-            ctx.fill();
-            ctx.stroke();
-        }
+            // info decision: left choice, right choice, price of the info
+            function textGambleOutcome(dotAngle, array){
 
+                // total payoff is either left or right
+                if(rightSideOP.includes(dotAngle)){
+                    payoff = parseFloat(array[1]);
+                } else {
+                    payoff = parseFloat(array[0]);
+                }
 
-        // draw marks, inputs: center at x coordinate, y coordinate, and radius of a circle
-        function drawMarks(x, y, r){
-            for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.fillStyle = "Moccasin";
+                ctx.font = FONT;
+                ctx.textAlign = CENTER;
+                ctx.fillText('Result', c.width/2, c.height*1/5);
+                ctx.fillText('Total payoff this round: $'+payoff, c.width/2, c.height*4/5);
+
+                return payoff, dotAngle;
+            }
+
+            // draw based circle, inputs: center at x coordinate, y coordinate, radius of a circle, color on the left and color on the right
+            function drawCircle(x, y, r, color_left, color_right){
+                // Right half of the circle
                 ctx.beginPath();
+                ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
+                ctx.fillStyle = color_left;
+                ctx.fill();
+                ctx.stroke();
 
-                var x1 = (x) + Math.cos(angle) * (r);
-                var y1 = (y) + Math.sin(angle) * (r);
-                var x2 = (x) + Math.cos(angle) * (r - (r / 7));
-                var y2 = (y) + Math.sin(angle) * (r - (r / 7));
-
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-
-                ctx.strokeStyle = 'White';
+                // Left half of the circle
+                ctx.beginPath();
+                ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
+                ctx.fillStyle = color_right;
+                ctx.fill();
                 ctx.stroke();
             }
-        }
 
-        // veil information with grey veil on top of the circle
-        function drawVeil(){
-            ctx.beginPath()
-            ctx.arc(x, y, RADIUS, 0, 2 * PI);
-            ctx.globalAlpha = FULLVEILALPHA;
-            ctx.fillStyle = FULLVIEL;
-            ctx.fill();
-        }
 
-        // cut-off line to reveal gambling info
-        function drawCutOff(angleX, angleY){
-            ctx.beginPath();
-            ctx.lineCap = "round";
-            ctx.moveTo(angleX-RADIUS, angleY); // y is a variable, need to be saved
-            ctx.lineTo(angleX+RADIUS, angleY); // y is a variable, need to be saved
-            ctx.strokeStyle = "Crimson";
-            ctx.lineWidth = 5;
-            ctx.stroke();
-        }
+            // draw marks, inputs: center at x coordinate, y coordinate, and radius of a circle
+            function drawMarks(x, y, r){
+                for (var i = 0; i < 12; i++) {
+                    angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
+                    ctx.lineWidth = 5;            // HAND WIDTH.
+                    ctx.beginPath();
 
-        // draw gamble outcome dot
-        function drawDot(x, y, r){
-            ctx.fillStyle = "Lime";
+                    var x1 = (x) + Math.cos(angle) * (r);
+                    var y1 = (y) + Math.sin(angle) * (r);
+                    var x2 = (x) + Math.cos(angle) * (r - (r / 7));
+                    var y2 = (y) + Math.sin(angle) * (r - (r / 7));
 
-            a = rndOutcomeAllAngles[0];
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
 
-            a1 = -(Math.ceil(a) * PI / 180);
+                    ctx.strokeStyle = 'White';
+                    ctx.stroke();
+                }
+            }
 
-            var x1 = (x) + Math.cos(a1) * (r);
-            var y1 = (y) + Math.sin(a1) * (r);
+            // veil information with grey veil on top of the circle
+            function drawVeil(){
+                ctx.beginPath()
+                ctx.arc(x, y, RADIUS, 0, 2 * PI);
+                ctx.globalAlpha = FULLVEILALPHA;
+                ctx.fillStyle = FULLVIEL;
+                ctx.fill();
+            }
 
-            ctx.beginPath();
-            ctx.globalAlpha = 1;
-            ctx.arc(x1, y1, 5, 0, 2*PI);
-            ctx.strokeStyle = 'LimeGreen';
-            ctx.lineWidth = 5;
-            ctx.stroke();
-            ctx.fill();
-            ctx.closePath();
+            // cut-off line to reveal gambling info
+            function drawCutOff(angleX, angleY){
+                ctx.beginPath();
+                ctx.lineCap = "round";
+                ctx.moveTo(angleX-RADIUS, angleY); // y is a variable, need to be saved
+                ctx.lineTo(angleX+RADIUS, angleY); // y is a variable, need to be saved
+                ctx.strokeStyle = "Crimson";
+                ctx.lineWidth = 5;
+                ctx.stroke();
+            }
+
+            // draw gamble outcome dot
+            function drawDot(x, y, r){
+                ctx.fillStyle = "Lime";
+
+                a = rndOutcomeAllAngles[0];
+
+                a1 = -(Math.ceil(a) * PI / 180);
+
+                var x1 = (x) + Math.cos(a1) * (r);
+                var y1 = (y) + Math.sin(a1) * (r);
+
+                ctx.beginPath();
+                ctx.globalAlpha = 1;
+                ctx.arc(x1, y1, 5, 0, 2*PI);
+                ctx.strokeStyle = 'LimeGreen';
+                ctx.lineWidth = 5;
+                ctx.stroke();
+                ctx.fill();
+                ctx.closePath();
+            }
         }
 
      },
@@ -1716,18 +1729,39 @@ var ifInfoReveal = {
     }
 }
 
-// show gamble outcome
-// var showGambleOutcome = {
+// if gamble is play but, info is not purchase
+// var ifGambleNoInfo = {
 //     timeline: [gambleOutcome],
+//     timeline_variables: function(){
+//         var yesGambleNoInfo = jsPsych.data.get().filter({gambleDecision: 'Yes'}, {infoRevealDecision: 'No'});
+//         var str = yesGambleNoInfo.values();
+//     },
 //     conditional_function: function(){
-//         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.gambleDecision == 'Yes' && data.infoRevealDecision == 'No'){
+//         var yesGambleNoInfo = jsPsych.data.get().filter({gambleDecision: 'Yes'}, {infoRevealDecision: 'No'});
+//         var rndYGNI = jsPsych.randomization.shuffle(yesGambleNoInfo);
+//         var trial = yesGambleNoInfo.values()[0];
+//
+//         if(trial.gambleDecision == 'Yes' && trial.infoRevealDecision == 'No'){
 //             return true;
 //         } else {
 //             return false;
 //         }
+//
 //     }
 // }
+
+// show gamble outcome
+var showGambleOutcome = {
+    timeline: [gambleOutcome],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.gambleDecision == 'Yes' && data.infoRevealDecision == 'No'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 // show info-gamble outcome if played first half
 // var showInfoOutcome = {
@@ -1774,12 +1808,25 @@ var ifInfoReveal = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
-    timeline_variables: tvTest
+    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, showGambleOutcome, pause],
+    timeline_variables: tvTest,
+    on_finish: function(){
+        var options = jsPsych.timelineVariable('options', true); // -> not working properly
+        var angle = jsPsych.timelineVariable('angle', true);
+        var infoPrice = jsPsych.timelineVariable('infoPrice', true);
+
+        addVars({
+            optionLeft: options[0],
+            optionRight: options[1],
+            angle: angle[0],
+            infoPrice: infoPrice[0]
+        })
+
+    }
 };
 
-// var outcomeProcedure = {
-//     timeline: []
-// };
+var outcomeProcedure = {
+    timeline: [ifGambleNoInfo]
+};
 
 /* end test procedures */
