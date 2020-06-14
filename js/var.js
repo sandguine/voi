@@ -467,7 +467,7 @@ var gambleOutcome = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
         if (false){
-
+            // if not last trial keeps showing nothing
         } else {
             var c = document.getElementById(EID);
             var ctx = c.getContext(CONTEXT);
@@ -1808,7 +1808,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, showGambleOutcome, pause],
+    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
     timeline_variables: tvTest,
     on_finish: function(){
         var options = jsPsych.timelineVariable('options', true); // -> not working properly
