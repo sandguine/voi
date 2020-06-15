@@ -38,16 +38,32 @@
     <script src="js/jsPsych/jspsych-canvas-keyboard-response.js"></script>
     <script src="js/jsPsych/jspsych-fullscreen.js"></script>
     <script src="js/jsPsych/jspsych-instructions.js"></script>
+    <script src="js/jsPsych/jspsych-html-button-response.js"></script>
     <script src="js/jsPsych/jspsych-html-keyboard-response.js"></script>
     <script src="js/jsPsych/jspsych-survey-multi-choice.js"></script>
     <script src="js/jsPsych/jspsych-survey-text.js"></script>
+    <script src="js/voi-in-person.js"></script>
 
     <link href="css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <link href="css/custom.css" rel="stylesheet" type="text/css"></link>
   </head>
   <body>
+    <noscript>
+      <h1>
+        Warning: Javascript seems to be disabled
+      </h1>
+      <p>
+        This website requires that Javascript be enabled on your browser.
+      </p>
+      <p>
+        Instructions for enabling Javascript in your browser can be found
+        <a href="http://support.google.com/bin/answer.py?hl=en&answer=23852">
+          here
+        </a>
+      </p>
+    </noscript>
   </body>
-  <script>
+  <!-- <script>
 
     // run the whole experiment
 
@@ -66,7 +82,7 @@
       on_finish: function() {
 
         function saveDB(data){
-          var dataSaved = db.collection("habit-short").doc('version1').collection('participants').doc(uid).set(data);
+          var dataSaved = db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(data);
         }
 
         jsPsych.data.addProperties(tvTest);
@@ -77,7 +93,7 @@
         var session = alldata[0].session;
 
         saveDB(alldata);
-        
+
         // var jsonString = jsPsych.data.get().dataAsJSON();
         // jsPsych.data.get().localSave(alldata, '/data/'+toString(participantID)+'.json'+'.json');
         // jsPsych.data.get().localSave('json', name);
@@ -86,5 +102,5 @@
     });
 
 
-  </script>
+  </script> -->
 </html>

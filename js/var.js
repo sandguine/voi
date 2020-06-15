@@ -128,10 +128,10 @@ addVars({
   gambleChoiceRight: rndYNG[1],
   infoShowLeft: rndYNIR[0],
   infoShowRight: rndYNIR[1],
-  topInfoOutcomeLeft: rndYNITP[0],
-  topInfoOutcomeRight: rndYNITP[1],
-  bottomInfoOutcomeLeft: rndYNIBP[0],
-  bottomInfoOutcomeRight: rndYNIBP[1],
+  // topInfoOutcomeLeft: rndYNITP[0],
+  // topInfoOutcomeRight: rndYNITP[1],
+  // bottomInfoOutcomeLeft: rndYNIBP[0],
+  // bottomInfoOutcomeRight: rndYNIBP[1],
   infoOutcomeAngle: outcomeAngle,
   infoPayoff: infoPayoff,
   outcomeAngle: rndOutcomeAllAngles[0],
@@ -1698,6 +1698,28 @@ var fixation = {
         data: {test_part: 'fixation'}
 };
 
+/* submit */
+var submit = {
+    type: 'html-button-response',
+    button_html: 'Submit',
+    prompt: 'You are done! Thanks so much for your participation! Click the button below to submit your response.',
+    on_finish: function(){
+        jsPsych.data.addProperties(tvTest);
+
+        var alldata = jsPsych.data.get().values();
+        var participantID = alldata[0].participantID;
+        var session = alldata[0].session;
+
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
+
+    },
+    on_load: function(data){
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+            'time_end': new Date().toLocaleTimeString(),
+        })
+    }
+}
+
 /* end individual screen */
 
 
@@ -1804,8 +1826,6 @@ var showGambleOutcome = {
 
 /* end if functions */
 
-
-
 /* test procedure */
 var procedure = {
     timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
@@ -1825,8 +1845,8 @@ var procedure = {
     }
 };
 
-var outcomeProcedure = {
-    timeline: [ifGambleNoInfo]
-};
+// var outcomeProcedure = {
+//     timeline: [ifGambleNoInfo]
+// };
 
 /* end test procedures */
