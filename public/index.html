@@ -64,8 +64,29 @@
   </body>
   <script>
 
-    // run the whole experiment
+    /* submit */
+    var submit = {
+        type: 'html-button-response',
+        choices: ['Submit your response'],
+        stimulus: '<p>You are done! Click the button below to submit your response.</p>',
+        on_finish: function(){
+            // var alldata = jsPsych.data.get().values();
+            // var participantID = alldata[0].participantID;
+            // var session = alldata[0].session;
 
+            db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(
+              JSON.parse(
+                JSON.stringify(
+                  jsPsych.data.get().values()
+                )
+              )
+            );
+            db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(tvTest);
+
+        }
+    }
+
+    // run the whole experiment
     // logistics
     timeline.push(fullscreen, welcome, loopID, instructions);
     // actual experiment
@@ -74,19 +95,7 @@
 
     /* start the experiment */
     jsPsych.init({
-      timeline: timeline,
-      on_finish: function() {
-
-        jsPsych.data.addProperties(tvTest);
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(tvTest);
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(jsPsych.data.get().values());
-
-        // var alldata = jsPsych.data.get().values();
-        // var participantID = alldata[0].participantID;
-        // var session = alldata[0].session;
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
-
-      }
+      timeline: timeline
     });
 
 
