@@ -135,18 +135,18 @@ addVars({
 });
 
 
-// db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
-//   leftColor: rndColorOptions[0],
-//   rightColor: rndColorOptions[1],
-//   gambleChoiceLeft: rndYNG[0],
-//   gambleChoiceRight: rndYNG[1],
-//   infoShowLeft: rndYNIR[0],
-//   infoShowRight: rndYNIR[1],
-//   infoOutcomeAngle: outcomeAngle,
-//   infoPayoff: infoPayoff,
-//   outcomeAngle: rndOutcomeAllAngles[0],
-//   payoff: payoff
-// });
+db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+  leftColor: rndColorOptions[0],
+  rightColor: rndColorOptions[1],
+  gambleChoiceLeft: rndYNG[0],
+  gambleChoiceRight: rndYNG[1],
+  infoShowLeft: rndYNIR[0],
+  infoShowRight: rndYNIR[1],
+  infoOutcomeAngle: outcomeAngle,
+  infoPayoff: infoPayoff,
+  outcomeAngle: rndOutcomeAllAngles[0],
+  payoff: payoff
+});
 /* end save global variables */
 
 
@@ -185,7 +185,7 @@ var id = {
           session: session
       });
 
-      // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+      // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
       //     participantID: participantID,
       //     session: session
       // });
@@ -1723,7 +1723,7 @@ var submit = {
         var participantID = alldata[0].participantID;
         var session = alldata[0].session;
 
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
+        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(alldata);
 
     },
     on_load: function(data){
@@ -1737,7 +1737,7 @@ var submit = {
 var thanks = {
     type: 'html-keyboard-response',
     choices: jsPsych.NO_KEYS,
-    stimulus: '<p>Response has been recorded. Close the window to exit.</p>',
+    stimulus: '<p>Your response has been recorded! Close the window to exit.</p>',
     on_finish: function(){
         jsPsych.data.addProperties(tvTest);
 
@@ -1745,7 +1745,7 @@ var thanks = {
         var participantID = alldata[0].participantID;
         var session = alldata[0].session;
 
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
+        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(alldata);
 
     },
     on_load: function(data){

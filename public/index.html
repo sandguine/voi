@@ -70,20 +70,26 @@
     timeline.push(fullscreen, welcome, loopID, instructions);
     // actual experiment
     timeline.push(procedure);
-    timeline.push(submit);
+    timeline.push(submit, thanks);
 
     /* start the experiment */
     jsPsych.init({
       timeline: timeline,
+      on_load: function(){
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString()
+        })
+      },
       on_finish: function() {
 
-        jsPsych.data.addProperties(tvTest);
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(tvTest);
+        // jsPsych.data.addProperties(tvTest);
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(tvTest);
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(jsPsych.data.get().values());
 
-        var alldata = jsPsych.data.get().values();
-        var participantID = alldata[0].participantID;
-        var session = alldata[0].session;
-
+        // var alldata = jsPsych.data.get().values();
+        // var participantID = alldata[0].participantID;
+        // var session = alldata[0].session;
         // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
 
       }
