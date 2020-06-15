@@ -137,6 +137,24 @@ addVars({
   outcomeAngle: rndOutcomeAllAngles[0],
   payoff: payoff
 });
+
+
+db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+  leftColor: rndColorOptions[0],
+  rightColor: rndColorOptions[1],
+  gambleChoiceLeft: rndYNG[0],
+  gambleChoiceRight: rndYNG[1],
+  infoShowLeft: rndYNIR[0],
+  infoShowRight: rndYNIR[1],
+  // topInfoOutcomeLeft: rndYNITP[0],
+  // topInfoOutcomeRight: rndYNITP[1],
+  // bottomInfoOutcomeLeft: rndYNIBP[0],
+  // bottomInfoOutcomeRight: rndYNIBP[1],
+  infoOutcomeAngle: outcomeAngle,
+  infoPayoff: infoPayoff,
+  outcomeAngle: rndOutcomeAllAngles[0],
+  payoff: payoff
+});
 /* end save global variables */
 
 
@@ -173,6 +191,11 @@ var id = {
       var session = parseInt(data.match(strsession))
 
       addVars({
+          participantID: participantID,
+          session: session
+      });
+
+      db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
           participantID: participantID,
           session: session
       });
@@ -1701,7 +1724,7 @@ var fixation = {
 /* submit */
 var submit = {
     type: 'html-button-response',
-    button_html: 'Submit',
+    choices: ['Submit'],
     prompt: 'You are done! Thanks so much for your participation! Click the button below to submit your response.',
     on_finish: function(){
         jsPsych.data.addProperties(tvTest);
