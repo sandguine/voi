@@ -135,18 +135,18 @@ addVars({
 });
 
 
-db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-  leftColor: rndColorOptions[0],
-  rightColor: rndColorOptions[1],
-  gambleChoiceLeft: rndYNG[0],
-  gambleChoiceRight: rndYNG[1],
-  infoShowLeft: rndYNIR[0],
-  infoShowRight: rndYNIR[1],
-  infoOutcomeAngle: outcomeAngle,
-  infoPayoff: infoPayoff,
-  outcomeAngle: rndOutcomeAllAngles[0],
-  payoff: payoff
-});
+// db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+//   leftColor: rndColorOptions[0],
+//   rightColor: rndColorOptions[1],
+//   gambleChoiceLeft: rndYNG[0],
+//   gambleChoiceRight: rndYNG[1],
+//   infoShowLeft: rndYNIR[0],
+//   infoShowRight: rndYNIR[1],
+//   infoOutcomeAngle: outcomeAngle,
+//   infoPayoff: infoPayoff,
+//   outcomeAngle: rndOutcomeAllAngles[0],
+//   payoff: payoff
+// });
 /* end save global variables */
 
 
@@ -1724,12 +1724,6 @@ var submit = {
         var session = alldata[0].session;
 
         // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(alldata);
-
-    },
-    on_load: function(data){
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-        //     'time_end': new Date().toLocaleTimeString(),
-        // })
     }
 }
 
@@ -1737,22 +1731,7 @@ var submit = {
 var thanks = {
     type: 'html-keyboard-response',
     choices: jsPsych.NO_KEYS,
-    stimulus: '<p>Your response has been recorded! Close the window to exit.</p>',
-    on_finish: function(){
-        jsPsych.data.addProperties(tvTest);
-
-        var alldata = jsPsych.data.get().values();
-        var participantID = alldata[0].participantID;
-        var session = alldata[0].session;
-
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(alldata);
-
-    },
-    on_load: function(data){
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-        //     'time_end': new Date().toLocaleTimeString(),
-        // })
-    }
+    stimulus: '<p>Your response has been recorded! Close the window to exit.</p>'
 }
 
 /* end individual screen */
@@ -1866,16 +1845,16 @@ var procedure = {
     timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
     timeline_variables: tvTest,
     on_finish: function(){
-        var options = jsPsych.timelineVariable('options', true); // -> not working properly
-        var angle = jsPsych.timelineVariable('angle', true);
-        var infoPrice = jsPsych.timelineVariable('infoPrice', true);
-
-        addVars({
-            optionLeft: options[0],
-            optionRight: options[1],
-            angle: angle[0],
-            infoPrice: infoPrice[0]
-        })
+        // var options = jsPsych.timelineVariable('options', true); // -> not working properly
+        // var angle = jsPsych.timelineVariable('angle', true);
+        // var infoPrice = jsPsych.timelineVariable('infoPrice', true);
+        //
+        // addVars({
+        //     optionLeft: options[0],
+        //     optionRight: options[1],
+        //     angle: angle[0],
+        //     infoPrice: infoPrice[0]
+        // })
 
     }
 };
