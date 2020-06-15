@@ -128,10 +128,6 @@ addVars({
   gambleChoiceRight: rndYNG[1],
   infoShowLeft: rndYNIR[0],
   infoShowRight: rndYNIR[1],
-  // topInfoOutcomeLeft: rndYNITP[0],
-  // topInfoOutcomeRight: rndYNITP[1],
-  // bottomInfoOutcomeLeft: rndYNIBP[0],
-  // bottomInfoOutcomeRight: rndYNIBP[1],
   infoOutcomeAngle: outcomeAngle,
   infoPayoff: infoPayoff,
   outcomeAngle: rndOutcomeAllAngles[0],
@@ -139,29 +135,23 @@ addVars({
 });
 
 
-db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
-  leftColor: rndColorOptions[0],
-  rightColor: rndColorOptions[1],
-  gambleChoiceLeft: rndYNG[0],
-  gambleChoiceRight: rndYNG[1],
-  infoShowLeft: rndYNIR[0],
-  infoShowRight: rndYNIR[1],
-  // topInfoOutcomeLeft: rndYNITP[0],
-  // topInfoOutcomeRight: rndYNITP[1],
-  // bottomInfoOutcomeLeft: rndYNIBP[0],
-  // bottomInfoOutcomeRight: rndYNIBP[1],
-  infoOutcomeAngle: outcomeAngle,
-  infoPayoff: infoPayoff,
-  outcomeAngle: rndOutcomeAllAngles[0],
-  payoff: payoff
-});
+// db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+//   leftColor: rndColorOptions[0],
+//   rightColor: rndColorOptions[1],
+//   gambleChoiceLeft: rndYNG[0],
+//   gambleChoiceRight: rndYNG[1],
+//   infoShowLeft: rndYNIR[0],
+//   infoShowRight: rndYNIR[1],
+//   infoOutcomeAngle: outcomeAngle,
+//   infoPayoff: infoPayoff,
+//   outcomeAngle: rndOutcomeAllAngles[0],
+//   payoff: payoff
+// });
 /* end save global variables */
 
 
 
-/* individual screen */
-/* create timeline */
-var timeline = [];
+/* individual screens */
 
 /* fullscreen */
 var fullscreen = {
@@ -195,10 +185,10 @@ var id = {
           session: session
       });
 
-      db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
-          participantID: participantID,
-          session: session
-      });
+      // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+      //     participantID: participantID,
+      //     session: session
+      // });
   }
 };
 
@@ -1724,8 +1714,8 @@ var fixation = {
 /* submit */
 var submit = {
     type: 'html-button-response',
-    choices: ['Submit'],
-    prompt: 'You are done! Thanks so much for your participation! Click the button below to submit your response.',
+    choices: ['Submit your response'],
+    stimulus: '<p>You are done! Click the button below to submit your response.</p>',
     on_finish: function(){
         jsPsych.data.addProperties(tvTest);
 
@@ -1733,13 +1723,35 @@ var submit = {
         var participantID = alldata[0].participantID;
         var session = alldata[0].session;
 
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
+        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
 
     },
     on_load: function(data){
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            'time_end': new Date().toLocaleTimeString(),
-        })
+        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+        //     'time_end': new Date().toLocaleTimeString(),
+        // })
+    }
+}
+
+/* thanks */
+var thanks = {
+    type: 'html-keyboard-response',
+    choices: jsPsych.NO_KEYS,
+    stimulus: '<p>Response has been recorded. Close the window to exit.</p>',
+    on_finish: function(){
+        jsPsych.data.addProperties(tvTest);
+
+        var alldata = jsPsych.data.get().values();
+        var participantID = alldata[0].participantID;
+        var session = alldata[0].session;
+
+        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(alldata);
+
+    },
+    on_load: function(data){
+        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+        //     'time_end': new Date().toLocaleTimeString(),
+        // })
     }
 }
 
