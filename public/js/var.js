@@ -122,8 +122,7 @@ for ( var j = 0; j < angles.length; j++){
 var idAndSession = [];
 
 // to keep track of trial data
-var trials = []; // all trials
-var trial = []; // one trial
+var trial = []; // all trial
 
 // save the experiment parameters to database
 var saveExpParams = {
@@ -132,10 +131,8 @@ var saveExpParams = {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
             leftColor: rndColorOptions[0],
             rightColor: rndColorOptions[1],
-            gambleChoiceLeft: rndYNG[0],
-            gambleChoiceRight: rndYNG[1],
-            infoShowLeft: rndYNIR[0],
-            infoShowRight: rndYNIR[1]
+            choiceLeft: rndYNG[0],
+            choiceRight: rndYNG[1]
         });
     }
 }
@@ -1601,7 +1598,7 @@ var saveTrialData = {
     type: 'call-function',
     func: function () {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            trials
+            trial
         });
     }
 }
