@@ -118,7 +118,15 @@ for ( var j = 0; j < angles.length; j++){
 
 /* save global variables */
 
-var setExpParams = {
+// to keep track of id and session
+var idAndSession = [];
+
+// to keep track of trial data
+var trials = []; // all trials
+var trial = []; // one trial
+
+// save the experiment parameters to database
+var saveExpParams = {
     type: 'call-function',
     func: function() {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
@@ -127,19 +135,17 @@ var setExpParams = {
             gambleChoiceLeft: rndYNG[0],
             gambleChoiceRight: rndYNG[1],
             infoShowLeft: rndYNIR[0],
-            infoShowRight: rndYNIR[1],
-            topInfoOutcomeLeft: rndYNITP[0],
-            topInfoOutcomeRight: rndYNITP[1],
-            bottomInfoOutcomeLeft: rndYNIBP[0],
-            bottomInfoOutcomeRight: rndYNIBP[1]
+            infoShowRight: rndYNIR[1]
         });
     }
 }
 
+// function to add param on jsPsych data in parallel
 function addVars(vars){
     jsPsych.data.addProperties(vars);
 };
 
+// add experiment parameters to data
 addVars({
   leftColor: rndColorOptions[0],
   rightColor: rndColorOptions[1],
@@ -180,26 +186,23 @@ var id = {
       var strid = /(?<="ID":")\d+/g;
       var participantID = parseInt(data.match(strid));
       var strsession = /(?<="session":")\d/g;
-      var session = parseInt(data.match(strsession))
+      var session = parseInt(data.match(strsession));
 
       addVars({
           participantID: participantID,
           session: session
       });
 
-      // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-      //     participantID: participantID,
-      //     session: session
-      // });
+      idAndSession.push(participantID, session);
   }
 };
 
-var saveID = {
+var setIDSession = {
     type: 'call-function',
-    func: function() {
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            participantID: participantID,
-            session: session
+    func: function(){
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+            AparticipantID: idAndSession[0],
+            AsessionID: idAndSession[1]
         });
     }
 }
@@ -256,7 +259,10 @@ var pause = {
     },
     canvasHTML: CANVAS,
     choices: ' ',
-    response_ends_trial: true
+    response_ends_trial: true,
+    on_finish: function(){
+        trials.push(trial);
+    }
 };
 
 /* VoI canvas keyboard, gamble screen */
@@ -346,7 +352,6 @@ var gamble = {
     canvasHTML: CANVAS,
     choices: ['f', 'j'],
     on_finish: function(data){
-
         var data = jsPsych.data.getLastTrialData().values()[0];
         if(data.response == 70){
             if (data.gambleChoiceLeft == 'Yes'){
@@ -366,6 +371,14 @@ var gamble = {
                 addVars({gambleDecision: gambleDecision})
             }
         }
+        var gambleEndTime = new Date().toLocaleTimeString();
+        var toSaveGamble = [{
+            gambleRT: data.rt,
+            gambleKP: data.response,
+            gambleDecision: gambleDecision,
+            gambleET: gambleEndTime
+        }];
+        trial.push(toSaveGamble);
     }
 };
 
@@ -780,6 +793,14 @@ var info = {
                 addVars({infoRevealDecision: infoRevealDecision})
             }
         }
+        var infoRevealEndTime = new Date().toLocaleTimeString();
+        var toSaveIR = [{
+            infoRevealRT: data.rt,
+            infoRevealKP: data.response,
+            infoRevealDecision: infoRevealDecision,
+            infoRevealET: infoRevealEndTime
+        }];
+        trial.concat(toSaveIR);
     }
 };
 
@@ -1054,6 +1075,14 @@ var revealTopInfo = {
                 addVars({infoPlayTop: infoPlayDecision})
             }
         }
+        var info1stHalfEndTime = new Date().toLocaleTimeString();
+        var toSaveI1H = [{
+            info1stHalfRT: data.rt,
+            info1stHalfKP: data.response,
+            info1stHalfDecision: infoPlayDecision,
+            info1stHalfET: info1stHalfEndTime
+        }];
+        trial.concat(toSaveI1H);
     }
 };
 
@@ -1370,6 +1399,14 @@ var revealBottomInfo = {
                 addVars({infoPlayBottom: infoOtherPlayDecision})
             }
         }
+        var info2ndHalfEndTime = new Date().toLocaleTimeString();
+        var toSaveI2H = [{
+            info2ndHalfRT: data.rt,
+            info2ndHalfKP: data.response,
+            info2ndHalfDecision: infoOtherPlayDecision,
+            info2ndHalfET: info2ndHalfEndTime
+        }];
+        trial.concat(toSaveI2H);
     }
 };
 
@@ -1538,6 +1575,30 @@ var confirmBottom = {
     trial_duration: CONFIRM,
     response_ends_trial: false
 };
+
+/* save key values of the trial to the database */
+var saveTrialData = {
+    type: 'call-function',
+    func: function () {
+        var trialGambleData = trials[0][0];
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+            trialData
+        });
+    }
+}
+// var saveTrialData = {
+//     type: 'call-function',
+//     func: function () {
+//         for(var i = 0; i < trials.length; i++){
+//             for(var j = 0; j < trialVars.length; j++){
+//                 var trialData = trial[i][j]
+//                 db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+//                     trialData
+//                 });
+//             }
+//         }
+//     }
+// }
 
 /* VoI info outcome screen, if yes on info */
 var infoOutcome = {
@@ -1729,18 +1790,6 @@ var submit = {
     choices: ['Submit your response'],
     stimulus: '<p>You are done! Click the button below to submit your response.</p>',
     on_finish: function(){
-        // var alldata = jsPsych.data.get().values();
-        // var participantID = alldata[0].participantID;
-        // var session = alldata[0].session;
-
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(
-        //   JSON.parse(
-        //     JSON.stringify(
-        //       jsPsych.data.get().values();
-        //     )
-        //   )
-        // );
-        // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(tvTest);
 
     }
 }
@@ -1860,8 +1909,8 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause],
-    timeline_variables: tvTest,
+    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause, saveTrialData],
+    timeline_variables: trialVars,
     on_finish: function(){
         // var options = jsPsych.timelineVariable('options', true); // -> not working properly
         // var angle = jsPsych.timelineVariable('angle', true);

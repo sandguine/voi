@@ -71,11 +71,11 @@
     timeline.push(fullscreen, welcome, loopID, instructions);
     // actual experiment
     // save task variables
-    timeline.push(saveTrialsVariables, setExpParams);
+    timeline.push(setIDSession, saveExpParams, saveTrialsVariables);
     // run procedure
     timeline.push(procedure);
     // save last part
-    timeline.push(submit, thanks);
+    timeline.push(saveTrialData, submit, thanks);
 
     /* start the experiment */
     jsPsych.init({
