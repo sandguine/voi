@@ -164,6 +164,7 @@ addVars({
 /* fullscreen */
 var fullscreen = {
   type: 'fullscreen',
+  message: '<p>This window will switch to full-screen mode when you press the button below</p>'
   fullscreen_mode: true
 };
 
@@ -261,7 +262,7 @@ var pause = {
     choices: ' ',
     response_ends_trial: true,
     on_finish: function(){
-        trials.push(trial);
+        trials = trials.concat(trial);
     }
 };
 
@@ -378,7 +379,7 @@ var gamble = {
             gambleDecision: gambleDecision,
             gambleET: gambleEndTime
         }];
-        trial.push(toSaveGamble);
+        trial = trial.concat(toSaveGamble);
     }
 };
 
@@ -800,7 +801,26 @@ var info = {
             infoRevealDecision: infoRevealDecision,
             infoRevealET: infoRevealEndTime
         }];
-        trial.concat(toSaveIR);
+        trial = trial.concat(toSaveIR);
+        
+        if(infoRevealDecision == 'No'){
+            var toSaveI1H = [{
+                info1stHalfRT: 'NA',
+                info1stHalfKP: 'NA',
+                info1stHalfDecision: 'NA',
+                info1stHalfET: 'NA'
+            }];
+            trial = trial.concat(toSaveI1H);
+
+            var toSaveI2H = [{
+                info2ndHalfRT: data.rt,
+                info2ndHalfKP: data.response,
+                info2ndHalfDecision: infoOtherPlayDecision,
+                info2ndHalfET: info2ndHalfEndTime
+            }];
+            trial = trial.concat(toSaveI2H);
+        }
+
     }
 };
 
@@ -1082,7 +1102,7 @@ var revealTopInfo = {
             info1stHalfDecision: infoPlayDecision,
             info1stHalfET: info1stHalfEndTime
         }];
-        trial.concat(toSaveI1H);
+        trial = trial.concat(toSaveI1H);
     }
 };
 
@@ -1406,7 +1426,7 @@ var revealBottomInfo = {
             info2ndHalfDecision: infoOtherPlayDecision,
             info2ndHalfET: info2ndHalfEndTime
         }];
-        trial.concat(toSaveI2H);
+        trial = trial.concat(toSaveI2H);
     }
 };
 
@@ -1580,25 +1600,11 @@ var confirmBottom = {
 var saveTrialData = {
     type: 'call-function',
     func: function () {
-        var trialGambleData = trials[0][0];
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            trialData
+            trials
         });
     }
 }
-// var saveTrialData = {
-//     type: 'call-function',
-//     func: function () {
-//         for(var i = 0; i < trials.length; i++){
-//             for(var j = 0; j < trialVars.length; j++){
-//                 var trialData = trial[i][j]
-//                 db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-//                     trialData
-//                 });
-//             }
-//         }
-//     }
-// }
 
 /* VoI info outcome screen, if yes on info */
 var infoOutcome = {
@@ -1773,32 +1779,11 @@ var infoOutcome = {
     choices: ['f', 'j']
 };
 
-/* fixation */
-var fixation = {
-        type: 'html-keyboard-response',
-        stimulus: '<div style="font-size:60px;">+</div>',
-        choices: jsPsych.NO_KEYS,
-        trial_duration: function(){
-            return jsPsych.randomization.sampleWithReplacement([250, 500], 1)[0];
-        },
-        data: {test_part: 'fixation'}
-};
-
-/* submit */
-var submit = {
-    type: 'html-button-response',
-    choices: ['Submit your response'],
-    stimulus: '<p>You are done! Click the button below to submit your response.</p>',
-    on_finish: function(){
-
-    }
-}
-
 /* thanks */
 var thanks = {
     type: 'html-keyboard-response',
     choices: jsPsych.NO_KEYS,
-    stimulus: '<p>Your response has been recorded! Close the window to exit.</p>'
+    stimulus: '<p>You are done! Your response has been recorded! Close the window to exit.</p>'
 }
 
 /* end individual screen */
