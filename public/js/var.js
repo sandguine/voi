@@ -164,7 +164,7 @@ addVars({
 /* fullscreen */
 var fullscreen = {
   type: 'fullscreen',
-  message: '<p>This window will switch to full-screen mode when you press the button below</p>'
+  message: '<p>This window will switch to full-screen mode when you press the button below</p>',
   fullscreen_mode: true
 };
 
@@ -802,7 +802,7 @@ var info = {
             infoRevealET: infoRevealEndTime
         }];
         trial = trial.concat(toSaveIR);
-        
+
         if(infoRevealDecision == 'No'){
             var toSaveI1H = [{
                 info1stHalfRT: 'NA',
