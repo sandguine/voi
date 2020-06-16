@@ -3,14 +3,14 @@
 * Sandy Tanwisuth, @sandguine, June 2020
 */
 
-// var optionsPair = [['+12','-9'], ['+9', '-12'], ['+9', '-9'], ['+12', '-6'], ['+6', '-12'], ['+9',
-// '-6'], ['+6', '-9'], ['+3', '-3'], ['+12', '-3'], ['+3', '-12']];
+var optionsPair = [['+12','-9'], ['+9', '-12'], ['+9', '-9'], ['+12', '-6'], ['+6', '-12'], ['+9',
+'-6'], ['+6', '-9'], ['+3', '-3'], ['+12', '-3'], ['+3', '-12']];
 
-// var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
+var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
 
-// var angles = [0, 30, 60, 120, 150]; // all available angle
+var angles = [0, 30, 60, 120, 150]; // all available angle
 
-// tvAll = []
+var tvAll = [];
 
 // for (var i = 0; i < optionsPair.length; i++){
 //   for (var j = 0; j < infoPrice.length; j++){
@@ -277,7 +277,7 @@ var tvAll = [
 var tvRnd = jsPsych.randomization.shuffle(tvAll);
 
 // test for dopamine group
-var trialVars = tvRnd.slice(0, 5);
+var trialVars = tvRnd.slice(0, 10);
 
 // initiate timeline
 var timeline = [];

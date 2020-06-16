@@ -259,7 +259,7 @@ var pause = {
     choices: ' ',
     response_ends_trial: true,
     on_finish: function(){
-        trials = trials.concat(trial);
+        // trials = trials.concat(trial);
     }
 };
 
@@ -1892,20 +1892,7 @@ var showGambleOutcome = {
 /* test procedure */
 var procedure = {
     timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause, saveTrialData],
-    timeline_variables: trialVars,
-    on_finish: function(){
-        // var options = jsPsych.timelineVariable('options', true); // -> not working properly
-        // var angle = jsPsych.timelineVariable('angle', true);
-        // var infoPrice = jsPsych.timelineVariable('infoPrice', true);
-        //
-        // addVars({
-        //     optionLeft: options[0],
-        //     optionRight: options[1],
-        //     angle: angle[0],
-        //     infoPrice: infoPrice[0]
-        // })
-
-    }
+    timeline_variables: trialVars
 };
 
 // var outcomeProcedure = {
