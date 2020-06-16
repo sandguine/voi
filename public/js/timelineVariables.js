@@ -281,3 +281,12 @@ var tvTest = tvRnd.slice(0, 5);
 
 // initiate timeline
 var timeline = [];
+
+var saveTrialsVariables = {
+  type: 'call-function',
+    func: function() {
+      db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+          tvTest
+      });
+    }
+}
