@@ -117,6 +117,25 @@ for ( var j = 0; j < angles.length; j++){
 
 
 /* save global variables */
+
+var setInitialData = {
+    type: 'call-function',
+    func: function() {
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+            leftColor: rndColorOptions[0],
+            rightColor: rndColorOptions[1],
+            gambleChoiceLeft: rndYNG[0],
+            gambleChoiceRight: rndYNG[1],
+            infoShowLeft: rndYNIR[0],
+            infoShowRight: rndYNIR[1],
+            topInfoOutcomeLeft: rndYNITP[0],
+            topInfoOutcomeRight: rndYNITP[1],
+            bottomInfoOutcomeLeft: rndYNIBP[0],
+            bottomInfoOutcomeRight: rndYNIBP[1]
+        });
+    }
+}
+
 function addVars(vars){
     jsPsych.data.addProperties(vars);
 };

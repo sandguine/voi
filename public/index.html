@@ -35,6 +35,7 @@
     <script src="js/database.js"></script>
     <script src="js/timelineVariables.js"></script>
     <script src="js/var.js"></script>
+    <script src="js/jsPsych/jspsych-call-function.js"></script>
     <script src="js/jsPsych/jspsych-canvas-keyboard-response.js"></script>
     <script src="js/jsPsych/jspsych-fullscreen.js"></script>
     <script src="js/jsPsych/jspsych-instructions.js"></script>
@@ -74,14 +75,14 @@
             // var participantID = alldata[0].participantID;
             // var session = alldata[0].session;
 
-            db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(
-              JSON.parse(
-                JSON.stringify(
-                  jsPsych.data.get().values()
-                )
-              )
-            );
-            db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(tvTest);
+            // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set(
+            //   JSON.parse(
+            //     JSON.stringify(
+            //       jsPsych.data.get().values();
+            //     )
+            //   )
+            // );
+            // db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update(tvTest);
 
         }
     }
@@ -90,7 +91,7 @@
     // logistics
     timeline.push(fullscreen, welcome, loopID, instructions);
     // actual experiment
-    timeline.push(procedure);
+    timeline.push(setInitialData, procedure);
     timeline.push(submit, thanks);
 
     /* start the experiment */
