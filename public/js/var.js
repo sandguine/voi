@@ -813,10 +813,10 @@ var info = {
             trial = trial.concat(toSaveI1H);
 
             var toSaveI2H = [{
-                info2ndHalfRT: data.rt,
-                info2ndHalfKP: data.response,
-                info2ndHalfDecision: infoOtherPlayDecision,
-                info2ndHalfET: info2ndHalfEndTime
+                info2ndHalfRT: 'NA',
+                info2ndHalfKP: 'NA',
+                info2ndHalfDecision: 'NA',
+                info2ndHalfET: 'NA'
             }];
             trial = trial.concat(toSaveI2H);
         }
