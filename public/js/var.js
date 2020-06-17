@@ -371,10 +371,12 @@ var gamble = {
         }
         var gambleEndTime = new Date().toLocaleTimeString();
         var toSaveGamble = [{
-            gambleRT: data.rt,
-            gambleKP: data.response,
-            gambleDecision: gambleDecision,
-            gambleET: gambleEndTime
+            gambleTrial: {
+                gambleRT: data.rt,
+                gambleKP: data.response,
+                gambleDecision: gambleDecision,
+                gambleET: gambleEndTime
+            }
         }];
         trials = trials.concat(toSaveGamble);
     }
@@ -793,27 +795,33 @@ var info = {
         }
         var infoRevealEndTime = new Date().toLocaleTimeString();
         var toSaveIR = [{
-            infoRevealRT: data.rt,
-            infoRevealKP: data.response,
-            infoRevealDecision: infoRevealDecision,
-            infoRevealET: infoRevealEndTime
+            infoTrial: {
+                infoRevealRT: data.rt,
+                infoRevealKP: data.response,
+                infoRevealDecision: infoRevealDecision,
+                infoRevealET: infoRevealEndTime
+            }
         }];
         trials = trials.concat(toSaveIR);
 
         if(infoRevealDecision == 'No'){
             var toSaveI1H = [{
-                info1stHalfRT: 'NA',
-                info1stHalfKP: 'NA',
-                info1stHalfDecision: 'NA',
-                info1stHalfET: 'NA'
+                info1stHalTrial: {
+                    info1stHalfRT: 'NA',
+                    info1stHalfKP: 'NA',
+                    info1stHalfDecision: 'NA',
+                    info1stHalfET: 'NA'
+                }
             }];
             trials = trials.concat(toSaveI1H);
 
             var toSaveI2H = [{
-                info2ndHalfRT: 'NA',
-                info2ndHalfKP: 'NA',
-                info2ndHalfDecision: 'NA',
-                info2ndHalfET: 'NA'
+                info2ndHalTrial: {
+                    info2ndHalfRT: 'NA',
+                    info2ndHalfKP: 'NA',
+                    info2ndHalfDecision: 'NA',
+                    info2ndHalfET: 'NA'
+                }
             }];
             trials = trials.concat(toSaveI2H);
         }
@@ -1094,10 +1102,12 @@ var revealTopInfo = {
         }
         var info1stHalfEndTime = new Date().toLocaleTimeString();
         var toSaveI1H = [{
-            info1stHalfRT: data.rt,
-            info1stHalfKP: data.response,
-            info1stHalfDecision: infoPlayDecision,
-            info1stHalfET: info1stHalfEndTime
+            info1stHalfTrial: {
+                info1stHalfRT: data.rt,
+                info1stHalfKP: data.response,
+                info1stHalfDecision: infoPlayDecision,
+                info1stHalfET: info1stHalfEndTime
+            }
         }];
         trials = trials.concat(toSaveI1H);
     }
@@ -1418,10 +1428,12 @@ var revealBottomInfo = {
         }
         var info2ndHalfEndTime = new Date().toLocaleTimeString();
         var toSaveI2H = [{
-            info2ndHalfRT: data.rt,
-            info2ndHalfKP: data.response,
-            info2ndHalfDecision: infoOtherPlayDecision,
-            info2ndHalfET: info2ndHalfEndTime
+            info2ndHalfTrial: {
+                info2ndHalfRT: data.rt,
+                info2ndHalfKP: data.response,
+                info2ndHalfDecision: infoOtherPlayDecision,
+                info2ndHalfET: info2ndHalfEndTime
+            }
         }];
         trials = trials.concat(toSaveI2H);
     }
