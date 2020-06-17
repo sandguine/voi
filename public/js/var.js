@@ -124,6 +124,9 @@ var idAndSession = [];
 // to keep track of trial data
 var trials = []; // all trial so far
 
+// to keep track of start time
+var startTime;
+
 // save the experiment parameters to database
 var saveExpParams = {
     type: 'call-function',
@@ -349,6 +352,9 @@ var gamble = {
      },
     canvasHTML: CANVAS,
     choices: ['f', 'j'],
+    on_start: function() {
+        startTime = new Date().toLocaleTimeString();
+    },
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
         if(data.response == 70){
@@ -372,10 +378,11 @@ var gamble = {
         var gambleEndTime = new Date().toLocaleTimeString();
         var toSaveGamble = [{
             gambleTrial: {
+                gambleStartTime: startTime,
                 gambleRT: data.rt,
-                gambleKP: data.response,
+                gambleKeyPress: data.response,
                 gambleDecision: gambleDecision,
-                gambleET: gambleEndTime
+                gambleEndTime: gambleEndTime
             }
         }];
         trials = trials.concat(toSaveGamble);
@@ -773,6 +780,9 @@ var info = {
      },
     canvasHTML: CANVAS,
     choices: ['f', 'j'],
+    on_start: function() {
+        startTime = new Date().toLocaleTimeString();
+    },
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
         if(data.response == 70){
@@ -796,10 +806,11 @@ var info = {
         var infoRevealEndTime = new Date().toLocaleTimeString();
         var toSaveIR = [{
             infoTrial: {
+                infoRevealStartTime: startTime,
                 infoRevealRT: data.rt,
-                infoRevealKP: data.response,
+                infoRevealKeyPress: data.response,
                 infoRevealDecision: infoRevealDecision,
-                infoRevealET: infoRevealEndTime
+                infoRevealEndTime: infoRevealEndTime
             }
         }];
         trials = trials.concat(toSaveIR);
@@ -807,20 +818,22 @@ var info = {
         if(infoRevealDecision == 'No'){
             var toSaveI1H = [{
                 info1stHalTrial: {
+                    info1stHalfStartTime: 'NA',
                     info1stHalfRT: 'NA',
-                    info1stHalfKP: 'NA',
+                    info1stHalfKeyPress: 'NA',
                     info1stHalfDecision: 'NA',
-                    info1stHalfET: 'NA'
+                    info1stHalfEndTime: 'NA'
                 }
             }];
             trials = trials.concat(toSaveI1H);
 
             var toSaveI2H = [{
                 info2ndHalTrial: {
+                    info2ndHalfStartTime: 'NA',
                     info2ndHalfRT: 'NA',
-                    info2ndHalfKP: 'NA',
+                    info2ndHalfKeyPress: 'NA',
                     info2ndHalfDecision: 'NA',
-                    info2ndHalfET: 'NA'
+                    info2ndHalfEndTime: 'NA'
                 }
             }];
             trials = trials.concat(toSaveI2H);
@@ -1080,6 +1093,9 @@ var revealTopInfo = {
      },
     canvasHTML: CANVAS,
     choices: ['f', 'j'],
+    on_start: function() {
+        startTime = new Date().toLocaleTimeString();
+    },
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
         if(data.response == 70){
@@ -1103,10 +1119,11 @@ var revealTopInfo = {
         var info1stHalfEndTime = new Date().toLocaleTimeString();
         var toSaveI1H = [{
             info1stHalfTrial: {
+                info1stHalfStartTime: startTime,
                 info1stHalfRT: data.rt,
-                info1stHalfKP: data.response,
+                info1stHalfKeyPress: data.response,
                 info1stHalfDecision: infoPlayDecision,
-                info1stHalfET: info1stHalfEndTime
+                info1stHalfEndTime: info1stHalfEndTime
             }
         }];
         trials = trials.concat(toSaveI1H);
@@ -1405,7 +1422,9 @@ var revealBottomInfo = {
 
      },
     canvasHTML: CANVAS,
-    choices: ['f', 'j'],
+    choices: ['f', 'j'],on_start: function() {
+        startTime = new Date().toLocaleTimeString();
+    },
     on_finish: function(data){
         var data = jsPsych.data.getLastTrialData().values()[0];
         if(data.response == 70){
@@ -1429,10 +1448,11 @@ var revealBottomInfo = {
         var info2ndHalfEndTime = new Date().toLocaleTimeString();
         var toSaveI2H = [{
             info2ndHalfTrial: {
+                info2ndHalfStartTime: startTime,
                 info2ndHalfRT: data.rt,
-                info2ndHalfKP: data.response,
+                info2ndHalfKeyPress: data.response,
                 info2ndHalfDecision: infoOtherPlayDecision,
-                info2ndHalfET: info2ndHalfEndTime
+                info2ndHalfEndTime: info2ndHalfEndTime
             }
         }];
         trials = trials.concat(toSaveI2H);
