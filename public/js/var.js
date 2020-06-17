@@ -122,7 +122,7 @@ for ( var j = 0; j < angles.length; j++){
 var idAndSession = [];
 
 // to keep track of trial data
-var trial = []; // all trial
+var trials = []; // all trial so far
 
 // save the experiment parameters to database
 var saveExpParams = {
@@ -376,7 +376,7 @@ var gamble = {
             gambleDecision: gambleDecision,
             gambleET: gambleEndTime
         }];
-        trial = trial.concat(toSaveGamble);
+        trials = trials.concat(toSaveGamble);
     }
 };
 
@@ -798,7 +798,7 @@ var info = {
             infoRevealDecision: infoRevealDecision,
             infoRevealET: infoRevealEndTime
         }];
-        trial = trial.concat(toSaveIR);
+        trials = trials.concat(toSaveIR);
 
         if(infoRevealDecision == 'No'){
             var toSaveI1H = [{
@@ -807,7 +807,7 @@ var info = {
                 info1stHalfDecision: 'NA',
                 info1stHalfET: 'NA'
             }];
-            trial = trial.concat(toSaveI1H);
+            trials = trials.concat(toSaveI1H);
 
             var toSaveI2H = [{
                 info2ndHalfRT: 'NA',
@@ -815,7 +815,7 @@ var info = {
                 info2ndHalfDecision: 'NA',
                 info2ndHalfET: 'NA'
             }];
-            trial = trial.concat(toSaveI2H);
+            trials = trials.concat(toSaveI2H);
         }
 
     }
@@ -1099,7 +1099,7 @@ var revealTopInfo = {
             info1stHalfDecision: infoPlayDecision,
             info1stHalfET: info1stHalfEndTime
         }];
-        trial = trial.concat(toSaveI1H);
+        trials = trials.concat(toSaveI1H);
     }
 };
 
@@ -1423,7 +1423,7 @@ var revealBottomInfo = {
             info2ndHalfDecision: infoOtherPlayDecision,
             info2ndHalfET: info2ndHalfEndTime
         }];
-        trial = trial.concat(toSaveI2H);
+        trials = trials.concat(toSaveI2H);
     }
 };
 
@@ -1593,12 +1593,21 @@ var confirmBottom = {
     response_ends_trial: false
 };
 
-/* save key values of the trial to the database */
-var saveTrialData = {
+var saveTrial = {
     type: 'call-function',
     func: function () {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
             trial
+        });
+    }
+}
+
+/* save key values of the trials to the database */
+var saveTrials = {
+    type: 'call-function',
+    func: function () {
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+            trials
         });
     }
 }
@@ -1803,7 +1812,7 @@ var thanks = {
 
 // if they decide to purchase info
 var ifInfoReveal = {
-    timeline: [revealTopInfo, confirmTop, revealBottomInfo, confirmBottom],
+    timeline: [revealTopInfo, saveTrials, confirmTop, revealBottomInfo, saveTrials, confirmBottom],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
         if(data.infoRevealDecision == 'Yes'){
@@ -1891,7 +1900,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, confirmGamble, info, confirmInfoReveal, ifInfoReveal, pause, saveTrialData],
+    timeline: [gamble, saveTrials, confirmGamble, info, saveTrials, confirmInfoReveal, ifInfoReveal, pause],
     timeline_variables: trialVars
 };
 
