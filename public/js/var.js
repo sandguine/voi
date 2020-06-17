@@ -48,7 +48,7 @@ var yesNo = ['Yes', 'No']; // for randomization of choices on left and right
 
 var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
 
-var angles = [0, 30, 60, -60, -30]; // all available angles -60 == 120, -30 == 150
+var angles = [0, 30, 60, 120, 150]; // all available angles -60 == 120, -30 == 150
 
 var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
 
@@ -116,7 +116,8 @@ for ( var j = 0; j < angles.length; j++){
 
 
 
-/* save global variables */
+
+/* variables for data access */
 
 // to keep track of id and session
 var idAndSession = [];
@@ -127,6 +128,30 @@ var trials = []; // all trial so far
 // to keep track of start time
 var startTime;
 
+// to keep track of options
+// var optionLeft;
+// var optionRight;
+// var cutoffAngle;
+// var price;
+
+/* end variables for data access */
+
+
+
+
+/* save to database */
+
+// initiate database and set id and session
+var setIDSession = {
+    type: 'call-function',
+    func: function(){
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+            AparticipantID: idAndSession[0],
+            AsessionID: idAndSession[1]
+        });
+    }
+}
+
 // save the experiment parameters to database
 var saveExpParams = {
     type: 'call-function',
@@ -136,6 +161,16 @@ var saveExpParams = {
             rightColor: rndColorOptions[1],
             choiceLeft: rndYNG[0],
             choiceRight: rndYNG[1]
+        });
+    }
+}
+
+/* save key values of the trials to the database */
+var saveTrials = {
+    type: 'call-function',
+    func: function () {
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+            trials
         });
     }
 }
@@ -158,6 +193,25 @@ addVars({
   bottomInfoOutcomeLeft: rndYNIBP[0],
   bottomInfoOutcomeRight: rndYNIBP[1],
 });
+
+/* end save to database */
+
+
+
+
+/* data retrieval for showing outcome screen */
+
+// retrieve data from database to display at outcome
+var retrievePlayed = {
+    type: 'call-function',
+    func: function(){
+        var database = db.collection('voi-in-person').doc('v1').collection('participants').doc(uid);
+        database.val()
+    }
+};
+/* end data retrieval */
+
+
 
 /* individual screens */
 
@@ -197,16 +251,6 @@ var id = {
       idAndSession.push(participantID, session);
   }
 };
-
-var setIDSession = {
-    type: 'call-function',
-    func: function(){
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
-            AparticipantID: idAndSession[0],
-            AsessionID: idAndSession[1]
-        });
-    }
-}
 
 var loopID = {
     timeline: [id],
@@ -1625,25 +1669,6 @@ var confirmBottom = {
     response_ends_trial: false
 };
 
-var saveTrial = {
-    type: 'call-function',
-    func: function () {
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            trial
-        });
-    }
-}
-
-/* save key values of the trials to the database */
-var saveTrials = {
-    type: 'call-function',
-    func: function () {
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            trials
-        });
-    }
-}
-
 /* VoI info outcome screen, if yes on info */
 var infoOutcome = {
     type: 'canvas-keyboard-response',
@@ -1827,20 +1852,8 @@ var thanks = {
 /* end individual screen */
 
 
-/* if functions */
 
-// if they decide to play the gamble
-// var ifGamble = {
-//     timeline: [info, confirmInfoReveal],
-//     conditional_function: function(){
-//         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.gambleDecision == 'Yes'){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-// }
+/* if functions */
 
 // if they decide to purchase info
 var ifInfoReveal = {
@@ -1855,27 +1868,6 @@ var ifInfoReveal = {
     }
 }
 
-// if gamble is play but, info is not purchase
-// var ifGambleNoInfo = {
-//     timeline: [gambleOutcome],
-//     timeline_variables: function(){
-//         var yesGambleNoInfo = jsPsych.data.get().filter({gambleDecision: 'Yes'}, {infoRevealDecision: 'No'});
-//         var str = yesGambleNoInfo.values();
-//     },
-//     conditional_function: function(){
-//         var yesGambleNoInfo = jsPsych.data.get().filter({gambleDecision: 'Yes'}, {infoRevealDecision: 'No'});
-//         var rndYGNI = jsPsych.randomization.shuffle(yesGambleNoInfo);
-//         var trial = yesGambleNoInfo.values()[0];
-//
-//         if(trial.gambleDecision == 'Yes' && trial.infoRevealDecision == 'No'){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//
-//     }
-// }
-
 // show gamble outcome
 var showGambleOutcome = {
     timeline: [gambleOutcome],
@@ -1889,46 +1881,9 @@ var showGambleOutcome = {
     }
 }
 
-// show info-gamble outcome if played first half
-// var showInfoOutcome = {
-//     timeline: [infoOutcome],
-//     conditional_function: function(){
-//         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.infoRevealDecision == 'Yes' && data.infoPlayDecision == 'Yes'){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-// }
-
-// show info-gamble outcome if played second half
-// var showInfoOtherOutcome = {
-//     timeline: [infoOtherOutcome],
-//     conditional_function: function(){
-//         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.infoRevealDecision == 'Yes' && data.infoOtherPlayDecision == 'Yes'){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-// }
-
-// if they decide to play after info is revealed
-// var ifInfoPlay = {
-//     timeline: [revealTopInfo],
-//     conditional_function: function(){
-//         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.infoRevealDecision == 'Yes'){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-// }
-
 /* end if functions */
+
+
 
 /* test procedure */
 var procedure = {
