@@ -191,7 +191,7 @@ var setExpParams = {
     type: 'call-function',
     func: function() {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
-            params: {
+            expParams: {
                 aParticipantID: idAndSession[0],
                 aSessionID: idAndSession[1],
                 leftColor: rndColorOptions[0],
