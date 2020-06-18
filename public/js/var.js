@@ -131,6 +131,31 @@ var trials = []; // all trial so far
 // to keep track of start time
 var startTime;
 
+// to keep track of timeline variables for showing outcome
+var optionLeft = [];
+var optionRight = [];
+var cutoffAngle = [];
+var price = [];
+
+for(var i = 0; i < trialVars.length; i++){
+    optionLeft.push(trialVars[i].options[0]);
+    optionRight.push(trialVars[i].options[1]);
+    cutoffAngle.push(trialVars[i].angle);
+    price.push(trialVars[i].infoPrice);
+}
+
+// to keep track of gamble decision
+gambleDecisions = [];
+
+// to keep track of info reveal decision
+infoRevealDecisions = [];
+
+// to keep track of info 1st half decision
+info1stHalfDecisions = [];
+
+// to keep track of info 2nd half decision
+info2ndHalfDecisions = [];
+
 /* end variables for data access */
 
 
@@ -138,26 +163,19 @@ var startTime;
 
 /* save to database */
 
-// initiate database and set id and session
-var setIDSession = {
-    type: 'call-function',
-    func: function(){
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
-            AparticipantID: idAndSession[0],
-            AsessionID: idAndSession[1]
-        });
-    }
-};
-
-// save the experiment parameters to database
-var saveExpParams = {
+// initiate database and set id and session and save the experiment parameters to database
+var setExpParams = {
     type: 'call-function',
     func: function() {
-        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            leftColor: rndColorOptions[0],
-            rightColor: rndColorOptions[1],
-            choiceLeft: rndYNG[0],
-            choiceRight: rndYNG[1]
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).set({
+            params: {
+                aParticipantID: idAndSession[0],
+                aSessionID: idAndSession[1],
+                leftColor: rndColorOptions[0],
+                rightColor: rndColorOptions[1],
+                choiceLeft: rndYNG[0],
+                choiceRight: rndYNG[1]
+            }
         });
     }
 };
@@ -181,7 +199,11 @@ var saveVars = {
             optionLeft,
             optionRight,
             cutoffAngle,
-            price
+            price,
+            gambleDecisions,
+            infoRevealDecisions,
+            info1stHalfDecisions,
+            info2ndHalfDecisions
         }
     });
   }
@@ -196,19 +218,6 @@ var saveTrials = {
         });
     }
 };
-
-// to keep track of timeline variables for showing outcome
-var optionLeft = [];
-var optionRight = [];
-var cutoffAngle = [];
-var price = [];
-
-for(var i = 0; i < trialVars.length; i++){
-    optionLeft.push(trialVars[i].options[0]);
-    optionRight.push(trialVars[i].options[1]);
-    cutoffAngle.push(trialVars[i].angle);
-    price.push(trialVars[i].infoPrice);
-}
 
 // function to add param on jsPsych data in parallel
 function addVars(vars){
@@ -465,7 +474,9 @@ var gamble = {
                 gambleEndTime: gambleEndTime
             }
         }];
+        // save trials
         trials = trials.concat(toSaveGamble);
+        gambleDecisions = gambleDecisions.concat(gambleDecision);
     }
 };
 
@@ -894,6 +905,7 @@ var info = {
             }
         }];
         trials = trials.concat(toSaveIR);
+        infoRevealDecisions = infoRevealDecisions.concat(infoRevealDecision);
 
         if(infoRevealDecision == 'No'){
             var toSaveI1H = [{
@@ -906,6 +918,7 @@ var info = {
                 }
             }];
             trials = trials.concat(toSaveI1H);
+            info1stHalfDecisions = info1stHalfDecisions.concat('NA');
 
             var toSaveI2H = [{
                 info2ndHalTrial: {
@@ -917,6 +930,7 @@ var info = {
                 }
             }];
             trials = trials.concat(toSaveI2H);
+            info2ndHalfDecisions = info2ndHalfDecisions.concat('NA');
         }
 
     }
@@ -1207,6 +1221,7 @@ var revealTopInfo = {
             }
         }];
         trials = trials.concat(toSaveI1H);
+        info1stHalfDecisions = info1stHalfDecisions.concat(infoPlayDecision);
     }
 };
 
@@ -1536,6 +1551,7 @@ var revealBottomInfo = {
             }
         }];
         trials = trials.concat(toSaveI2H);
+        info2ndHalfDecisions = info2ndHalfDecisions.concat(infoPlayDecision);
     }
 };
 
@@ -1882,7 +1898,7 @@ var infoOutcome = {
 var thanks = {
     type: 'html-keyboard-response',
     choices: jsPsych.NO_KEYS,
-    stimulus: '<p>Thanks so much for your participation! Your response has been recorded! Close the window to exit.</p>'
+    stimulus: '<p>Thank you for your participation! </br> Your response has been recorded. </br> Close the window to exit.</p>'
 };
 
 /* end individual screen */
@@ -1893,7 +1909,7 @@ var thanks = {
 
 // if they decide to purchase info
 var ifInfoReveal = {
-    timeline: [revealTopInfo, saveTrials, confirmTop, revealBottomInfo, saveTrials, confirmBottom],
+    timeline: [revealTopInfo, saveVars, saveTrials, confirmTop, revealBottomInfo, saveVars, saveTrials, confirmBottom],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
         if(data.infoRevealDecision == 'Yes'){
@@ -1923,7 +1939,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, saveTrials, confirmGamble, info, saveTrials, confirmInfoReveal, ifInfoReveal, pause],
+    timeline: [gamble, saveVars, saveTrials, confirmGamble, info, saveVars, saveTrials, confirmInfoReveal, ifInfoReveal, pause],
     timeline_variables: trialVars
 };
 
