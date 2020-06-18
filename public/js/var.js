@@ -1551,7 +1551,7 @@ var revealBottomInfo = {
             }
         }];
         trials = trials.concat(toSaveI2H);
-        info2ndHalfDecisions = info2ndHalfDecisions.concat(infoPlayDecision);
+        info2ndHalfDecisions = info2ndHalfDecisions.concat(infoOtherPlayDecision);
     }
 };
 
