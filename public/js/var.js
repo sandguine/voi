@@ -680,8 +680,8 @@ var gambleOutcome = {
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
-            ctx.fillText('Total payoff this round: '+payoff, c.width/2, c.height*4/5);
-            ctx.fillText('Press space bar to continue.', c.width/2, c.height*85/100);
+            ctx.fillText('Total payoff: '+payoff, c.width/2, c.height*4/5);
+            ctx.fillText('Press space bar to continue.', c.width/2, c.height*875/1000);
 
             return payoff, dotAngle;
         }
@@ -1823,7 +1823,7 @@ var infoOutcome = {
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
-            ctx.fillText('Total payoff this round: $'+infoPayoff, c.width/2, c.height*4/5);
+            ctx.fillText('Total payoff: '+infoPayoff, c.width/2, c.height*4/5);
 
             return infoPayoff, outcomeAngle;
         }
@@ -1936,7 +1936,7 @@ var infoOutcome = {
 
      },
     canvasHTML: CANVAS,
-    choices: ['f', 'j']
+    choices: [' ']
 };
 
 /* thanks */
