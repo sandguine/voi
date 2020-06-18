@@ -139,6 +139,9 @@ var trials = []; // all trial so far
 // to keep track of start time
 var startTime;
 
+// index of random trial to show outcome
+var trialIdx;
+
 // to keep track of timeline variables for showing outcome
 var optionLeft = [];
 var optionRight = [];
@@ -235,6 +238,16 @@ var saveTrials = {
     func: function () {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
             trials
+        });
+    }
+};
+
+/* save outcome information */
+var saveOutcome = {
+    type: 'call-function',
+    func: function () {
+        db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
+            outcomeParams
         });
     }
 };
@@ -757,7 +770,7 @@ var gambleOutcome = {
     on_start: function() {
         startTime = new Date().toLocaleTimeString();
         gambleDecisions.forEach((decision, index) => decision === 'Yes' ? gambleYesIdx.push(index) : null)
-        var trialIdx = jsPsych.randomization.shuffle(gambleYesIdx)[0];
+        trialIdx = jsPsych.randomization.shuffle(gambleYesIdx)[0];
         ool = optionLeft[trialIdx];
         oor = optionRight[trialIdx];
     },
@@ -770,7 +783,8 @@ var gambleOutcome = {
                 outcomeOptionLeft: ool,
                 outcomeOptionRight: oor,
                 outcomeAngle: dotAngle,
-                outcomePayOff: payoff
+                outcomePayOff: payoff,
+                outcomeIndex: trialIdx
             }
         }];
         outcomeParams = outcomeParams.concat(outcomeParam);
