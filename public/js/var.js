@@ -782,7 +782,7 @@ var gambleOutcome = {
                 outcomeEndTime: outcomeEndTime,
                 outcomeOptionLeft: ool,
                 outcomeOptionRight: oor,
-                outcomeAngle: dotAngle,
+                outcomeAngle: rndOutcomeAllAngles[0],
                 outcomePayOff: payoff,
                 outcomeIndex: trialIdx
             }
@@ -1988,7 +1988,7 @@ var procedure = {
 };
 
 var endTask = {
-    timeline: [showGambleOutcome, thanks]
+    timeline: [showGambleOutcome, saveOutcome, thanks]
 };
 
 /* end test procedures */
