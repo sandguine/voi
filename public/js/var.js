@@ -243,11 +243,11 @@ var saveTrials = {
 };
 
 /* save outcome information */
-var saveOutcome = {
+var savePayment = {
     type: 'call-function',
     func: function () {
         db.collection('voi-in-person').doc('v1').collection('participants').doc(uid).update({
-            outcomeParams
+            paymentParams
         });
     }
 };
@@ -775,19 +775,19 @@ var gambleOutcome = {
         oor = optionRight[trialIdx];
     },
     on_finish: function() {
-        var outcomeEndTime = new Date().toLocaleTimeString();
-        var outcomeParam = [{
-            outcome: {
-                outcomeStartTime: startTime,
-                outcomeEndTime: outcomeEndTime,
-                outcomeOptionLeft: ool,
-                outcomeOptionRight: oor,
-                outcomeAngle: rndOutcomeAllAngles[0],
-                outcomePayOff: payoff,
-                outcomeIndex: trialIdx
+        var paymentEndTime = new Date().toLocaleTimeString();
+        var paymentParam = [{
+            payment: {
+                paymentStartTime: startTime,
+                paymentEndTime: outcomeEndTime,
+                paymentOptionLeft: ool,
+                paymentOptionRight: oor,
+                paymentAngle: rndOutcomeAllAngles[0],
+                paymentPayOff: payoff,
+                paymentIndex: trialIdx
             }
         }];
-        outcomeParams = outcomeParams.concat(outcomeParam);
+        paymentParams = paymentParams.concat(paymentParam);
     }
 };
 
@@ -1988,7 +1988,7 @@ var procedure = {
 };
 
 var endTask = {
-    timeline: [showGambleOutcome, saveOutcome, thanks]
+    timeline: [showGambleOutcome, savePayment, thanks]
 };
 
 /* end test procedures */
