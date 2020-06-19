@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-auth.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
     <script>
       // Your web app's Firebase configuration
@@ -68,7 +69,7 @@
 
     // run the whole experiment
     // logistics
-    timeline.push(fullscreen, welcome, loopID, instructions);
+    timeline.push(loadFont, fullscreen, welcome, loopID, instructions);
     // actual experiment
     // save task variables
     timeline.push(setExpParams, saveTrialsVariables, saveVars);

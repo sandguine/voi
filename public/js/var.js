@@ -3,20 +3,23 @@
 * Sandy Tanwisuth, @sandguine, May 2020
 */
 
+
+
+
 /* static values across tasks and subjects */
 var EID = 'circle'; // element id from css
 
 var CONTEXT = '2d'; // get context 2d
 
-var RADIUS = 100; // radius of circle on the screen always 100px
+var RADIUS = 150; // radius of circle on the screen always 100px
 
-var CB = ['White', 5]; // parameter for circle border
+var CB = ['White', 7]; // parameter for circle border
 
-var CANVAS = '<canvas id="circle" width="800" height="600"> Your browser does not support the HTML5 canvas tag.</canvas>';
+var CANVAS = '<canvas id="circle" width="1200" height="900"> Your browser does not support the HTML5 canvas tag.</canvas>';
 
 var CONFIRM = 1000; // duration of confirmation of choice selected
 
-var FONT = '32px Helvetica'; // font size and color throughout the task
+var FONT = '48px Nunito'; // font size and color throughout the task
 
 var FULLVEILALPHA = 0.7; // transparency of full veil
 
@@ -156,28 +159,28 @@ for(var i = 0; i < trialVars.length; i++){
 }
 
 // to keep track of gamble decision
-gambleDecisions = [];
+var gambleDecisions = [];
 
 // to keep track of info reveal decision
-infoRevealDecisions = [];
+var infoRevealDecisions = [];
 
 // to keep track of info 1st half decision
-info1stHalfDecisions = [];
+var info1stHalfDecisions = [];
 
 // to keep track of info 2nd half decision
-info2ndHalfDecisions = [];
+var info2ndHalfDecisions = [];
 
 // to keep gamble outcome stimulus
-gambleYesIdx = [];
+var gambleYesIdx = [];
 
 // to keep gamble info 1st half stimulus
-info1HYesIdx = [];
+var info1HYesIdx = [];
 
 // to keep gamble info 2nd half stimulus
-info2HYesIdx = [];
+var info2HYesIdx = [];
 
 // to keep track of outcome parameters
-outcomeParams = [];
+var paymnetParams = [];
 
 /* end variables for data access */
 
@@ -278,6 +281,18 @@ addVars({
 
 
 /* individual screens */
+
+// load font
+var loadFont = {
+    type: 'call-function',
+    func: function(){
+        WebFont.load({
+            google: {
+              families: ['Nunito']
+            }
+        });
+    }
+};
 
 /* fullscreen */
 var fullscreen = {
@@ -442,7 +457,7 @@ var gamble = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -453,7 +468,7 @@ var gamble = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -580,7 +595,7 @@ var confirmGamble = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -591,7 +606,7 @@ var confirmGamble = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -617,6 +632,32 @@ var confirmGamble = {
     response_ends_trial: false
 };
 
+var signalingOutcome = {
+    type: 'canvas-keyboard-response',
+    stimulus: function (){
+        var c = document.getElementById(EID);
+        var ctx = c.getContext(CONTEXT);
+        var x = c.width/2;
+        var y = c.height/2;
+
+        function textPause(){
+            ctx.strokeStyle = CB[0];
+            ctx.fillStyle = CB[0];
+            ctx.font = FONT;
+            ctx.textAlign = CENTER;
+            ctx.fillText('You are done! .', c.width*1/2, c.height*1/2);
+        }
+
+        textPause();
+    },
+    canvasHTML: CANVAS,
+    choices: ' ',
+    response_ends_trial: true,
+    on_finish: function(){
+        // trials = trials.concat(trial);
+    }
+};
+
 /* show gamble results, if yes to gamble or if yes gamble and to info */
 var gambleOutcome = {
     type: 'canvas-keyboard-response',
@@ -626,7 +667,6 @@ var gambleOutcome = {
         var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
-        var RADIUS = 100;
         var angle;
 
         // draw screen components
@@ -708,7 +748,7 @@ var gambleOutcome = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -719,7 +759,7 @@ var gambleOutcome = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -740,7 +780,7 @@ var gambleOutcome = {
             ctx.moveTo(angleX-RADIUS, angleY); // y is a variable, need to be saved
             ctx.lineTo(angleX+RADIUS, angleY); // y is a variable, need to be saved
             ctx.strokeStyle = "Crimson";
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.stroke();
         }
 
@@ -759,7 +799,7 @@ var gambleOutcome = {
             ctx.globalAlpha = 1;
             ctx.arc(x1, y1, 5, 0, 2*PI);
             ctx.strokeStyle = 'LimeGreen';
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.stroke();
             ctx.fill();
             ctx.closePath();
@@ -779,7 +819,7 @@ var gambleOutcome = {
         var paymentParam = [{
             payment: {
                 paymentStartTime: startTime,
-                paymentEndTime: outcomeEndTime,
+                paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
                 paymentAngle: rndOutcomeAllAngles[0],
@@ -863,7 +903,7 @@ var info = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -874,7 +914,7 @@ var info = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -891,7 +931,7 @@ var info = {
 
         // cut-off line to reveal gambling info
         function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
@@ -1066,7 +1106,7 @@ var confirmInfoReveal = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -1077,7 +1117,7 @@ var confirmInfoReveal = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -1176,7 +1216,7 @@ var revealTopInfo = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -1187,7 +1227,7 @@ var revealTopInfo = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -1207,7 +1247,7 @@ var revealTopInfo = {
 
         // cut-off line to reveal gambling info
         function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
@@ -1360,7 +1400,7 @@ var confirmTop = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -1371,7 +1411,7 @@ var confirmTop = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -1391,7 +1431,7 @@ var confirmTop = {
 
         // cut-off line to reveal gambling info
         function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
@@ -1507,7 +1547,7 @@ var revealBottomInfo = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -1518,7 +1558,7 @@ var revealBottomInfo = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -1538,7 +1578,7 @@ var revealBottomInfo = {
 
         // cut-off line to reveal gambling info
         function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
@@ -1690,7 +1730,7 @@ var confirmBottom = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -1701,7 +1741,7 @@ var confirmBottom = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -1721,7 +1761,7 @@ var confirmBottom = {
 
         // cut-off line to reveal gambling info
         function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
@@ -1849,7 +1889,7 @@ var infoOutcome = {
         function drawMarks(x, y, r){
             for (var i = 0; i < 12; i++) {
                 angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = 5;            // HAND WIDTH.
+                ctx.lineWidth = CB[1];            // HAND WIDTH.
                 ctx.beginPath();
 
                 var x1 = (x) + Math.cos(angle) * (r);
@@ -1860,7 +1900,7 @@ var infoOutcome = {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
 
-                ctx.strokeStyle = 'White';
+                ctx.strokeStyle = CB[0];
                 ctx.stroke();
             }
         }
@@ -1880,7 +1920,7 @@ var infoOutcome = {
 
         // cut-off line to reveal gambling info
         function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.strokeStyle = 'Crimson';
             ctx.beginPath();
 
@@ -1928,7 +1968,7 @@ var infoOutcome = {
             ctx.globalAlpha = 1;
             ctx.arc(x1, y1, 5, 0, 2*PI);
             ctx.strokeStyle = 'LimeGreen';
-            ctx.lineWidth = 5;
+            ctx.lineWidth = CB[1];
             ctx.stroke();
             ctx.fill();
             ctx.closePath();

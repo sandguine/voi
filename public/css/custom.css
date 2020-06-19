@@ -3,6 +3,8 @@
  * Sandy Tanwisuth, @sandguine
  */
 
+@import url(https://fonts.googleapis.com/css?family=Nunito);
+
 canvas {
     padding: 0;
     margin: auto;
@@ -17,4 +19,5 @@ canvas {
     background-color: #000000;
     fillStyle: #FFFFFF;
     overflow-y: hidden;
+    font-family: Nunito;
 }
