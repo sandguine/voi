@@ -180,7 +180,7 @@ var info1HYesIdx = [];
 var info2HYesIdx = [];
 
 // to keep track of outcome parameters
-var paymnetParams = [];
+var paymentParams = [];
 
 /* end variables for data access */
 
