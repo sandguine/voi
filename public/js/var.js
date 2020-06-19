@@ -25,6 +25,10 @@ var FULLVEILALPHA = 0.7; // transparency of full veil
 
 var HALFVEILALPHA = 0.9; //transparency of half veil
 
+var DOTCOLOR = 'Lime'; // color of dot outcome
+
+var DOTOUTLINE = 'LimeGreen'; // color of dot circle
+
 var FULLVIEL = 'DarkGrey'; // color of full veil
 
 var HALFVEIL = 'DimGrey'; // color of half veil
@@ -32,6 +36,8 @@ var HALFVEIL = 'DimGrey'; // color of half veil
 var GAMBLETEXTCOLOR = 'PaleGreen'; // text color of gamble page
 
 var INFOTEXTCOLOR = 'Salmon'; // text color of info page
+
+var RESULTTEXTCOLOR = 'Moccasin'; // text color for result page
 
 var PI = Math.PI; // pi as a constant
 
@@ -632,7 +638,7 @@ var confirmGamble = {
     response_ends_trial: false
 };
 
-var signalingOutcome = {
+var signalPayment = {
     type: 'canvas-keyboard-response',
     stimulus: function (){
         var c = document.getElementById(EID);
@@ -640,15 +646,16 @@ var signalingOutcome = {
         var x = c.width/2;
         var y = c.height/2;
 
-        function textPause(){
+        function textSignalPayment(){
             ctx.strokeStyle = CB[0];
             ctx.fillStyle = CB[0];
             ctx.font = FONT;
             ctx.textAlign = CENTER;
-            ctx.fillText('You are done! .', c.width*1/2, c.height*1/2);
+            ctx.fillText('Your payment will be shown in the next section.', c.width*1/2, c.height*1/2);
+            ctx.fillText('Press space bar to continue.', c.width*1/2, c.height*3/5);
         }
 
-        textPause();
+        textSignalPayment();
     },
     canvasHTML: CANVAS,
     choices: ' ',
@@ -716,7 +723,7 @@ var gambleOutcome = {
             }
             payoff = payoff.slice(0, 1)+'$'+payoff.slice(1);
 
-            ctx.fillStyle = "Moccasin";
+            ctx.fillStyle = RESULTTEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
@@ -786,7 +793,7 @@ var gambleOutcome = {
 
         // draw gamble outcome dot
         function drawDot(x, y, r){
-            ctx.fillStyle = "Lime";
+            ctx.fillStyle = DOTCOLOR;
 
             a = rndOutcomeAllAngles[0];
 
@@ -798,7 +805,7 @@ var gambleOutcome = {
             ctx.beginPath();
             ctx.globalAlpha = 1;
             ctx.arc(x1, y1, 5, 0, 2*PI);
-            ctx.strokeStyle = 'LimeGreen';
+            ctx.strokeStyle = DOTOUTLINE;
             ctx.lineWidth = CB[1];
             ctx.stroke();
             ctx.fill();
@@ -1815,7 +1822,6 @@ var infoOutcome = {
         var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
-        var RADIUS = 100;
         var angle;
 
         // draw screen components
@@ -1859,7 +1865,7 @@ var infoOutcome = {
                 infoPayoff = parseFloat(rndOptionsPair[0][0]) - parseFloat(rndInfoPrice[0]);
             }
 
-            ctx.fillStyle = "Moccasin";
+            ctx.fillStyle = RESULTTEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
@@ -1944,7 +1950,7 @@ var infoOutcome = {
 
         // draw outcome position
         function drawDotHalf(x, y, r, a){
-            ctx.fillStyle = "Lime";
+            ctx.fillStyle = DOTCOLOR;
 
             // determine possible outcome options from angle
             if (a == 0) {
@@ -1967,7 +1973,7 @@ var infoOutcome = {
             ctx.beginPath();
             ctx.globalAlpha = 1;
             ctx.arc(x1, y1, 5, 0, 2*PI);
-            ctx.strokeStyle = 'LimeGreen';
+            ctx.strokeStyle = DOTOUTLINE;
             ctx.lineWidth = CB[1];
             ctx.stroke();
             ctx.fill();
@@ -2007,7 +2013,7 @@ var ifInfoReveal = {
 
 // show gamble outcome
 var showGambleOutcome = {
-    timeline: [gambleOutcome],
+    timeline: [signalPayment, gambleOutcome],
     conditional_function: function(){
         if(idAndSession[1] == 2){
             return true;
