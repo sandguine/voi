@@ -300,14 +300,14 @@ var loadFont = {
     }
 };
 
-/* fullscreen */
+// fullscreen
 var fullscreen = {
   type: 'fullscreen',
   message: '<p>This window will switch to full-screen mode when you press the button below</p>',
   fullscreen_mode: true
 };
 
-/* subject id */
+// subject id
 var id = {
   type: 'survey-text',
   questions: [{
@@ -351,13 +351,13 @@ var loopID = {
     }
 };
 
-/* welcome message */
+// welcome message
 var welcome = {
   type: "html-keyboard-response",
   stimulus: "Welcome to the experiment.<br>Press any key to begin."
 };
 
-/* instructions */
+// instructions
 var instructions = {
   type: "html-keyboard-response",
   stimulus: "<p>In this experiment, you need to make a couple of decisions.</p>" +
@@ -368,7 +368,7 @@ var instructions = {
   post_trial_gap: 200
 };
 
-/* pause page before next trial */
+// pause page before next trial
 var pause = {
     type: 'canvas-keyboard-response',
     stimulus: function (){
@@ -395,7 +395,7 @@ var pause = {
     }
 };
 
-/* VoI canvas keyboard, gamble screen */
+// VoI canvas keyboard, gamble screen */
 var gamble = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
@@ -638,6 +638,7 @@ var confirmGamble = {
     response_ends_trial: false
 };
 
+// page to signal the payment section
 var signalPayment = {
     type: 'canvas-keyboard-response',
     stimulus: function (){
@@ -2012,8 +2013,9 @@ var ifInfoReveal = {
 };
 
 // show gamble outcome
+// double check this so that the reply is smooth
 var showGambleOutcome = {
-    timeline: [signalPayment, gambleOutcome],
+    timeline: [signalPayment, gamble, confirmGamble, gambleOutcome],
     conditional_function: function(){
         if(idAndSession[1] == 2){
             return true;
