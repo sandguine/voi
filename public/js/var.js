@@ -1799,8 +1799,10 @@ var gambleReplay = {
     response_ends_trial: false,
     on_start: function() {
         startTime = new Date().toLocaleTimeString();
-        //gambleDecisions.forEach((decision, index) => decision === 'Yes' ? gambleYesIdx.push(index) : null)
-        trialIdx = jsPsych.randomization.shuffle(gambleDecisions)[0];
+        // gambleDecisions.forEach((decision, index) => decision === 'Yes' ? gambleYesIdx.push(index) : null)
+        var trialIndexes = [];
+        gambleDecisions.forEach((decision, index) => trialIndexes.push(index));
+        trialIdx = jsPsych.randomization.shuffle(trialIndexes)[0];
         ool = optionLeft[trialIdx];
         oor = optionRight[trialIdx];
         ip = price[trialIdx];
@@ -1991,7 +1993,7 @@ var gambleOutcome = {
             }
             payoff = payoff.slice(0, 1)+'$'+payoff.slice(1);
 
-        
+
             ctx.fillStyle = RESULTTEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
@@ -2591,7 +2593,7 @@ var ifInfoReveal = {
 // show gamble outcome
 // double check this so that the reply is smooth
 var showGambleOutcome = {
-    timeline: [signalPayment, gambleReplay, confirmGambleReplay, gambleOutcome, infoReplay],
+    timeline: [signalPayment, gambleReplay, confirmGambleReplay, gambleOutcome],
     conditional_function: function(){
         if(idAndSession[1] == 2){
             return true;
