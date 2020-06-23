@@ -277,7 +277,7 @@ var tvAll = [
 var tvRnd = jsPsych.randomization.shuffle(tvAll);
 
 // test for dopamine group
-var trialVars = tvRnd.slice(0, 5);
+var trialVars = tvRnd.slice(0, 1);
 
 // initiate timeline
 var timeline = [];
