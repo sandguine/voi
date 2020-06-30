@@ -90,7 +90,7 @@ var infoPayoff; // payoff per trial if info screen is selected
 
 var payoff; // payoff if gamble page is selected
 
-var totalPayoff;
+var totalPayoff; // total payoff
 
 var gambleDecision; // decision to gamble or not
 
@@ -107,6 +107,8 @@ var oor; // the right option stimulus for outcome
 var ip; // info price stimulus for outcome
 
 var coa; // cut off angle stimulus for outcome
+
+var oca; // angle of outcome
 
 var gd; // gamble trial select for payment
 
@@ -170,12 +172,14 @@ var optionLeft = [];
 var optionRight = [];
 var cutoffAngle = [];
 var price = [];
+var outcomeAngle = []; // all outcomes
 
 for(var i = 0; i < trialVars.length; i++){
-    optionLeft.push(trialVars[i].options[0]);
-    optionRight.push(trialVars[i].options[1]);
+    optionLeft.push(trialVars[i].optionLeft);
+    optionRight.push(trialVars[i].optionRight);
     cutoffAngle.push(trialVars[i].angle);
     price.push(trialVars[i].infoPrice);
+    outcomeAngle.push(trialVars[i].outcome);
 }
 
 // to keep track of gamble decision
@@ -246,6 +250,7 @@ var saveVars = {
             optionRight,
             cutoffAngle,
             price,
+            outcomeAngle,
             gambleDecisions,
             infoRevealDecisions,
             info1stHalfDecisions,
@@ -384,6 +389,15 @@ var instructions = {
   post_trial_gap: 200
 };
 
+// calculate outcome
+var calOC = {
+    type: 'call-function',
+    func: function(){
+        oc = rndOutcomeAllAngles[0];
+        return oc;
+    }
+};
+
 // pause page before next trial
 var pause = {
     type: 'canvas-keyboard-response',
@@ -438,7 +452,7 @@ var gamble = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         textGambleDecision(rndYNG);
 
         // border of circle: color and stroke width
@@ -448,9 +462,9 @@ var gamble = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -565,9 +579,9 @@ var confirmGamble = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -653,7 +667,7 @@ var confirmGamble = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
 
         if (data.gambleDecision == 'Yes'){
             textGambleYes(rndYNG);
@@ -681,7 +695,7 @@ var info = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         textInfoDecision(rndYNIR, jsPsych.timelineVariable('infoPrice', true));
         drawVeil();
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
@@ -693,9 +707,9 @@ var info = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -870,7 +884,7 @@ var confirmInfoReveal = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         textInfoPrice(jsPsych.timelineVariable('infoPrice', true));
         drawVeil();
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
@@ -892,9 +906,9 @@ var confirmInfoReveal = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -1036,7 +1050,7 @@ var revealTopInfo = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         textTopInfoOutcomeDecision(rndYNITP);
         drawHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
@@ -1048,9 +1062,9 @@ var revealTopInfo = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -1184,6 +1198,18 @@ var revealTopInfo = {
         }];
         trials = trials.concat(toSaveI1H);
         info1stHalfDecisions = info1stHalfDecisions.concat(infoPlayDecision);
+
+        var toSaveI2H = [{
+            info2ndHalTrial: {
+                info2ndHalfStartTime: 'NA',
+                info2ndHalfRT: 'NA',
+                info2ndHalfKeyPress: 'NA',
+                info2ndHalfDecision: 'NA',
+                info2ndHalfEndTime: 'NA'
+            }
+        }];
+        trials = trials.concat(toSaveI2H);
+        info2ndHalfDecisions = info2ndHalfDecisions.concat('NA');
     }
 };
 
@@ -1203,9 +1229,9 @@ var confirmTop = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -1336,7 +1362,7 @@ var confirmTop = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         drawHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         textTopInfo();
@@ -1367,7 +1393,7 @@ var revealBottomInfo = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         textBottomInfo(rndYNIBP);
         drawOtherHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
@@ -1379,9 +1405,9 @@ var revealBottomInfo = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -1503,6 +1529,18 @@ var revealBottomInfo = {
             }
         }
         var info2ndHalfEndTime = new Date().toLocaleTimeString();
+        var toSaveI1H = [{
+            info1stHalTrial: {
+                info1stHalfStartTime: 'NA',
+                info1stHalfRT: 'NA',
+                info1stHalfKeyPress: 'NA',
+                info1stHalfDecision: 'NA',
+                info1stHalfEndTime: 'NA'
+            }
+        }];
+        trials = trials.concat(toSaveI1H);
+        info1stHalfDecisions = info1stHalfDecisions.concat('NA');
+
         var toSaveI2H = [{
             info2ndHalfTrial: {
                 info2ndHalfStartTime: startTime,
@@ -1533,9 +1571,9 @@ var confirmBottom = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -1666,7 +1704,7 @@ var confirmBottom = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         drawOtherHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         textBottomInfo();
@@ -1732,7 +1770,7 @@ var gambleReplay = {
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
         textGambleChoices([ool, oor]);
-        textGambleDecision(rndYNG);
+        textGambleDecision();
 
         // border of circle: color and stroke width
         function drawCB(color, stroke_width){
@@ -1741,14 +1779,14 @@ var gambleReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
             ctx.textAlign = CENTER;
-            ctx.fillText(l, c.width*1/3, c.height*1/3);
+            // ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
@@ -1756,13 +1794,13 @@ var gambleReplay = {
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
-        function textGambleDecision(yesNoArray){
+        function textGambleDecision(){
             ctx.fillStyle = GAMBLETEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('These options were presented.', c.width/2, c.height*1/5);
-            ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-            ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
+            //ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
+            //ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
         }
 
         function drawCircle(x, y, r, color_left, color_right){
@@ -1815,6 +1853,7 @@ var gambleReplay = {
         oor = optionRight[trialIdx];
         ip = price[trialIdx];
         coa = cutoffAngle[trialIdx];
+        oca = outcomeAngle[trialIdx];
         gd = gambleDecisions[trialIdx];
         ird = infoRevealDecisions[trialIdx];
         i1hd = info1stHalfDecisions[trialIdx];
@@ -1822,14 +1861,24 @@ var gambleReplay = {
     }
 };
 
-// replay of confirm gamble screen
-/* var confirmGambleReplay = {
+// info purchase screen
+var infoReplay = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
+
         var c = document.getElementById(EID);
         var ctx = c.getContext(CONTEXT);
         var x = c.width/2;
         var y = c.height/2;
+
+        // draw screen components
+        drawCB(CB[0], CB[1]);
+        drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
+        drawMarks(x, y, RADIUS);
+        textGambleChoices([ool, oor]);
+        textInfoDecision(rndYNIR, ip);
+        drawVeil();
+        drawCutOffLine(x, y, RADIUS, coa);
 
         // border of circle: color and stroke width
         function drawCB(color, stroke_width){
@@ -1838,9 +1887,9 @@ var gambleReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -1853,33 +1902,14 @@ var gambleReplay = {
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
-        function textGambleYes(yesNoArray){
-            ctx.fillStyle = GAMBLETEXTCOLOR;
+        // info decision: left choice, right choice, price of the info
+        function textInfoDecision(yesNoArray, infoPrice){
+            ctx.fillStyle = INFOTEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
-            ctx.fillText('You selected \'YES\'.', c.width/2, c.height*1/5);
 
-            if (yesNoArray[0] == 'Yes'){
-                ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            } else if (yesNoArray[1] == 'Yes') {
-                ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.strokeText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            }
-        }
-
-        function textGambleNo(yesNoArray){
-            ctx.fillStyle = GAMBLETEXTCOLOR;
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText('You selected \'No\'.', c.width/2, c.height*1/5);
-
-            if (yesNoArray[0] == 'No'){
-                ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            } else if (yesNoArray[1] == 'No'){
-                ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.strokeText(yesNoArray[1], c.width*4/5, c.height*4/5);
+            if (ird == 'Yes'){
+                ctx.fillText('You purchased this information at $'+infoPrice+'.', c.width/2, c.height*4/5);
             }
         }
 
@@ -1919,26 +1949,49 @@ var gambleReplay = {
             }
         }
 
-        // draw screen components
-        drawCB(CB[0], CB[1]);
-        drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
-        drawMarks(x, y, RADIUS);
-        textGambleChoices([ool, oor]);
-
-        if (gd == 'Yes'){
-            textGambleYes(rndYNG);
-        } else if (gd == 'No'){
-            textGambleNo(rndYNG);
+        // veil info
+        function drawVeil(){
+            ctx.beginPath();
+            ctx.arc(x, y, RADIUS, 0, 2 * PI);
+            ctx.globalAlpha = FULLVEILALPHA;
+            ctx.fillStyle = FULLVIEL;
+            ctx.fill();
+            ctx.closePath();
         }
+
+        // cut-off line to reveal gambling info
+        function drawCutOffLine(x, y, r, a){
+            ctx.lineWidth = CB[1];
+            ctx.strokeStyle = CUTOFFLINE;
+            ctx.beginPath();
+
+            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
+            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
+
+            var x1 = (x) + Math.cos(a1) * (r);
+            var y1 = (y) + Math.sin(a1) * (r);
+            var x2 = (x) + Math.cos(a2) * (r);
+            var y2 = (y) + Math.sin(a2) * (r);
+
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x, y);
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x, y);
+
+            ctx.globalAlpha = 1;
+            ctx.stroke();
+            ctx.closePath();
+        }
+
      },
     canvasHTML: CANVAS,
     choices: jsPsych.NO_KEYS,
     trial_duration: RPLY,
     response_ends_trial: false
-}; */
+};
 
 // show gamble result
-/* var gambleOutcome = {
+var gambleOutcome = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
 
@@ -1963,9 +2016,9 @@ var gambleReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -2113,492 +2166,6 @@ var gambleReplay = {
         }];
         paymentParams = paymentParams.concat(paymentParam);
     }
-}; */
-
-// info purchase screen
-var infoReplay = {
-    type: 'canvas-keyboard-response',
-    stimulus: function() {
-
-        var c = document.getElementById(EID);
-        var ctx = c.getContext(CONTEXT);
-        var x = c.width/2;
-        var y = c.height/2;
-
-        // draw screen components
-        drawCB(CB[0], CB[1]);
-        drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
-        drawMarks(x, y, RADIUS);
-        textGambleChoices([ool, oor]);
-        textInfoDecision(rndYNIR, ip);
-        drawVeil();
-        drawCutOffLine(x, y, RADIUS, coa);
-
-        // border of circle: color and stroke width
-        function drawCB(color, stroke_width){
-            ctx.strokeStyle = color;
-            ctx.lineWidth = stroke_width;
-        }
-
-        // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
-
-            ctx.fillStyle = rndColorOptions[0];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(l, c.width*1/3, c.height*1/3);
-
-            ctx.fillStyle = rndColorOptions[1];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(r, c.width*2/3, c.height*1/3);
-        }
-
-        // info decision: left choice, right choice, price of the info
-        function textInfoDecision(yesNoArray, infoPrice){
-            ctx.fillStyle = INFOTEXTCOLOR;
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-
-            if (ird == 'Yes'){
-                ctx.fillText('You purchased this information at $'+infoPrice+'.', c.width/2, c.height*4/5);
-            }
-        }
-
-        function drawCircle(x, y, r, color_left, color_right){
-            // Right half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
-            ctx.fillStyle = color_left;
-            ctx.fill();
-            ctx.stroke();
-
-            // Left half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
-            ctx.fillStyle = color_right;
-            ctx.fill();
-            ctx.stroke();
-        }
-
-        // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
-        function drawMarks(x, y, r){
-            for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = CB[1];            // HAND WIDTH.
-                ctx.beginPath();
-
-                var x1 = (x) + Math.cos(angle) * (r);
-                var y1 = (y) + Math.sin(angle) * (r);
-                var x2 = (x) + Math.cos(angle) * (r - (r / 7));
-                var y2 = (y) + Math.sin(angle) * (r - (r / 7));
-
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-
-                ctx.strokeStyle = CB[0];
-                ctx.stroke();
-            }
-        }
-
-        // veil info
-        function drawVeil(){
-            ctx.beginPath();
-            ctx.arc(x, y, RADIUS, 0, 2 * PI);
-            ctx.globalAlpha = FULLVEILALPHA;
-            ctx.fillStyle = FULLVIEL;
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        // cut-off line to reveal gambling info
-        function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = CB[1];
-            ctx.strokeStyle = CUTOFFLINE;
-            ctx.beginPath();
-
-            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
-
-            var x1 = (x) + Math.cos(a1) * (r);
-            var y1 = (y) + Math.sin(a1) * (r);
-            var x2 = (x) + Math.cos(a2) * (r);
-            var y2 = (y) + Math.sin(a2) * (r);
-
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x, y);
-            ctx.moveTo(x2, y2);
-            ctx.lineTo(x, y);
-
-            ctx.globalAlpha = 1;
-            ctx.stroke();
-            ctx.closePath();
-        }
-
-     },
-    canvasHTML: CANVAS,
-    choices: jsPsych.NO_KEYS,
-    trial_duration: RPLY,
-    response_ends_trial: false
-};
-
-// confirm the choice selected on info screen
-var confirmInfoReplay = {
-    type: 'canvas-keyboard-response',
-    stimulus: function() {
-        var c = document.getElementById(EID);
-        var ctx = c.getContext(CONTEXT);
-        var x = c.width/2;
-        var y = c.height/2;
-
-        // border of circle: color and stroke width
-        function drawCB(color, stroke_width){
-            ctx.strokeStyle = color;
-            ctx.lineWidth = stroke_width;
-        }
-
-        // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
-
-            ctx.fillStyle = rndColorOptions[0];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(l, c.width*1/3, c.height*1/3);
-
-            ctx.fillStyle = rndColorOptions[1];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(r, c.width*2/3, c.height*1/3);
-        }
-
-        function textInfoPrice(infoPrice){
-            ctx.fillStyle = INFOTEXTCOLOR;
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText('$'+infoPrice, c.width/2, c.height*4/5);
-        }
-
-        function textInfoYes(yesNoArray){
-            ctx.fillStyle = INFOTEXTCOLOR;
-            ctx.font = FONT;
-
-            ctx.fillText('You selected \'Yes\'.', c.width/2, c.height*725/1000);
-
-            if (yesNoArray[0] == 'Yes'){
-                ctx.strokeStyle = CB[0];
-                ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            } else if (yesNoArray[1] == 'Yes') {
-                ctx.strokeStyle = CB[0];
-                ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.strokeText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            }
-        }
-
-        function textInfoNo(yesNoArray){
-            ctx.fillStyle = INFOTEXTCOLOR;
-            ctx.font = FONT;
-
-            ctx.fillText('You selected \'No\'.', c.width/2, c.height*725/1000);
-
-            if (yesNoArray[0] == 'No'){
-                ctx.strokeStyle = CB[0];
-                ctx.strokeText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.fillText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            } else if (yesNoArray[1] == 'No'){
-                ctx.strokeStyle = CB[0];
-                ctx.fillText(yesNoArray[0], c.width*1/5, c.height*4/5);
-                ctx.strokeText(yesNoArray[1], c.width*4/5, c.height*4/5);
-            }
-        }
-
-        function drawCircle(x, y, r, color_left, color_right){
-            // Right half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
-            ctx.fillStyle = color_left;
-            ctx.fill();
-            ctx.stroke();
-
-            // Left half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
-            ctx.fillStyle = color_right;
-            ctx.fill();
-            ctx.stroke();
-        }
-
-        // draw marks inputs: center at x coordinate, y coordinate, and radius of a circle
-        function drawMarks(x, y, r){
-            for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = CB[1];            // HAND WIDTH.
-                ctx.beginPath();
-
-                var x1 = (x) + Math.cos(angle) * (r);
-                var y1 = (y) + Math.sin(angle) * (r);
-                var x2 = (x) + Math.cos(angle) * (r - (r / 7));
-                var y2 = (y) + Math.sin(angle) * (r - (r / 7));
-
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-
-                ctx.strokeStyle = CB[0];
-                ctx.stroke();
-            }
-        }
-
-        // reveal veil info
-        function drawHalfVeil(x, y, r, a){
-            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
-
-            ctx.beginPath()
-            ctx.arc(x, y, r, a1, a2);
-            ctx.globalAlpha = HALFVEILALPHA;
-            ctx.fillStyle = HALFVEIL;
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        // cut-off line to reveal gambling info
-        function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = CB[1];
-            ctx.strokeStyle = CUTOFFLINE;
-            ctx.beginPath();
-
-            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
-
-            var x1 = (x) + Math.cos(a1) * (r);
-            var y1 = (y) + Math.sin(a1) * (r);
-            var x2 = (x) + Math.cos(a2) * (r);
-            var y2 = (y) + Math.sin(a2) * (r);
-
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x, y);
-            ctx.moveTo(x2, y2);
-            ctx.lineTo(x, y);
-
-            ctx.globalAlpha = 1;
-            ctx.stroke();
-            ctx.closePath();
-        }
-
-        // draw screen components
-        drawCB(CB[0], CB[1]);
-        drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
-        drawMarks(x, y, RADIUS);
-        textGambleChoices([ool, oor]);
-        textInfoPrice(ip);
-        drawHalfVeil(x, y, RADIUS, coa);
-        drawCutOffLine(x, y, RADIUS, coa);
-
-        // to determine which side was chosen then highlight
-        if (i1hd == 'Yes'){
-            textInfoYes(rndYNIR);
-        } else if (ird == 'No'){
-            textInfoNo(rndYNIR);
-        }
-     },
-    canvasHTML: CANVAS,
-    choices: jsPsych.NO_KEYS,
-    trial_duration: RPLY,
-    response_ends_trial: false
-};
-
-// info purchase deduction screen
-var infoPay = {
-    type: 'canvas-keyboard-response',
-    stimulus: function() {
-
-        var c = document.getElementById(EID);
-        var ctx = c.getContext(CONTEXT);
-        var x = c.width/2;
-        var y = c.height/2;
-        var angle;
-
-        // draw screen components
-        drawCB(CB[0], CB[1]);
-        drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
-        drawMarks(x, y, RADIUS);
-        textGambleChoices([ool, oor]);
-        textInfoOutcome(rndYNIR);
-        drawVeil();
-        drawCutOffLine(x, y, RADIUS, coa);
-
-        // border of circle: color and stroke width
-        function drawCB(color, stroke_width){
-            ctx.strokeStyle = color;
-            ctx.lineWidth = stroke_width;
-        }
-
-        // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
-
-            ctx.fillStyle = rndColorOptions[0];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(l, c.width*1/3, c.height*1/3);
-
-            ctx.fillStyle = rndColorOptions[1];
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText(r, c.width*2/3, c.height*1/3);
-        }
-
-        // info decision: left choice, right choice, price of the info
-        function textInfoOutcome(array){
-
-            // check if select not to play
-            if(ird == 'No'){
-                payoff = '$0'
-            } else if (ird == 'Yes'){
-                payoff = totalPayoff - parseFloat(ip);
-                totalPayoff = payoff;
-            }
-
-            var tp = totalPayoff.toString();
-            if(tp.length < 2){
-                tp = '$' + tp;
-            } else {
-                if(tp < 0){
-                    tp = tp.slice(0, 1)+'$' + tp.slice(1);
-                } else {
-                    tp = '+$'+tp.toString();
-                }
-
-            }
-
-            ctx.fillStyle = RESULTTEXTCOLOR;
-            ctx.font = FONT;
-            ctx.textAlign = CENTER;
-            ctx.fillText('Result', c.width/2, c.height*1/5);
-            ctx.fillText('Info Price: $'+ ip, c.width/2, c.height*725/1000);
-            ctx.fillText('Total payoff: '+ tp, c.width/2, c.height*4/5);
-            ctx.fillText('Press space bar to continue.', c.width/2, c.height*875/1000);
-
-            return totalPayoff;
-        }
-
-        // draw based circle, inputs: center at x coordinate, y coordinate, radius of a circle, color on the left and color on the right
-        function drawCircle(x, y, r, color_left, color_right){
-            // Right half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 0.5*PI, 1.5*PI);
-            ctx.fillStyle = color_left;
-            ctx.fill();
-            ctx.stroke();
-
-            // Left half of the circle
-            ctx.beginPath();
-            ctx.arc(x, y, r, 1.5*PI, 0.5*PI);
-            ctx.fillStyle = color_right;
-            ctx.fill();
-            ctx.stroke();
-        }
-
-
-        // draw marks, inputs: center at x coordinate, y coordinate, and radius of a circle
-        function drawMarks(x, y, r){
-            for (var i = 0; i < 12; i++) {
-                angle = (i - 3) * (PI * 2) / 12;       // THE ANGLE TO MARK.
-                ctx.lineWidth = CB[1];            // HAND WIDTH.
-                ctx.beginPath();
-
-                var x1 = (x) + Math.cos(angle) * (r);
-                var y1 = (y) + Math.sin(angle) * (r);
-                var x2 = (x) + Math.cos(angle) * (r - (r / 7));
-                var y2 = (y) + Math.sin(angle) * (r - (r / 7));
-
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-
-                ctx.strokeStyle = CB[0];
-                ctx.stroke();
-            }
-        }
-
-        // veil information with grey veil on top of the circle
-        function drawVeil(){
-            ctx.beginPath()
-            ctx.arc(x, y, RADIUS, 0, 2 * PI);
-            ctx.globalAlpha = FULLVEILALPHA;
-            ctx.fillStyle = FULLVIEL;
-            ctx.fill();
-        }
-
-        // cut-off line to reveal gambling info
-        function drawCutOffLine(x, y, r, a){
-            ctx.lineWidth = CB[1];
-            ctx.strokeStyle = CUTOFFLINE;
-            ctx.beginPath();
-
-            a1 = -(Math.ceil(a/30) * (2 * PI) / 12);
-            a2 = -(Math.ceil((a/30)+6) * (2 * PI) / 12);
-
-            var x1 = (x) + Math.cos(a1) * (r);
-            var y1 = (y) + Math.sin(a1) * (r);
-            var x2 = (x) + Math.cos(a2) * (r);
-            var y2 = (y) + Math.sin(a2) * (r);
-
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x, y);
-            ctx.moveTo(x2, y2);
-            ctx.lineTo(x, y);
-
-            ctx.globalAlpha = 1;
-            ctx.stroke();
-            ctx.closePath();
-        }
-
-        // draw gamble outcome dot
-        function drawDot(x, y, r){
-            ctx.fillStyle = DOTCOLOR;
-
-            a = rndOutcomeAllAngles[0];
-
-            a1 = -(Math.ceil(a) * PI / 180);
-
-            var x1 = (x) + Math.cos(a1) * (r);
-            var y1 = (y) + Math.sin(a1) * (r);
-
-            ctx.beginPath();
-            ctx.globalAlpha = 1;
-            ctx.arc(x1, y1, 5, 0, 2*PI);
-            ctx.strokeStyle = DOTOUTLINE;
-            ctx.lineWidth = CB[1];
-            ctx.stroke();
-            ctx.fill();
-            ctx.closePath();
-        }
-     },
-    canvasHTML: CANVAS,
-    choices: [' '],
-    on_start: function() {
-        startTime = new Date().toLocaleTimeString();
-    },
-    on_finish: function() {
-        var paymentEndTime = new Date().toLocaleTimeString();
-        var paymentParam = [{
-            payment: {
-                paymentStartTime: startTime,
-                paymentEndTime: paymentEndTime,
-                paymentOptionLeft: ool,
-                paymentOptionRight: oor,
-                paymentAngle: rndOutcomeAllAngles[0],
-                paymentPayOff: payoff,
-                paymentIndex: trialIdx
-            }
-        }];
-        paymentParams = paymentParams.concat(paymentParam);
-    }
 };
 
 // replay of 1st half
@@ -2627,9 +2194,9 @@ var revealTopInfoReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -2748,9 +2315,9 @@ var confirmTopReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -2929,9 +2496,9 @@ var info1stOutcome = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -3117,7 +2684,7 @@ var revealBottomInfoReplay = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         textBottomInfo(rndYNIBP);
         drawOtherHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
@@ -3129,9 +2696,9 @@ var revealBottomInfoReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -3283,9 +2850,9 @@ var confirmBottomReplay = {
         }
 
         // choice of gambles displayed
-        function textGambleChoices(choicesArray){
-            var l = choicesArray[0].slice(0, 1)+'$'+choicesArray[0].slice(1);
-            var r = choicesArray[1].slice(0, 1)+'$'+choicesArray[1].slice(1);
+        function textGambleChoices(left, right){
+            var l = left.slice(0, 1)+'$'+left.slice(1);
+            var r = right.slice(0, 1)+'$'+right.slice(1);
 
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
@@ -3416,7 +2983,7 @@ var confirmBottomReplay = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices(jsPsych.timelineVariable('options', true));
+        textGambleChoices(jsPsych.timelineVariable('optionLeft', true), jsPsych.timelineVariable('optionRight', true));
         drawOtherHalfVeil(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         drawCutOffLine(x, y, RADIUS, jsPsych.timelineVariable('angle', true));
         textBottomInfo();
@@ -3446,7 +3013,7 @@ var confirmBottomReplay = {
 
 // if they decide to purchase info
 var ifInfoReveal = {
-    timeline: [revealTopInfo, saveVars, saveTrials, confirmTop, revealBottomInfo, saveVars, saveTrials, confirmBottom],
+    timeline: [ifTop, ifBottom],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
         if(data.infoRevealDecision == 'Yes'){
@@ -3457,6 +3024,29 @@ var ifInfoReveal = {
     }
 };
 
+var ifTop = {
+    timeline: [revealTopInfo, saveTrials, confirmTop],
+    conditional_function: function(){
+        if(oc > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+
+var ifBottom = {
+    timeline: [revealBottomInfo, saveTrials, confirmBottom],
+    conditional_function: function(){
+        if(oc < 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+
+// these are for payment section
 var ifPlay1stHalf = {
     timeline: [],
     conditional_function: function(){
@@ -3480,7 +3070,7 @@ var ifPlay2ndHalf = {
 };
 
 var ifPlayInfo = {
-    timeline: [infoReplay, ifPlay1stHalf],
+    timeline: [infoReplay, ifPlay1stHalf, ifPlay2ndHalf],
     conditional_function: function(){
         if (ird == 'Yes'){
             return true;
@@ -3490,7 +3080,7 @@ var ifPlayInfo = {
     }
 };
 
-var ifPlayGanble = {
+var ifPlayGamble = {
     timeline: [],
     conditional_function: function(){
         if (gd == 'Yes'){
@@ -3514,7 +3104,7 @@ var ifPaymentInfoReveal = {
 
 // show gamble outcome
 var showGambleOutcome = {
-    timeline: [signalPayment, gambleReplay, confirmGambleReplay, gambleOutcome, infoReplay, confirmInfoReplay, infoPay, ifPaymentInfoReveal],
+    timeline: [signalPayment, gambleReplay],
     conditional_function: function(){
         if(idAndSession[1] == 2){
             return true;
@@ -3530,7 +3120,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, saveVars, saveTrials, confirmGamble, info, saveVars, saveTrials, confirmInfoReveal, ifInfoReveal, pause],
+    timeline: [gamble, saveTrials, confirmGamble, info, saveTrials, confirmInfoReveal, ifInfoReveal, saveVars, pause],
     timeline_variables: trialVars
 };
 
