@@ -9,14 +9,13 @@ var angles = [0, 30, 60, -60, -30];
 
 var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
 
-var ooaa = outcomeAllAngles.reverse();
-
 var outcomeByAngles = []; // all available outcome depending on the angle
 // filling all available outcome depending on the angle
 for (var i = 0; i < outcomeAllAngles.length/2; i++ ){
     outcomeByAngles.push(outcomeAllAngles.slice(i, i+6));
 }
 
+var ooaar = outcomeAllAngles.reverse();
 
 var rndOBA = []; // all available outcome depending on the angle randomized
 // fill-in all available outcome depending on the angle randomized
@@ -25,7 +24,7 @@ for ( var j = 0; j < angles.length; j++){
 }
 
 
-var ooba = []; // all available outcome depending on the angle
+var oobar = []; // all available outcome depending on the angle
 // filling all available outcome depending on the angle
 for (var i = 0; i < ooaa.length/2; i++ ){
     ooba.push(ooaa.slice(i, i+6));
@@ -161,9 +160,9 @@ function drawDotHalf(x, y, r, a){
         dotAngle = outcomeByAngles[1];
     } else if (a == 60){
         dotAngle = outcomeByAngles[2];
-    } else if (a == -60){
+    } else if (a == 120){
         dotAngle = outcomeByAngles[4];
-    } else if (a == -30){
+    } else if (a == 150){
         dotAngle = outcomeByAngles[5];
     }
 

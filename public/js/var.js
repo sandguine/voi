@@ -66,15 +66,18 @@ var angles = [0, 30, 60, 120, 150]; // all available angles -60 == 120, -30 == 1
 
 var outcomeAllAngles = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15];
 
-var outcomeByAngles = []; // all available outcome depending on the angle
+var ooba = []; // all available outcome depending on the angle
 // filling all available outcome depending on the angle
 for (var i = 0; i <= outcomeAllAngles.length/2; i++ ){
-    outcomeByAngles.push(outcomeAllAngles.slice(i, i+6));
+    ooba.push(outcomeAllAngles.slice(i, i+6));
 }
 
 var rightSideOP = [-75, -45, -15, 15, 45, 75]; //outcome position on the right side
 
 var leftSideOP = [-105, -135, -165, 165, 135, 105]; //outcome position on the left side
+
+var onTop = false; // boolean to keep track of which side of outcome to show
+
 /* end all variables */
 
 
@@ -145,7 +148,7 @@ var rndOutcomeAllAngles = jsPsych.randomization.shuffle(outcomeAllAngles);
 var rndOBA = []; // all available outcome depending on the angle randomized
 // fill-in all available outcome depending on the angle randomized
 for ( var j = 0; j < outcomeAllAngles.length/2; j++){
-    rndOBA.push(jsPsych.randomization.shuffle(outcomeByAngles[j]));
+    rndOBA.push(jsPsych.randomization.shuffle(ooba[j]));
 }
 
 /* end probabilistic variables */
@@ -389,15 +392,33 @@ var instructions = {
   post_trial_gap: 200
 };
 
-// calculate outcome
-var calOCA = {
+// calculate outcome angle position
+var calOCAP = {
     type: 'call-function',
     func: function(){
-        oca = jsPsych.timelineVariable('outcome', true);
         coa = jsPsych.timelineVariable('angle', true);
+        oca = jsPsych.timelineVariable('outcome', true);
 
-        
-        return oca;
+        // determine which side the outcome will land depending on cutoff angle
+        switch (coa) {
+            case 0:
+                onTop = ooba[0].includes(oca)?true:false;
+                break;
+            case 30:
+                onTop = ooba[1].includes(oca)?true:false;
+                break;
+            case 60:
+                onTop = ooba[2].includes(oca)?true:false;
+                break;
+            case 120:
+                onTop = ooba[4].includes(oca)?true:false; // since we skip 90
+                break;
+            case 150:
+                onTop = ooba[5].includes(oca)?true:false;
+                break;
+        }
+
+        return coa, oca, onTop;
     }
 };
 
@@ -1802,7 +1823,7 @@ var gambleReplay = {
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('These options were presented.', c.width/2, c.height*1/5);
-            ctx.fillText('You selected \'' + gd + '\'', c.width*1/2, c.height*4/5);
+            ctx.fillText('You selected \'' + gd + '\'.', c.width*1/2, c.height*4/5);
         }
 
         function drawCircle(x, y, r, color_left, color_right){
@@ -2577,7 +2598,7 @@ var ifTop = {
     timeline: [revealTopInfo, saveVars, saveTrials, confirmTop],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && oca < 0){
+        if(data.infoRevealDecision == 'Yes' && onTop){
             return true;
         } else {
             return false;
@@ -2590,7 +2611,7 @@ var ifBottom = {
     timeline: [revealBottomInfo, saveVars, saveTrials, confirmBottom],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && oca > 0){
+        if(data.infoRevealDecision == 'Yes' && !onTop){
             return true;
         } else {
             return false;
@@ -2607,7 +2628,7 @@ var ifBottom = {
 var ifTopRPLY = {
     timeline: [infoTopOutcome],
     conditional_function: function(){
-        if(ird == 'Yes' && oca < 0){
+        if(ird == 'Yes' && onTop){
             return true;
         } else {
             return false;
@@ -2619,7 +2640,7 @@ var ifTopRPLY = {
 var ifBottomRPLY = {
     timeline: [infoBottomOutcome],
     conditional_function: function(){
-        if(ird == 'Yes' && oca > 0){
+        if(ird == 'Yes' && !onTop){
             return true;
         } else {
             return false;
@@ -2669,7 +2690,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, saveVars, saveTrials, confirmGamble, info, saveVars, saveTrials, confirmInfoReveal, calOCA, ifTop, ifBottom, pause],
+    timeline: [gamble, saveVars, saveTrials, confirmGamble, info, saveVars, saveTrials, confirmInfoReveal, calOCAP, ifTop, ifBottom, pause],
     timeline_variables: trialVars
 };
 
