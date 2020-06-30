@@ -156,15 +156,15 @@ function drawDotHalf(x, y, r, a){
 
     // determine possible outcome options from angle
     if (a == 0) {
-        dotAngle = rndOBA[0];
+        dotAngle = outcomeByAngles[0];
     } else if (a == 30) {
-        dotAngle = rndOBA[1];
+        dotAngle = outcomeByAngles[1];
     } else if (a == 60){
-        dotAngle = rndOBA[2];
+        dotAngle = outcomeByAngles[2];
     } else if (a == -60){
-        dotAngle = rndOBA[4];
+        dotAngle = outcomeByAngles[4];
     } else if (a == -30){
-        dotAngle = rndOBA[5];
+        dotAngle = outcomeByAngles[5];
     }
 
     for (var i = 0; i < dotAngle.length; i++){
@@ -191,15 +191,15 @@ function drawDotOtherHalf(x, y, r, a){
 
     // determine possible outcome options from angle
     if (a == 0) {
-        dotAngle = rndOOBA[0];
+        dotAngle = ooba[0];
     } else if (a == 30) {
-        dotAngle = rndOOBA[5];
+        dotAngle = ooba[1];
     } else if (a == 60){
-        dotAngle = rndOOBA[2];
+        dotAngle = ooba[2];
     } else if (a == 120){
-        dotAngle = rndOOBA[4];
+        dotAngle = ooba[4];
     } else if (a == 150){
-        dotAngle = rndOOBA[5];
+        dotAngle = ooba[5];
     }
 
     for (var i = 0; i < dotAngle.length; i++){

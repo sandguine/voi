@@ -9,7 +9,7 @@ var optionsPair = [['+12','-9'], ['+9', '-12'], ['+9', '-9'],
 
 var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
 
-var angles = [0, 30, 60, 120, 150]; // all available angle
+var angles = [0, 30, 60, -60, -30]; // all available angle
 
 var outcome = [15, 45, 75, 105, 135, 165, -165, -135, -105, -75, -45, -15]
 

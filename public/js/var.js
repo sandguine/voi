@@ -394,6 +394,9 @@ var calOCA = {
     type: 'call-function',
     func: function(){
         oca = jsPsych.timelineVariable('outcome', true);
+        coa = jsPsych.timelineVariable('angle', true);
+
+        
         return oca;
     }
 };
@@ -2185,7 +2188,7 @@ var infoTopOutcome = {
         drawHalfVeil(x, y, RADIUS, coa);
         drawCutOffLine(x, y, RADIUS, coa);
         drawDotHalf(x, y, RADIUS, oca);
-        textInfoOutcome(oca);
+        textInfoOutcome(oca, [ool, oor]);
 
         // border of circle: color and stroke width
         function drawCB(color, stroke_width){
@@ -2209,32 +2212,38 @@ var infoTopOutcome = {
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
-        function textInfoOutcome(oc){
-
-            // check if select not to play
-            if(ird == 'No'){
-                payoff = '$0'
-            } else if (ird == 'Yes'){
-                payoff = totalPayoff - parseFloat(ip);
-                totalPayoff = payoff;
+        function textInfoOutcome(dotAngle, array){
+            // total payoff is either left or right
+            if(rightSideOP.includes(dotAngle)){
+                payoff = parseFloat(array[1]);
+            } else {
+                payoff = parseFloat(array[0]);
             }
 
-            var tp = totalPayoff.toString();
-            if(tp.length < 2){
-                tp = '$' + tp;
+            totalPayoff = payoff - parseFloat(ip);
+
+            // check if positive add + sign then convert to string
+            if(payoff > 0){
+                payoff = '+' + payoff.toString()
             } else {
-                tp = tp.slice(0, 1)+'$' + tp.slice(1);
+                payoff = payoff.toString()
+            }
+            payoff = payoff.slice(0, 1)+'$'+payoff.slice(1);
+
+            // check if select not to play
+            if(i1hd == 'No'){
+                payoff = '$0'
             }
 
             ctx.fillStyle = RESULTTEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
-            ctx.fillText('Info Price: $'+ ip, c.width/2, c.height*725/1000);
-            ctx.fillText('Total payoff: '+ tp, c.width/2, c.height*4/5);
+            ctx.fillText('Result: '+ payoff, c.width/2, c.height*725/1000);
+            ctx.fillText('Total payoff: '+ totalPayoff, c.width/2, c.height*4/5);
             ctx.fillText('Press space bar to continue.', c.width/2, c.height*875/1000);
 
-            return totalPayoff;
+            return payoff, dotAngle, totalPayoff;
         }
 
         function drawCircle(x, y, r, color_left, color_right){
@@ -2344,8 +2353,9 @@ var infoTopOutcome = {
                 paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
-                paymentAngle: dotAngle,
+                paymentAngle: oca,
                 paymentPayOff: payoff,
+                paymentTotal: totalPayoff,
                 paymentIndex: trialIdx
             }
         }];
@@ -2372,7 +2382,7 @@ var infoBottomOutcome = {
         drawOtherHalfVeil(x, y, RADIUS, coa);
         drawCutOffLine(x, y, RADIUS, coa);
         drawDotHalf(x, y, RADIUS, oca);
-        textInfoOutcome(dotAngle);
+        textInfoOtherOutcome(oca, [ool, oor]);
 
         // border of circle: color and stroke width
         function drawCB(color, stroke_width){
@@ -2396,32 +2406,38 @@ var infoBottomOutcome = {
             ctx.fillText(r, c.width*2/3, c.height*1/3);
         }
 
-        function textInfoOutcome(array){
-
-            // check if select not to play
-            if(ird == 'No'){
-                payoff = '$0'
-            } else if (ird == 'Yes'){
-                payoff = totalPayoff - parseFloat(ip);
-                totalPayoff = payoff;
+        function textInfoOtherOutcome(dotAngle, array){
+            // total payoff is either left or right
+            if(rightSideOP.includes(dotAngle)){
+                payoff = parseFloat(array[1]);
+            } else {
+                payoff = parseFloat(array[0]);
             }
 
-            var tp = totalPayoff.toString();
-            if(tp.length < 2){
-                tp = '$' + tp;
+            totalPayoff = payoff - parseFloat(ip);
+
+            // check if positive add + sign then convert to string
+            if(payoff > 0){
+                payoff = '+' + payoff.toString()
             } else {
-                tp = tp.slice(0, 1)+'$' + tp.slice(1);
+                payoff = payoff.toString()
+            }
+            payoff = payoff.slice(0, 1)+'$'+payoff.slice(1);
+
+            // check if select not to play
+            if(i2hd == 'No'){
+                payoff = '$0'
             }
 
             ctx.fillStyle = RESULTTEXTCOLOR;
             ctx.font = FONT;
             ctx.textAlign = CENTER;
             ctx.fillText('Result', c.width/2, c.height*1/5);
-            ctx.fillText('Info Price: $'+ ip, c.width/2, c.height*725/1000);
-            ctx.fillText('Total payoff: '+ tp, c.width/2, c.height*4/5);
+            ctx.fillText('Result: '+ payoff, c.width/2, c.height*725/1000);
+            ctx.fillText('Total payoff: '+ totalPayoff, c.width/2, c.height*4/5);
             ctx.fillText('Press space bar to continue.', c.width/2, c.height*875/1000);
 
-            return totalPayoff;
+            return payoff, dotAngle, totalPayoff;
         }
 
         function drawCircle(x, y, r, color_left, color_right){
@@ -2533,8 +2549,9 @@ var infoBottomOutcome = {
                 paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
-                paymentAngle: dotAngle,
+                paymentAngle: oca,
                 paymentPayOff: payoff,
+                paymentTotal: totalPayoff,
                 paymentIndex: trialIdx
             }
         }];
@@ -2560,7 +2577,7 @@ var ifTop = {
     timeline: [revealTopInfo, saveVars, saveTrials, confirmTop],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && oca > 0){
+        if(data.infoRevealDecision == 'Yes' && oca < 0){
             return true;
         } else {
             return false;
@@ -2573,7 +2590,7 @@ var ifBottom = {
     timeline: [revealBottomInfo, saveVars, saveTrials, confirmBottom],
     conditional_function: function(){
         var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && oca < 0){
+        if(data.infoRevealDecision == 'Yes' && oca > 0){
             return true;
         } else {
             return false;
@@ -2590,7 +2607,7 @@ var ifBottom = {
 var ifTopRPLY = {
     timeline: [infoTopOutcome],
     conditional_function: function(){
-        if(ird == 'Yes' && oca > 0){
+        if(ird == 'Yes' && oca < 0){
             return true;
         } else {
             return false;
@@ -2602,7 +2619,7 @@ var ifTopRPLY = {
 var ifBottomRPLY = {
     timeline: [infoBottomOutcome],
     conditional_function: function(){
-        if(ird == 'Yes' && oca < 0){
+        if(ird == 'Yes' && oca > 0){
             return true;
         } else {
             return false;
