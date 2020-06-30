@@ -390,11 +390,11 @@ var instructions = {
 };
 
 // calculate outcome
-var calOC = {
+var calOCA = {
     type: 'call-function',
     func: function(){
-        oc = rndOutcomeAllAngles[0];
-        return oc;
+        oca = jsPsych.timelineVariable('outcome', true);
+        return oca;
     }
 };
 
@@ -3012,22 +3012,23 @@ var confirmBottomReplay = {
 /* if functions */
 
 // if they decide to purchase info
-var ifInfoReveal = {
-    timeline: [ifTop, ifBottom],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes'){
-            return true;
-        } else {
-            return false;
-        }
-    }
-};
+// var ifInfoReveal = {
+//     timeline: [ifTop, ifBottom],
+//     conditional_function: function(){
+//         var data = jsPsych.data.get().last(1).values()[0];
+//         if(data.infoRevealDecision == 'Yes'){
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+// };
 
 var ifTop = {
     timeline: [revealTopInfo, saveTrials, confirmTop],
     conditional_function: function(){
-        if(oc > 0){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes' && oca > 0){
             return true;
         } else {
             return false;
@@ -3038,7 +3039,8 @@ var ifTop = {
 var ifBottom = {
     timeline: [revealBottomInfo, saveTrials, confirmBottom],
     conditional_function: function(){
-        if(oc < 0){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes' && oca < 0){
             return true;
         } else {
             return false;
@@ -3120,7 +3122,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, saveTrials, confirmGamble, info, saveTrials, confirmInfoReveal, ifInfoReveal, saveVars, pause],
+    timeline: [gamble, saveTrials, confirmGamble, info, saveTrials, confirmInfoReveal, calOCA, ifTop, ifBottom, saveVars, pause],
     timeline_variables: trialVars
 };
 
