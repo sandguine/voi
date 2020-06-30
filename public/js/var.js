@@ -19,7 +19,7 @@ var CANVAS = '<canvas id="circle" width="1200" height="900"> Your browser does n
 
 var CONFIRM = 1000; // duration of confirmation of choice selected
 
-var RPLY = 2000; // duration of replay
+var RPLY = 3000; // duration of replay
 
 var FONT = '48px Nunito'; // font size and color throughout the task
 
@@ -1769,7 +1769,7 @@ var gambleReplay = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices([ool, oor]);
+        textGambleChoices(ool, oor);
         textGambleDecision();
 
         // border of circle: color and stroke width
@@ -1786,7 +1786,7 @@ var gambleReplay = {
             ctx.fillStyle = rndColorOptions[0];
             ctx.font = FONT;
             ctx.textAlign = CENTER;
-            // ctx.fillText(l, c.width*1/3, c.height*1/3);
+            ctx.fillText(l, c.width*1/3, c.height*1/3);
 
             ctx.fillStyle = rndColorOptions[1];
             ctx.font = FONT;
@@ -1875,7 +1875,7 @@ var infoReplay = {
         drawCB(CB[0], CB[1]);
         drawCircle(x, y, RADIUS, rndColorOptions[0], rndColorOptions[1]);
         drawMarks(x, y, RADIUS);
-        textGambleChoices([ool, oor]);
+        textGambleChoices(ool, oor);
         textInfoDecision(rndYNIR, ip);
         drawVeil();
         drawCutOffLine(x, y, RADIUS, coa);
@@ -2007,7 +2007,7 @@ var gambleOutcome = {
         drawMarks(x, y, RADIUS);
         textGambleChoices([ool, oor]);
         drawDot(x, y, RADIUS);
-        textGambleOutcome(rndOutcomeAllAngles[0], [ool, oor]);
+        textGambleOutcome(oca, [ool, oor]);
 
         // border of circle: color and stroke width
         function drawCB(color, stroke_width){
@@ -3011,19 +3011,7 @@ var confirmBottomReplay = {
 
 /* if functions */
 
-// if they decide to purchase info
-// var ifInfoReveal = {
-//     timeline: [ifTop, ifBottom],
-//     conditional_function: function(){
-//         var data = jsPsych.data.get().last(1).values()[0];
-//         if(data.infoRevealDecision == 'Yes'){
-//             return true;
-//         } else {
-//             return false;
-//         }
-//     }
-// };
-
+// if they decide to purchase info and outcome is in the top portion
 var ifTop = {
     timeline: [revealTopInfo, saveTrials, confirmTop],
     conditional_function: function(){
@@ -3036,6 +3024,7 @@ var ifTop = {
     }
 };
 
+// if they decide to purchase info and outcome is in the bottom portion
 var ifBottom = {
     timeline: [revealBottomInfo, saveTrials, confirmBottom],
     conditional_function: function(){
@@ -3106,7 +3095,7 @@ var ifPaymentInfoReveal = {
 
 // show gamble outcome
 var showGambleOutcome = {
-    timeline: [signalPayment, gambleReplay],
+    timeline: [signalPayment, gambleReplay, infoReplay],
     conditional_function: function(){
         if(idAndSession[1] == 2){
             return true;
