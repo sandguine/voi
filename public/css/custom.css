@@ -20,4 +20,5 @@ canvas {
     fillStyle: #FFFFFF;
     overflow-y: hidden;
     font-family: Nunito;
+    cursor: none;
 }
