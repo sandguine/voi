@@ -60,7 +60,7 @@ var optionsPair = [['+12','-9'], ['+9', '-12'], ['+9', '-9'], ['+12', '-6'], ['+
 
 var yesNo = ['Yes', 'No']; // for randomization of choices on left and right
 
-var infoPrice = ['0.05', '1', '2', '3', '9']; // available options for information price
+var infoPrices = ['0.05', '1', '2', '3', '9']; // available options for information price
 
 var angles = [0, 30, 60, 120, 150]; // all available angles -60 == 120, -30 == 150
 
@@ -2226,6 +2226,7 @@ var gambleOutcome = {
                 paymentCutoffAngle: coa,
                 paymentAngle: oca,
                 paymentPayOff: payoff,
+                paymentTotalPayOff: totalPayoff,
                 paymentIndex: trialIdx
             }
         }];
@@ -2401,6 +2402,7 @@ var infoOutcome = {
                 paymentCutoffAngle: coa,
                 paymentAngle: oca,
                 paymentPayOff: payoff,
+                paymentTotalPayOff: totalPayoff,
                 paymentIndex: trialIdx
             }
         }];
@@ -2605,7 +2607,7 @@ var infoTopOutcome = {
                 paymentCutoffAngle: coa,
                 paymentAngle: oca,
                 paymentPayOff: payoff,
-                paymentTotal: totalPayoff,
+                paymentTotalPayOff: totalPayoff,
                 paymentIndex: trialIdx
             }
         }];
@@ -2812,7 +2814,7 @@ var infoBottomOutcome = {
                 paymentCutoffAngle: coa,
                 paymentAngle: oca,
                 paymentPayOff: payoff,
-                paymentTotal: totalPayoff,
+                paymentTotalPayOff: totalPayoff,
                 paymentIndex: trialIdx
             }
         }];
