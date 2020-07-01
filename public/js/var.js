@@ -2834,31 +2834,43 @@ var infoBottomOutcome = {
 /* if functions */
 
 // during regular portion
+// if the information is purchased
+var ifInfoReveal = {
+    timeline: [revealTopInfo, saveVars, saveTrials, confirmTop, revealBottomInfo, saveVars, saveTrials, confirmBottom],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes'){
+            return true;
+        } else if (data.infoRevealDecision == 'No'){
+            return false;
+        }
+    }
+};
 
 // if they decide to purchase info and outcome is in the top portion
 var ifTop = {
     timeline: [revealTopInfo, saveVars, saveTrials, confirmTop],
-    // conditional_function: function(){
-    //     var data = jsPsych.data.get().last(1).values()[0];
-    //     if(data.infoRevealDecision == 'Yes' && onTop){
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes' && onTop){
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
 
 // if they decide to purchase info and outcome is in the bottom portion
 var ifBottom = {
     timeline: [revealBottomInfo, saveVars, saveTrials, confirmBottom],
-    // conditional_function: function(){
-    //     var data = jsPsych.data.get().last(1).values()[0];
-    //     if(data.infoRevealDecision == 'Yes' && !onTop){
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.infoRevealDecision == 'Yes' && !onTop){
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
 
 
@@ -2944,7 +2956,7 @@ var showGambleOutcome = {
 
 /* test procedure */
 var procedure = {
-    timeline: [gamble, saveVars, saveTrials, confirmGamble, info, saveVars, saveTrials, confirmInfoReveal, calOCAP, ifTop, ifBottom, pause],
+    timeline: [gamble, saveVars, saveTrials, confirmGamble, info, saveVars, saveTrials, confirmInfoReveal, calOCAP, ifInfoReveal, pause],
     timeline_variables: trialVars
 };
 
