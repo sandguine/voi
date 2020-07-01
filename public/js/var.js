@@ -2838,27 +2838,27 @@ var infoBottomOutcome = {
 // if they decide to purchase info and outcome is in the top portion
 var ifTop = {
     timeline: [revealTopInfo, saveVars, saveTrials, confirmTop],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && onTop){
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // conditional_function: function(){
+    //     var data = jsPsych.data.get().last(1).values()[0];
+    //     if(data.infoRevealDecision == 'Yes' && onTop){
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 };
 
 // if they decide to purchase info and outcome is in the bottom portion
 var ifBottom = {
     timeline: [revealBottomInfo, saveVars, saveTrials, confirmBottom],
-    conditional_function: function(){
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(data.infoRevealDecision == 'Yes' && !onTop){
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // conditional_function: function(){
+    //     var data = jsPsych.data.get().last(1).values()[0];
+    //     if(data.infoRevealDecision == 'Yes' && !onTop){
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 };
 
 
