@@ -1780,6 +1780,7 @@ var signalPayment = {
 };
 
 // replay of gamble screen
+// replay of gamble screen
 var gambleReplay = {
     type: 'canvas-keyboard-response',
     stimulus: function() {
@@ -1872,6 +1873,29 @@ var gambleReplay = {
         var trialIndexes = [];
         gambleDecisions.forEach((decision, index) => trialIndexes.push(index));
         trialIdx = jsPsych.randomization.shuffle(trialIndexes)[0];
+        coa = cutoffAngle[trialIdx];
+        oca = outcomeAngle[trialIdx];
+
+        // determine which side the outcome will land depending on cutoff angle
+        switch (coa) {
+            case 0:
+                onTop = ooba[0].includes(oca)?true:false;
+                break;
+            case 30:
+                onTop = ooba[1].includes(oca)?true:false;
+                break;
+            case 60:
+                onTop = ooba[2].includes(oca)?true:false;
+                break;
+            case 120:
+                onTop = ooba[4].includes(oca)?true:false; // since we skip 90
+                break;
+            case 150:
+                onTop = ooba[5].includes(oca)?true:false;
+                break;
+        }
+
+
         ool = optionLeft[trialIdx];
         oor = optionRight[trialIdx];
         ip = price[trialIdx];
@@ -1881,6 +1905,8 @@ var gambleReplay = {
         ird = infoRevealDecisions[trialIdx];
         i1hd = info1stHalfDecisions[trialIdx];
         i2hd = info2ndHalfDecisions[trialIdx];
+
+        return coa, oca, onTop;
     }
 };
 
@@ -2197,7 +2223,8 @@ var gambleOutcome = {
                 paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
-                paymentAngle: rndOutcomeAllAngles[0],
+                paymentCutoffAngle: coa,
+                paymentAngle: oca,
                 paymentPayOff: payoff,
                 paymentIndex: trialIdx
             }
@@ -2371,7 +2398,8 @@ var infoOutcome = {
                 paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
-                paymentAngle: rndOutcomeAllAngles[0],
+                paymentCutoffAngle: coa,
+                paymentAngle: oca,
                 paymentPayOff: payoff,
                 paymentIndex: trialIdx
             }
@@ -2574,6 +2602,7 @@ var infoTopOutcome = {
                 paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
+                paymentCutoffAngle: coa,
                 paymentAngle: oca,
                 paymentPayOff: payoff,
                 paymentTotal: totalPayoff,
@@ -2780,6 +2809,7 @@ var infoBottomOutcome = {
                 paymentEndTime: paymentEndTime,
                 paymentOptionLeft: ool,
                 paymentOptionRight: oor,
+                paymentCutoffAngle: coa,
                 paymentAngle: oca,
                 paymentPayOff: payoff,
                 paymentTotal: totalPayoff,
