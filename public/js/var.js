@@ -2841,7 +2841,7 @@ var ifInfoReveal = {
         var data = jsPsych.data.get().last(1).values()[0];
         if(data.infoRevealDecision == 'Yes'){
             return true;
-        } else if (data.infoRevealDecision == 'No'){
+        } else {
             return false;
         }
     }
